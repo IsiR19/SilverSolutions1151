@@ -1,0 +1,51 @@
+﻿@model SilverSolutions1151.Data.Entity.ProductionReport
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ProductionReport</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="OpeningBalance" class="control-label"></label>
+                <label asp-for="OpeningBalance" class="form-control" id="OpeningBalanceLabel" />
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="InProgress" class="control-label"></label>
+                <label asp-for="InProgress" class="form-control" />
+                <span asp-validation-for="InProgress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReadyStockk" class="control-label"></label>
+                <input asp-for="ReadyStockk" class="form-control" />
+                <span asp-validation-for="ReadyStockk" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sold" class="control-label"></label>
+                <input asp-for="Sold" class="form-control" />
+                <span asp-validation-for="Sold" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Packing" class="control-label"></label>
+                <input asp-for="Packing" class="form-control" />
+                <span asp-validation-for="Packing" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClosedBalance" class="control-label"></label>
+                <input asp-for="ClosedBalance" class="form-control" />
+                <span asp-validation-for="ClosedBalance" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
