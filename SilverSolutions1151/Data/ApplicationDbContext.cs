@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SilverSolutions1151.Data.Entity;
+using SilverSolutions1151.Models;
+using SilverSolutions1151.Models.Entity;
 
 namespace SilverSolutions1151.Data
 {
@@ -19,5 +21,7 @@ namespace SilverSolutions1151.Data
         public DbSet<Ingredients> Ingredients { get; set; }
         public DbSet<ProductionReport> ProductionReport { get; set; }
         public DbSet<ManufacturingStage> ManufacturingStage { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<SalesOrder> SalesOrder { get; set; }
     }
 }

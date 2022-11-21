@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SilverSolutions1151.Data;
 
@@ -11,9 +12,10 @@ using SilverSolutions1151.Data;
 namespace SilverSolutions1151.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221121114010_CustomerDB")]
+    partial class CustomerDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -520,119 +522,6 @@ namespace SilverSolutions1151.Data.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("SilverSolutions1151.Models.Entity.SalesOrder", b =>
-                {
-                    b.Property<int>("SalesOrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SalesOrderId"), 1L, 1);
-
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CurrencyId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CustomerRefNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("DeliveryDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<double>("Discount")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Freight")
-                        .HasColumnType("float");
-
-                    b.Property<DateTimeOffset>("OrderDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Remarks")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SalesOrderName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SalesTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("SubTotal")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Tax")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Total")
-                        .HasColumnType("float");
-
-                    b.HasKey("SalesOrderId");
-
-                    b.ToTable("SalesOrder");
-                });
-
-            modelBuilder.Entity("SilverSolutions1151.Models.Entity.SalesOrderLine", b =>
-                {
-                    b.Property<int>("SalesOrderLineId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SalesOrderLineId"), 1L, 1);
-
-                    b.Property<double>("Amount")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("DiscountAmount")
-                        .HasColumnType("float");
-
-                    b.Property<double>("DiscountPercentage")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
-
-                    b.Property<int>("SalesOrderId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("SubTotal")
-                        .HasColumnType("float");
-
-                    b.Property<double>("TaxAmount")
-                        .HasColumnType("float");
-
-                    b.Property<double>("TaxPercentage")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Total")
-                        .HasColumnType("float");
-
-                    b.HasKey("SalesOrderLineId");
-
-                    b.HasIndex("SalesOrderId");
-
-                    b.ToTable("SalesOrderLine");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -736,17 +625,6 @@ namespace SilverSolutions1151.Data.Migrations
                         .HasForeignKey("ProductTypeId");
                 });
 
-            modelBuilder.Entity("SilverSolutions1151.Models.Entity.SalesOrderLine", b =>
-                {
-                    b.HasOne("SilverSolutions1151.Models.Entity.SalesOrder", "SalesOrder")
-                        .WithMany("SalesOrderLines")
-                        .HasForeignKey("SalesOrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("SalesOrder");
-                });
-
             modelBuilder.Entity("SilverSolutions1151.Data.Entity.Catalog", b =>
                 {
                     b.Navigation("Materials");
@@ -755,11 +633,6 @@ namespace SilverSolutions1151.Data.Migrations
             modelBuilder.Entity("SilverSolutions1151.Data.Entity.ProductType", b =>
                 {
                     b.Navigation("RawMaterials");
-                });
-
-            modelBuilder.Entity("SilverSolutions1151.Models.Entity.SalesOrder", b =>
-                {
-                    b.Navigation("SalesOrderLines");
                 });
 #pragma warning restore 612, 618
         }
