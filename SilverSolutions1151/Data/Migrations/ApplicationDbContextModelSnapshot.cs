@@ -421,7 +421,12 @@ namespace SilverSolutions1151.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("PackagingId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PackagingId");
 
                     b.ToTable("ProductType");
                 });
@@ -723,6 +728,17 @@ namespace SilverSolutions1151.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("RawMaterial");
+                });
+
+            modelBuilder.Entity("SilverSolutions1151.Data.Entity.ProductType", b =>
+                {
+                    b.HasOne("SilverSolutions1151.Data.Entity.Packaging", "Packaging")
+                        .WithMany()
+                        .HasForeignKey("PackagingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Packaging");
                 });
 
             modelBuilder.Entity("SilverSolutions1151.Data.Entity.RawMaterial", b =>

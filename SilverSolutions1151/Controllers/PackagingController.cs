@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SilverSolutions1151.Data;
 using SilverSolutions1151.Data.Entity;
@@ -22,7 +17,7 @@ namespace SilverSolutions1151.Controllers
         // GET: Packaging
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Packaging.ToListAsync());
+            return View(await _context.Packaging.ToListAsync());
         }
 
         // GET: Packaging/Details/5
@@ -149,14 +144,14 @@ namespace SilverSolutions1151.Controllers
             {
                 _context.Packaging.Remove(packaging);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PackagingExists(Guid id)
         {
-          return _context.Packaging.Any(e => e.Id == id);
+            return _context.Packaging.Any(e => e.Id == id);
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SilverSolutions1151.Data;
 using SilverSolutions1151.Data.Entity;
@@ -22,7 +17,7 @@ namespace SilverSolutions1151.Controllers
         // GET: ManufacturingStage
         public async Task<IActionResult> Index()
         {
-              return View(await _context.ManufacturingStage.ToListAsync());
+            return View(await _context.ManufacturingStage.ToListAsync());
         }
 
         // GET: ManufacturingStage/Details/5
@@ -102,7 +97,6 @@ namespace SilverSolutions1151.Controllers
                         _context.Add(updatePacking);
                         await _context.SaveChangesAsync();
                         break;
-
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -193,14 +187,14 @@ namespace SilverSolutions1151.Controllers
             {
                 _context.ManufacturingStage.Remove(manufacturingStage);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ManufacturingStageExists(Guid id)
         {
-          return _context.ManufacturingStage.Any(e => e.Id == id);
+            return _context.ManufacturingStage.Any(e => e.Id == id);
         }
     }
 }

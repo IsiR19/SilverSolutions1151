@@ -12,6 +12,7 @@ namespace SilverSolutions1151.Data
             : base(options)
         {
         }
+
         public DbSet<Catalog>? Catalog { get; set; }
         public DbSet<ProductType>? ProductType { get; set; }
         public DbSet<RawMaterial>? RawMaterials { get; set; }

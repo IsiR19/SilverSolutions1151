@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SilverSolutions1151.Models.Entity
 {
     public class SalesOrder
     {
         public int SalesOrderId { get; set; }
+
         [Display(Name = "Order Number")]
         public string SalesOrderName { get; set; }
+
         [Display(Name = "Branch")]
         public int BranchId { get; set; }
+
         [Display(Name = "Customer")]
         public int CustomerId { get; set; }
+
         public DateTimeOffset OrderDate { get; set; }
         public DateTimeOffset DeliveryDate { get; set; }
 
@@ -23,8 +23,10 @@ namespace SilverSolutions1151.Models.Entity
 
         [Display(Name = "Customer Ref. Number")]
         public string CustomerRefNumber { get; set; }
+
         [Display(Name = "Sales Type")]
         public int SalesTypeId { get; set; }
+
         public string Remarks { get; set; }
         public double Amount { get; set; }
         public double SubTotal { get; set; }

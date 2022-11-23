@@ -1,10 +1,7 @@
-﻿using MessagePack;
-
-namespace SilverSolutions1151.Data.Entity
+﻿namespace SilverSolutions1151.Data.Entity
 {
     public class Ingredients
     {
-
         public Guid Id { get; set; }
         public ProductType ProductType { get; set; }
         public string Description { get; set; }

@@ -19,7 +19,7 @@ namespace SilverSolutions1151.Controllers
 
         public IActionResult Index()
         {
-            ProductionReport productReport = new ProductionReport 
+            ProductionReport productReport = new ProductionReport
             {
                 OpeningBalance = _context.ManufacturingStage.Where(x => x.ProductionStage == ProductionStage.RawTobacco).Sum(x => x.Quantity),
                 InProgress = _context.ManufacturingStage.Where(x => x.ProductionStage == ProductionStage.Mixing).Sum(x => x.Quantity),

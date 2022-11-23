@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SilverSolutions1151.Data;
 using SilverSolutions1151.Models;
@@ -22,7 +17,7 @@ namespace SilverSolutions1151.Controllers
         // GET: Customer
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Customers.ToListAsync());
+            return View(await _context.Customers.ToListAsync());
         }
 
         // GET: Customer/Details/5
@@ -149,14 +144,14 @@ namespace SilverSolutions1151.Controllers
             {
                 _context.Customers.Remove(customer);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CustomerExists(Guid id)
         {
-          return _context.Customers.Any(e => e.CustomerId == id);
+            return _context.Customers.Any(e => e.CustomerId == id);
         }
     }
 }

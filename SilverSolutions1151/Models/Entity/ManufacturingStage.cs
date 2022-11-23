@@ -1,13 +1,12 @@
-﻿using SilverSolutions1151.Data.Enumerations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SilverSolutions1151.Data.Entity
 {
     public class ManufacturingStage
     {
         public Guid Id { get; set; }
-        public ProductionStage ProductionStage { get; set; }    
-        public decimal Quantity {get; set; }
+        public ProductionStage ProductionStage { get; set; }
+        public decimal Quantity { get; set; }
         private DateTime createdDate;
 
         [Column("CreatedDate")]
@@ -21,7 +20,6 @@ namespace SilverSolutions1151.Data.Entity
             set { this.createdDate = value; }
         }
     }
-
 }
 
 public enum ProductionStage
