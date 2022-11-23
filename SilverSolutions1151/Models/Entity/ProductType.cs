@@ -10,7 +10,7 @@ namespace SilverSolutions1151.Data.Entity
         [ForeignKey("Packaging")]
         public Guid PackagingId { get; set; }
 
-        public virtual Packaging Packaging { get; set; }
+        public virtual Packaging? Packaging { get; set; }
 
         public ICollection<RawMaterial>? RawMaterials { get; set; }
     }
