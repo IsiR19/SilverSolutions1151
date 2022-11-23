@@ -1,26 +1,32 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SilverSolutions1151.Data;
 using SilverSolutions1151.Data.Entity;
 
 namespace SilverSolutions1151.Controllers
 {
-    public class ProductTypeController : Controller
+    public class ProductTypesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ProductTypeController(ApplicationDbContext context)
+        public ProductTypesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: ProductType
+        // GET: ProductTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ProductType.ToListAsync());
+            var applicationDbContext = _context.ProductType.Include(p => p.Packaging);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: ProductType/Details/5
+        // GET: ProductTypes/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.ProductType == null)
@@ -29,6 +35,7 @@ namespace SilverSolutions1151.Controllers
             }
 
             var productType = await _context.ProductType
+                .Include(p => p.Packaging)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (productType == null)
             {
@@ -38,18 +45,19 @@ namespace SilverSolutions1151.Controllers
             return View(productType);
         }
 
-        // GET: ProductType/Create
+        // GET: ProductTypes/Create
         public IActionResult Create()
         {
+            ViewData["PackagingId"] = new SelectList(_context.Packaging, "Id", "Name");
             return View();
         }
 
-        // POST: ProductType/Create
+        // POST: ProductTypes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] ProductType productType)
+        public async Task<IActionResult> Create([Bind("Id,Name,PackagingId")] ProductType productType)
         {
             if (ModelState.IsValid)
             {
@@ -58,10 +66,11 @@ namespace SilverSolutions1151.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["PackagingId"] = new SelectList(_context.Packaging, "Id", "Name", productType.PackagingId);
             return View(productType);
         }
 
-        // GET: ProductType/Edit/5
+        // GET: ProductTypes/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null || _context.ProductType == null)
@@ -74,15 +83,16 @@ namespace SilverSolutions1151.Controllers
             {
                 return NotFound();
             }
+            ViewData["PackagingId"] = new SelectList(_context.Packaging, "Id", "Name", productType.PackagingId);
             return View(productType);
         }
 
-        // POST: ProductType/Edit/5
+        // POST: ProductTypes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name")] ProductType productType)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,PackagingId")] ProductType productType)
         {
             if (id != productType.Id)
             {
@@ -109,10 +119,11 @@ namespace SilverSolutions1151.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["PackagingId"] = new SelectList(_context.Packaging, "Id", "Name", productType.PackagingId);
             return View(productType);
         }
 
-        // GET: ProductType/Delete/5
+        // GET: ProductTypes/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.ProductType == null)
@@ -121,6 +132,7 @@ namespace SilverSolutions1151.Controllers
             }
 
             var productType = await _context.ProductType
+                .Include(p => p.Packaging)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (productType == null)
             {
@@ -130,7 +142,7 @@ namespace SilverSolutions1151.Controllers
             return View(productType);
         }
 
-        // POST: ProductType/Delete/5
+        // POST: ProductTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
@@ -144,14 +156,14 @@ namespace SilverSolutions1151.Controllers
             {
                 _context.ProductType.Remove(productType);
             }
-
+            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductTypeExists(Guid id)
         {
-            return _context.ProductType.Any(e => e.Id == id);
+          return _context.ProductType.Any(e => e.Id == id);
         }
     }
 }
