@@ -24,6 +24,7 @@ namespace SilverSolutions1151.Controllers
                 OpeningBalance = _context.ManufacturingStage.Where(x => x.ProductionStage == ProductionStage.RawTobacco).Sum(x => x.Quantity),
                 InProgress = _context.ManufacturingStage.Where(x => x.ProductionStage == ProductionStage.Mixing).Sum(x => x.Quantity),
                 Packing = _context.ManufacturingStage.Where(x => x.ProductionStage == ProductionStage.Packing).Sum(x => x.Quantity),
+                ReadyStockk = _context.ManufacturingStage.Where(x => x.ProductionStage == ProductionStage.Complete).Sum(x => x.Quantity),
                 Sold = _context.ManufacturingStage.Where(x => x.ProductionStage == ProductionStage.Sold).Sum(x => x.Quantity)
             };
             return View(productReport);

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SilverSolutions1151.Data;
 
@@ -11,9 +12,10 @@ using SilverSolutions1151.Data;
 namespace SilverSolutions1151.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221124001251_Packing")]
+    partial class Packing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -525,25 +527,6 @@ namespace SilverSolutions1151.Data.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("SilverSolutions1151.Models.Entity.Packing", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CatalogId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CatalogId");
-
-                    b.ToTable("Packing");
-                });
-
             modelBuilder.Entity("SilverSolutions1151.Models.Entity.SalesOrder", b =>
                 {
                     b.Property<int>("SalesOrderId")
@@ -769,17 +752,6 @@ namespace SilverSolutions1151.Data.Migrations
                     b.HasOne("SilverSolutions1151.Data.Entity.ProductType", null)
                         .WithMany("RawMaterials")
                         .HasForeignKey("ProductTypeId");
-                });
-
-            modelBuilder.Entity("SilverSolutions1151.Models.Entity.Packing", b =>
-                {
-                    b.HasOne("SilverSolutions1151.Data.Entity.Catalog", "Catalog")
-                        .WithMany()
-                        .HasForeignKey("CatalogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Catalog");
                 });
 
             modelBuilder.Entity("SilverSolutions1151.Models.Entity.SalesOrderLine", b =>

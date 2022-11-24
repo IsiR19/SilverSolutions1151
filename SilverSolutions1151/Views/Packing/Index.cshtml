@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SilverSolutions1151.Data.Entity.ManufacturingStage>
+﻿@model IEnumerable<SilverSolutions1151.Models.Entity.Packing>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,13 +13,10 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ProductionStage)
+                @Html.DisplayNameFor(model => model.Catalog)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
             </th>
             <th></th>
         </tr>
@@ -28,13 +25,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.ProductionStage)
+                @Html.DisplayFor(modelItem => item.Catalog.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
             </td>
         </tr>
 }

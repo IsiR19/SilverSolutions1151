@@ -24,5 +24,6 @@ namespace SilverSolutions1151.Data
         public DbSet<ManufacturingStage> ManufacturingStage { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<SalesOrder> SalesOrder { get; set; }
+        public DbSet<Packing> Packing { get; set; }
     }
 }
