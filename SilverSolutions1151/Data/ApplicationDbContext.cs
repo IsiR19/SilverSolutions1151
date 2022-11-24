@@ -25,5 +25,6 @@ namespace SilverSolutions1151.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<SalesOrder> SalesOrder { get; set; }
         public DbSet<Packing> Packing { get; set; }
+        public DbSet<SilverSolutions1151.Models.Entity.Invoice> Invoice { get; set; }
     }
 }
