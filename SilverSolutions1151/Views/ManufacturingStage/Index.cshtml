@@ -16,6 +16,12 @@
                 @Html.DisplayNameFor(model => model.ProductionStage)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.ProductType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ingredient)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Quantity)
             </th>
             <th>
@@ -30,6 +36,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ProductionStage)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductType.Name)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ingredient.Description)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>

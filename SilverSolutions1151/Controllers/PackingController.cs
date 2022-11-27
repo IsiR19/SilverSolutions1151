@@ -62,6 +62,7 @@ namespace SilverSolutions1151.Controllers
         {
            
                 packing.Id = Guid.NewGuid();
+
                 _context.Add(packing);
                 await _context.SaveChangesAsync();
 
@@ -71,16 +72,24 @@ namespace SilverSolutions1151.Controllers
             {
                 var productType = await _context.ProductType.FindAsync(catalogItem.ProductTypeId);
                 var packaging = await _context.Packaging.FindAsync(productType.PackagingId);
-                
-                if (productType.Name.Contains("fruit"))
+                var ingredients = _context.Ingredients.Where(x => x.ProductTypeId == productType.Id);
+                var ingredientId = Guid.Empty;
+                foreach (var ingredient in ingredients)
                 {
-                    
+                    if(ingredient.Description == "Tobacco")
+                    {
+                        ingredientId = ingredient.Id;
+                    }
+                }
+     
                     decimal tobaccoUsed = ((decimal)packaging.Quantity * packing.Quantity) / 3.2M;
                     var manufacturingStage = new ManufacturingStage
                     {
                         Id = Guid.NewGuid(),
                         ProductionStage = ProductionStage.Complete,
                         Quantity = tobaccoUsed,
+                        IngredientId = ingredientId,
+                        ProductTypeId = productType.Id,
                         CreatedDate = DateTime.Now
                     };
 
@@ -92,40 +101,15 @@ namespace SilverSolutions1151.Controllers
                         Id = Guid.NewGuid(),
                         ProductionStage = ProductionStage.Packing,
                         Quantity = -tobaccoUsed,
+                        IngredientId = ingredientId,
+                        ProductTypeId = productType.Id,
                         CreatedDate = DateTime.Now
                     };
 
                     _context.Add(updatemanufacturingStage);
                     await _context.SaveChangesAsync();
                 }
-                else 
-                {
-                    decimal tobaccoUsed = ((decimal)packaging.Quantity * packing.Quantity) / 1.5M;
-                    var manufacturingStage = new ManufacturingStage
-                    {
-                        Id = Guid.NewGuid(),
-                        ProductionStage = ProductionStage.Complete,
-                        Quantity = tobaccoUsed,
-                        CreatedDate = DateTime.Now
-                    };
-
-                    _context.Add(manufacturingStage);
-                    await _context.SaveChangesAsync();
-
-                    var updatemanufacturingStage = new ManufacturingStage
-                    {
-                        Id = Guid.NewGuid(),
-                        ProductionStage = ProductionStage.Packing,
-                        Quantity = -tobaccoUsed,
-                        CreatedDate = DateTime.Now
-                    };
-
-                    _context.Add(updatemanufacturingStage);
-                    await _context.SaveChangesAsync();
-                }
-                
-
-            }
+            
             return RedirectToAction(nameof(Index));
             
             ViewData["CatalogId"] = new SelectList(_context.Catalog, "Id", "Name", packing.CatalogId);

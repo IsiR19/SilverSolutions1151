@@ -8,12 +8,12 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="OpeningBalance" class="control-label"></label>
+                <label asp-for="OpeningBalance" class="control-label">Tobacco</label>
                 <input asp-for="OpeningBalance" class="form-control" id="OpeningBalanceLabel" readonly="readonly" />
             </div>
 
             <div class="form-group">
-                <label asp-for="InProgress" class="control-label"></label>
+                <label asp-for="InProgress" class="control-label">Tobacco Ingedients Mixing</label>
                 <input asp-for="InProgress" class="form-control" readonly="readonly"/>
                 <span asp-validation-for="InProgress" class="text-danger"></span>
             </div>

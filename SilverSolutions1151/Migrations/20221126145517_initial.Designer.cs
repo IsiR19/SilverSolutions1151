@@ -9,11 +9,11 @@ using SilverSolutions1151.Data;
 
 #nullable disable
 
-namespace SilverSolutions1151.Data.Migrations
+namespace SilverSolutions1151.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221123231626_PackagingId")]
-    partial class PackagingId
+    [Migration("20221126145517_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -273,20 +273,12 @@ namespace SilverSolutions1151.Data.Migrations
                     b.Property<Guid>("ProductTypeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal?>("Quantity")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid>("RawMaterialId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal?>("TotalQuantity")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int?>("Ratio")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProductTypeId");
-
-                    b.HasIndex("RawMaterialId");
 
                     b.ToTable("Ingredients");
                 });
@@ -348,6 +340,18 @@ namespace SilverSolutions1151.Data.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("CreatedDate");
 
+                    b.Property<Guid?>("IngredientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("Ingredients")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ProductTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductTypes")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("ProductionStage")
                         .HasColumnType("int");
 
@@ -355,6 +359,10 @@ namespace SilverSolutions1151.Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IngredientId");
+
+                    b.HasIndex("ProductTypeId");
 
                     b.ToTable("ManufacturingStage");
                 });
@@ -525,6 +533,97 @@ namespace SilverSolutions1151.Data.Migrations
                     b.HasKey("CustomerId");
 
                     b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("SilverSolutions1151.Models.Entity.Invoice", b =>
+                {
+                    b.Property<Guid>("InvoiceID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CustomerID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InvoiceNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Paid")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ProposalDetails")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("InvoiceID");
+
+                    b.HasIndex("CustomerID");
+
+                    b.ToTable("Invoice");
+                });
+
+            modelBuilder.Entity("SilverSolutions1151.Models.Entity.InvoiceDetails", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Article")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("InvoiceID")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Qty")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("VAT")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceID");
+
+                    b.ToTable("InvoiceDetails");
+                });
+
+            modelBuilder.Entity("SilverSolutions1151.Models.Entity.Packing", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CatalogId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CatalogId");
+
+                    b.ToTable("Packing");
                 });
 
             modelBuilder.Entity("SilverSolutions1151.Models.Entity.SalesOrder", b =>
@@ -710,15 +809,7 @@ namespace SilverSolutions1151.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SilverSolutions1151.Data.Entity.RawMaterial", "RawMaterial")
-                        .WithMany()
-                        .HasForeignKey("RawMaterialId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("ProductType");
-
-                    b.Navigation("RawMaterial");
                 });
 
             modelBuilder.Entity("SilverSolutions1151.Data.Entity.Inventory", b =>
@@ -730,6 +821,21 @@ namespace SilverSolutions1151.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("RawMaterial");
+                });
+
+            modelBuilder.Entity("SilverSolutions1151.Data.Entity.ManufacturingStage", b =>
+                {
+                    b.HasOne("SilverSolutions1151.Data.Entity.Ingredients", "Ingredient")
+                        .WithMany()
+                        .HasForeignKey("IngredientId");
+
+                    b.HasOne("SilverSolutions1151.Data.Entity.ProductType", "ProductType")
+                        .WithMany()
+                        .HasForeignKey("ProductTypeId");
+
+                    b.Navigation("Ingredient");
+
+                    b.Navigation("ProductType");
                 });
 
             modelBuilder.Entity("SilverSolutions1151.Data.Entity.ProductType", b =>
@@ -754,6 +860,39 @@ namespace SilverSolutions1151.Data.Migrations
                         .HasForeignKey("ProductTypeId");
                 });
 
+            modelBuilder.Entity("SilverSolutions1151.Models.Entity.Invoice", b =>
+                {
+                    b.HasOne("SilverSolutions1151.Models.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("SilverSolutions1151.Models.Entity.InvoiceDetails", b =>
+                {
+                    b.HasOne("SilverSolutions1151.Models.Entity.Invoice", "Invoice")
+                        .WithMany("InvoiceDetails")
+                        .HasForeignKey("InvoiceID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Invoice");
+                });
+
+            modelBuilder.Entity("SilverSolutions1151.Models.Entity.Packing", b =>
+                {
+                    b.HasOne("SilverSolutions1151.Data.Entity.Catalog", "Catalog")
+                        .WithMany()
+                        .HasForeignKey("CatalogId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Catalog");
+                });
+
             modelBuilder.Entity("SilverSolutions1151.Models.Entity.SalesOrderLine", b =>
                 {
                     b.HasOne("SilverSolutions1151.Models.Entity.SalesOrder", "SalesOrder")
@@ -773,6 +912,11 @@ namespace SilverSolutions1151.Data.Migrations
             modelBuilder.Entity("SilverSolutions1151.Data.Entity.ProductType", b =>
                 {
                     b.Navigation("RawMaterials");
+                });
+
+            modelBuilder.Entity("SilverSolutions1151.Models.Entity.Invoice", b =>
+                {
+                    b.Navigation("InvoiceDetails");
                 });
 
             modelBuilder.Entity("SilverSolutions1151.Models.Entity.SalesOrder", b =>

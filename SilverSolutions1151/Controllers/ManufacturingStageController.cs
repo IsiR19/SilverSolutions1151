@@ -1,4 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SilverSolutions1151.Data;
 using SilverSolutions1151.Data.Entity;
@@ -17,7 +22,10 @@ namespace SilverSolutions1151.Controllers
         // GET: ManufacturingStage
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ManufacturingStage.ToListAsync());
+            var applicationDbContext = _context.ManufacturingStage
+                .Include(m => m.ProductType)
+                .Include(m => m.Ingredient);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: ManufacturingStage/Details/5
@@ -29,6 +37,8 @@ namespace SilverSolutions1151.Controllers
             }
 
             var manufacturingStage = await _context.ManufacturingStage
+                .Include(m => m.ProductType)
+                .Include(m => m.Ingredient)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (manufacturingStage == null)
             {
@@ -41,6 +51,7 @@ namespace SilverSolutions1151.Controllers
         // GET: ManufacturingStage/Create
         public IActionResult Create()
         {
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductType, "Id", "Name");
             return View();
         }
 
@@ -49,11 +60,48 @@ namespace SilverSolutions1151.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ProductionStage,Quantity,CreatedDate")] ManufacturingStage manufacturingStage)
+        public async Task<IActionResult> Create([Bind("Id,ProductionStage,ProductTypeId,Quantity,CreatedDate")] ManufacturingStage manufacturingStage)
         {
+
             if (ModelState.IsValid)
             {
+                decimal producedQuantity = manufacturingStage.Quantity;
                 manufacturingStage.Id = Guid.NewGuid();
+                
+                    var ingredients = _context.Ingredients.Where(x => x.ProductTypeId == manufacturingStage.ProductTypeId);
+                    {
+                        foreach (var ingredient in ingredients)
+                        {
+
+                            decimal calculated = ((decimal)ingredient.Ratio / 100m) * manufacturingStage.Quantity;
+
+                           if (ingredient.Description == "Tobacco")
+                            {
+                                manufacturingStage.IngredientId = ingredient.Id;
+                            }
+                            else
+                            {
+                            producedQuantity += (decimal)calculated;
+                            _context.Add( new ManufacturingStage
+                                {
+                                    Id = Guid.NewGuid(),
+                                    CreatedDate = DateTime.Now,
+                                    Quantity = (decimal)calculated,
+                                    ProductTypeId = manufacturingStage.ProductTypeId,
+                                    IngredientId  = ingredient.Id,
+                                    ProductionStage = manufacturingStage.ProductionStage
+                                });
+                                
+                               
+                            }
+
+                        }
+
+                    };
+                
+
+                await _context.SaveChangesAsync();
+                manufacturingStage.Quantity = producedQuantity;
                 _context.Add(manufacturingStage);
                 await _context.SaveChangesAsync();
 
@@ -66,6 +114,7 @@ namespace SilverSolutions1151.Controllers
                             ProductionStage = ProductionStage.RawTobacco,
                             Quantity = -manufacturingStage.Quantity,
                             CreatedDate = manufacturingStage.CreatedDate,
+                            IngredientId = manufacturingStage.IngredientId
                         };
 
                         _context.Add(updatedManufacture);
@@ -79,6 +128,7 @@ namespace SilverSolutions1151.Controllers
                             ProductionStage = ProductionStage.Mixing,
                             Quantity = -manufacturingStage.Quantity,
                             CreatedDate = manufacturingStage.CreatedDate,
+                            IngredientId = manufacturingStage.IngredientId
                         };
 
                         _context.Add(updateMixing);
@@ -92,6 +142,7 @@ namespace SilverSolutions1151.Controllers
                             ProductionStage = ProductionStage.Packing,
                             Quantity = -manufacturingStage.Quantity,
                             CreatedDate = manufacturingStage.CreatedDate,
+                            IngredientId = manufacturingStage.IngredientId
                         };
 
                         _context.Add(updatePacking);
@@ -101,6 +152,9 @@ namespace SilverSolutions1151.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductType, "Id", "Name", manufacturingStage.ProductType);
+            ViewData["IngredientId"] = new SelectList(_context.ProductType, "Id", "Name", manufacturingStage.Ingredient);
             return View(manufacturingStage);
         }
 
@@ -117,6 +171,8 @@ namespace SilverSolutions1151.Controllers
             {
                 return NotFound();
             }
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductType, "Id", "Name", manufacturingStage.ProductType);
+            ViewData["IngredientId"] = new SelectList(_context.ProductType, "Id", "Name", manufacturingStage.Ingredient);
             return View(manufacturingStage);
         }
 
@@ -125,7 +181,7 @@ namespace SilverSolutions1151.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,ProductionStage,Quantity,CreatedDate")] ManufacturingStage manufacturingStage)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,ProductionStage,ProductTypeId,Quantity,CreatedDate")] ManufacturingStage manufacturingStage)
         {
             if (id != manufacturingStage.Id)
             {
@@ -152,6 +208,8 @@ namespace SilverSolutions1151.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductType, "Id", "Name", manufacturingStage.ProductType);
+            ViewData["IngredientId"] = new SelectList(_context.ProductType, "Id", "Name", manufacturingStage.Ingredient);
             return View(manufacturingStage);
         }
 
@@ -164,6 +222,7 @@ namespace SilverSolutions1151.Controllers
             }
 
             var manufacturingStage = await _context.ManufacturingStage
+                .Include(m => m.ProductType)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (manufacturingStage == null)
             {
@@ -187,14 +246,14 @@ namespace SilverSolutions1151.Controllers
             {
                 _context.ManufacturingStage.Remove(manufacturingStage);
             }
-
+            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ManufacturingStageExists(Guid id)
         {
-            return _context.ManufacturingStage.Any(e => e.Id == id);
+          return _context.ManufacturingStage.Any(e => e.Id == id);
         }
     }
 }

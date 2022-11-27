@@ -16,6 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20221126131748_initial.cs" />
+    <Compile Remove="Migrations\20221126131748_initial.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="bin\Debug\net6.0\publish\appsettings.Development.json" />
     <Content Include="bin\Debug\net6.0\publish\appsettings.json" />
     <Content Include="bin\Debug\net6.0\publish\SilverSolutions1151.deps.json" />
@@ -406,6 +411,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
