@@ -25,7 +25,7 @@ namespace SilverSolutions1151.Controllers
             var applicationDbContext = _context.ManufacturingStage
                 .Include(m => m.ProductType)
                 .Include(m => m.Ingredient);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await applicationDbContext.OrderByDescending(x=> x.CreatedDate).OrderBy(x=> x.ProductType).ToListAsync());
         }
 
         // GET: ManufacturingStage/Details/5
@@ -63,8 +63,7 @@ namespace SilverSolutions1151.Controllers
         public async Task<IActionResult> Create([Bind("Id,ProductionStage,ProductTypeId,Quantity,CreatedDate")] ManufacturingStage manufacturingStage)
         {
 
-            if (ModelState.IsValid)
-            {
+            
                 decimal producedQuantity = manufacturingStage.Quantity;
                 manufacturingStage.Id = Guid.NewGuid();
                 
@@ -81,27 +80,28 @@ namespace SilverSolutions1151.Controllers
                             }
                             else
                             {
+                        if(manufacturingStage.ProductionStage == ProductionStage.Mixing)
+                        {
                             producedQuantity += (decimal)calculated;
-                            _context.Add( new ManufacturingStage
-                                {
-                                    Id = Guid.NewGuid(),
-                                    CreatedDate = DateTime.Now,
-                                    Quantity = (decimal)calculated,
-                                    ProductTypeId = manufacturingStage.ProductTypeId,
-                                    IngredientId  = ingredient.Id,
-                                    ProductionStage = manufacturingStage.ProductionStage
-                                });
+                            _context.Add(new ManufacturingStage
+                            {
+                                Id = Guid.NewGuid(),
+                                CreatedDate = DateTime.Now,
+                                Quantity = (decimal)calculated,
+                                ProductTypeId = manufacturingStage.ProductTypeId,
+                                IngredientId = ingredient.Id,
+                                ProductionStage = manufacturingStage.ProductionStage
+                            });
+                        }
+                            
                                 
                                
                             }
 
                         }
-
-                    };
                 
 
                 await _context.SaveChangesAsync();
-                manufacturingStage.Quantity = producedQuantity;
                 _context.Add(manufacturingStage);
                 await _context.SaveChangesAsync();
 
@@ -114,7 +114,8 @@ namespace SilverSolutions1151.Controllers
                             ProductionStage = ProductionStage.RawTobacco,
                             Quantity = -manufacturingStage.Quantity,
                             CreatedDate = manufacturingStage.CreatedDate,
-                            IngredientId = manufacturingStage.IngredientId
+                            IngredientId = manufacturingStage.IngredientId,
+                            ProductTypeId = manufacturingStage.ProductTypeId
                         };
 
                         _context.Add(updatedManufacture);
@@ -122,27 +123,44 @@ namespace SilverSolutions1151.Controllers
                         break;
 
                     case ProductionStage.Packing:
+                        var updateCompelete = new ManufacturingStage
+                        {
+                            Id = Guid.NewGuid(),
+                            ProductionStage = ProductionStage.Complete,
+                            Quantity = -manufacturingStage.Quantity,
+                            CreatedDate = manufacturingStage.CreatedDate,
+                            IngredientId = manufacturingStage.IngredientId,
+                            ProductTypeId = manufacturingStage.ProductTypeId
+                        };
+
+                        _context.Add(updateCompelete);
+                        await _context.SaveChangesAsync();
+                        break;
+
+                    case ProductionStage.Complete:
                         var updateMixing = new ManufacturingStage
                         {
                             Id = Guid.NewGuid(),
                             ProductionStage = ProductionStage.Mixing,
                             Quantity = -manufacturingStage.Quantity,
                             CreatedDate = manufacturingStage.CreatedDate,
-                            IngredientId = manufacturingStage.IngredientId
+                            IngredientId = manufacturingStage.IngredientId,
+                             ProductTypeId = manufacturingStage.ProductTypeId
                         };
 
                         _context.Add(updateMixing);
                         await _context.SaveChangesAsync();
                         break;
-
-                    case ProductionStage.Complete:
+                     
+                       case ProductionStage.Sold:
                         var updatePacking = new ManufacturingStage
                         {
                             Id = Guid.NewGuid(),
                             ProductionStage = ProductionStage.Packing,
                             Quantity = -manufacturingStage.Quantity,
                             CreatedDate = manufacturingStage.CreatedDate,
-                            IngredientId = manufacturingStage.IngredientId
+                            IngredientId = manufacturingStage.IngredientId,
+                            ProductTypeId = manufacturingStage.ProductTypeId
                         };
 
                         _context.Add(updatePacking);

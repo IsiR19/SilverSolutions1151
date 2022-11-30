@@ -1,4 +1,4 @@
-﻿@model SilverSolutions1151.Data.Entity.Invoice
+﻿@model SilverSolutions1151.Models.Entity.Invoice
 
 @{
     ViewBag.Title = "Create";
@@ -27,7 +27,7 @@
     @Html.ValidationSummary(true)
     <text>
         @{
-            Html.RenderPartial("EditOrCreateInvoicePartial", Model);
+            await Html.RenderPartialAsync("CreateOrEditPartial.cshtml", Model);
         }
     </text>
 }

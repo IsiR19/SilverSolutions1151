@@ -9,15 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Views\Invoices\**" />
-    <Content Remove="Views\Invoices\**" />
-    <EmbeddedResource Remove="Views\Invoices\**" />
-    <None Remove="Views\Invoices\**" />
+    <Compile Remove="Migrations\20221126131748_initial.cs" />
+    <Compile Remove="Migrations\20221126131748_initial.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20221126131748_initial.cs" />
-    <Compile Remove="Migrations\20221126131748_initial.Designer.cs" />
+    <Content Remove="Views\Invoices\Delete.cshtml" />
+    <Content Remove="Views\Invoices\Details.cshtml" />
+    <Content Remove="Views\Invoices\EditOrCreateInvoicePartial.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -414,6 +413,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\Api\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

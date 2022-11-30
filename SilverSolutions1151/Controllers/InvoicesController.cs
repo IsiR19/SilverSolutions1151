@@ -125,13 +125,13 @@ namespace SilverSolutions1151.Controllers
             IPagedList<Invoice> invoices_paged = null;
             if (proposal == true)
             {
-                invoices = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<Invoice, Models.Customer>)invoices.Where(i => i.InvoiceNumber == 0);  //we can not use  Where(i => i.IsProposal) from within the LINQ db context                
+                //invoices = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<Invoice, Models.Customer>)invoices.Where(i => i.InvoiceNumber == 0);  //we can not use  Where(i => i.IsProposal) from within the LINQ db context                
             }
             else
             {
-                invoices = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<Invoice, Models.Customer>)invoices.Where(i => i.InvoiceNumber > 0);  //we can not use  Where(i => i.IsProposal) from within the LINQ db context                
+                //invoices = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<Invoice, Models.Customer>)invoices.Where(i => i.InvoiceNumber > 0);  //we can not use  Where(i => i.IsProposal) from within the LINQ db context                
             }
-
+            pagesize = pagesize ?? 1;
             invoices_paged = invoices.OrderByDescending(i => i.TimeStamp).ToPagedList(currentPageIndex, (pagesize.HasValue) ? pagesize.Value : defaultPageSize);
 
             FillIndexViewBags(invoices_paged);
@@ -189,7 +189,8 @@ namespace SilverSolutions1151.Controllers
                     i.InvoiceNumber = next_invoice.InvoiceNumber + 1;
             }
             ViewBag.IsProposal = proposal;
-            ViewBag.CustomerID = new SelectList(_context.Customers.OrderBy(c => c.CustomerName), "CustomerID", "CustomerName");
+            ViewData["CustomerID"] = new SelectList(_context.Customers.OrderBy(c=> c.CustomerName), "CustomerId", "CustomerName");
+            //ViewBag.CustomerID = new SelectList(_context.Customers.OrderBy(c => c.CustomerName), "CustomerID", "CustomerName");
             return View(i);
         }
 
@@ -200,7 +201,8 @@ namespace SilverSolutions1151.Controllers
         [System.Web.Mvc.ValidateInput(false)]
         public ActionResult Create(Invoice invoice, bool? proposal = false)
         {
-            ViewBag.CustomerID = new SelectList(_context.Customers.OrderBy(c => c.CustomerName), "CustomerID", "Name", invoice.CustomerID);
+            ViewData["CustomerID"] = new SelectList(_context.Customers.OrderBy(c=>c.CustomerName), "CustomerId", "CustomerName");
+            //ViewBag.CustomerID = new SelectList(_context.Customers.OrderBy(c => c.CustomerName), "CustomerID", "Name", invoice.CustomerID);
             ViewBag.IsProposal = proposal;
 
             if (ModelState.IsValid)

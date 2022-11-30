@@ -11,6 +11,7 @@ namespace SilverSolutions1151.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
         }
 
         public DbSet<Catalog>? Catalog { get; set; }
