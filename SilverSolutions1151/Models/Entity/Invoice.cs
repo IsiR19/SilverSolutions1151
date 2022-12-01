@@ -23,7 +23,7 @@ namespace SilverSolutions1151.Models.Entity
                 return (this.InvoiceNumber == null || this.InvoiceNumber == 0);
             }
         }
-    
+
         public Guid CustomerID { get; set; }
         public virtual Customer Customer { get; set; }
 
@@ -43,7 +43,7 @@ namespace SilverSolutions1151.Models.Entity
         public DateTime DueDate { get; set; }
 
         public bool Paid { get; set; }
-       public virtual ICollection<InvoiceDetails> InvoiceDetails { get; set; }
+        public virtual ICollection<InvoiceDetails> InvoiceDetails { get; set; }
 
         #region Calculated fields
         public decimal VATAmount

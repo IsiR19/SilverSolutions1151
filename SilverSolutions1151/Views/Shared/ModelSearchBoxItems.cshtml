@@ -1,0 +1,69 @@
+﻿@model SilverSolutions1151.Models.Search.SearchModel
+
+<script>
+    function SetQ(q, year) {
+        var startd, end;
+        if (q == 1) {
+            $('#from').val('01/01/' + year);
+            $('#to').val('31/03/' + year);
+        }
+        else if (q == 2) {
+            $('#from').val('01/04/' + year);
+            $('#to').val('30/06/' + year);
+        }
+        else if (q == 3) {
+            $('#from').val('01/07/' + year);
+            $('#to').val('30/09/' + year);
+        }
+        else if (q == 4) {
+            $('#from').val('01/10/' + year);
+            $('#to').val('31/12/' + year);
+        }
+    }
+</script>
+
+
+
+@using (Html.BeginForm("Search", Model.Action, FormMethod.Get))
+{
+    <div class="searchBox noprint">
+        @Html.ValidationSummary()
+        Text:
+        @Html.TextBoxFor(x => x.text, new { @placeholder="Search text to look for ..."})
+        From:
+        @Html.EditorFor(x=>x.from,"DateTime",new {@Value=Model.from,Placeholder="start Date from.."})
+        @*@Html.TextBoxFor(x=>x.from, new {@placeholder="Start Date from..", @class="datefield small"})*@
+        To:
+        @Html.EditorFor(x => x.to, "DateTime", new {@Value=Model.to, Placeholder = "end Date to.." })
+        @*@Html.TextBoxFor(x =>x.to, new { @placeholder="End Date to..", @class="datefield small"})*@
+
+        <input type="submit" value="Filter" class="btn small primary" />
+        <a href="?filter=clear" class="btn small">Clear filters</a>
+
+        <div class="setQuarter">
+            <div>
+                @{
+                    var year = DateTime.Now.Year - 1;
+                }
+                <strong>@year:</strong>
+                <a name="" onclick="SetQ(1, @year)" href="#">1Q</a>
+                <a name="" onclick="SetQ(2, @year)" href="#">2Q</a>
+                <a name="" onclick="SetQ(3, @year)" href="#">3Q</a>
+                <a name="" onclick="SetQ(4, @year)" href="#">4Q</a>
+
+                /
+
+                @{
+                    year = DateTime.Now.Year;
+                }
+                <strong>@year:</strong>
+                <a name="" onclick="SetQ(1, @year)" href="#">1Q</a>
+                <a name="" onclick="SetQ(2, @year)" href="#">2Q</a>
+                <a name="" onclick="SetQ(3, @year)" href="#">3Q</a>
+                <a name="" onclick="SetQ(4, @year)" href="#">4Q</a>
+            </div>
+        </div>
+    </div>
+}
+
+
