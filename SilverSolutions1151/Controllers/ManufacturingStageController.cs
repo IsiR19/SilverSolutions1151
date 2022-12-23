@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SilverSolutions1151.Data;
 using SilverSolutions1151.Data.Entity;
+using X.PagedList;
 
 namespace SilverSolutions1151.Controllers
 {
+    [Authorize]
     public class ManufacturingStageController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,12 +23,31 @@ namespace SilverSolutions1151.Controllers
         }
 
         // GET: ManufacturingStage
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
+            ViewBag.CurrentSort = sortOrder;
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
             var applicationDbContext = _context.ManufacturingStage
                 .Include(m => m.ProductType)
                 .Include(m => m.Ingredient);
-            return View(await applicationDbContext.OrderByDescending(x=> x.CreatedDate).OrderBy(x=> x.ProductType).ToListAsync());
+           // return View(await applicationDbContext.OrderByDescending(x=> x.CreatedDate).OrderBy(x=> x.ProductType).ToListAsync());
+
+            var ManufacturingStage = from s in applicationDbContext
+                           select s;
+          
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            return View(ManufacturingStage.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: ManufacturingStage/Details/5

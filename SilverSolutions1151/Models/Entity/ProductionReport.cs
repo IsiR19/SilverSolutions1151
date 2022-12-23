@@ -1,7 +1,11 @@
-﻿namespace SilverSolutions1151.Data.Entity
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SilverSolutions1151.Data.Entity
 {
     public class ProductionReport : Entity
     {
+        [DataType(DataType.Date)]
+        public DateTime SearchDate { get; set; }
         public decimal OpeningBalance { get; set; }
         public decimal ClosedBalance { get; set; }
         public decimal InProgress { get; set; }

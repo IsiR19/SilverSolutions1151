@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SilverSolutions1151.Data;
 
@@ -11,13 +12,14 @@ using SilverSolutions1151.Data;
 namespace SilverSolutions1151.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221221114517_RemoveInvoice")]
+    partial class RemoveInvoice
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.12")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -530,88 +532,6 @@ namespace SilverSolutions1151.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("SilverSolutions1151.Models.Entity.Invoice", b =>
-                {
-                    b.Property<int>("InvoiceID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoiceID"), 1L, 1);
-
-                    b.Property<decimal>("AdvancePaymentTax")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid>("CustomerID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("InvoiceNumber")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InvoiceType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Paid")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ProposalDetails")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("InvoiceID");
-
-                    b.HasIndex("CustomerID");
-
-                    b.ToTable("Invoice");
-                });
-
-            modelBuilder.Entity("SilverSolutions1151.Models.Entity.InvoiceDetails", b =>
-                {
-                    b.Property<int>("InvoiceDetailsID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InvoiceDetailsID"), 1L, 1);
-
-                    b.Property<string>("Article")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("InvoiceID")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Qty")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("TimeStamp")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("VAT")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("InvoiceDetailsID");
-
-                    b.HasIndex("InvoiceID");
-
-                    b.ToTable("InvoiceDetails");
-                });
-
             modelBuilder.Entity("SilverSolutions1151.Models.Entity.Packing", b =>
                 {
                     b.Property<Guid>("Id")
@@ -869,28 +789,6 @@ namespace SilverSolutions1151.Migrations
                         .HasForeignKey("ProductTypeId");
                 });
 
-            modelBuilder.Entity("SilverSolutions1151.Models.Entity.Invoice", b =>
-                {
-                    b.HasOne("SilverSolutions1151.Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("SilverSolutions1151.Models.Entity.InvoiceDetails", b =>
-                {
-                    b.HasOne("SilverSolutions1151.Models.Entity.Invoice", "Invoice")
-                        .WithMany("InvoiceDetails")
-                        .HasForeignKey("InvoiceID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Invoice");
-                });
-
             modelBuilder.Entity("SilverSolutions1151.Models.Entity.Packing", b =>
                 {
                     b.HasOne("SilverSolutions1151.Data.Entity.Catalog", "Catalog")
@@ -921,11 +819,6 @@ namespace SilverSolutions1151.Migrations
             modelBuilder.Entity("SilverSolutions1151.Data.Entity.ProductType", b =>
                 {
                     b.Navigation("RawMaterials");
-                });
-
-            modelBuilder.Entity("SilverSolutions1151.Models.Entity.Invoice", b =>
-                {
-                    b.Navigation("InvoiceDetails");
                 });
 
             modelBuilder.Entity("SilverSolutions1151.Models.Entity.SalesOrder", b =>

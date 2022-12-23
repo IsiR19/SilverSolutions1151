@@ -1,4 +1,7 @@
-﻿@model IEnumerable<SilverSolutions1151.Data.Entity.ManufacturingStage>
+﻿@model X.PagedList.IPagedList<SilverSolutions1151.Data.Entity.ManufacturingStage>
+@using X.PagedList.Mvc;
+@using X.PagedList.Mvc.Core
+
 
 @{
     ViewData["Title"] = "Index";
@@ -9,25 +12,32 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+@using (Html.BeginForm("Index", "ManufacturingStage", FormMethod.Get))
+{
+    <p>
+        Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
 <table class="table">
+
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ProductionStage)
+                @Html.DisplayName("Production Stage")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProductType)
+                @Html.DisplayName("Product Type")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Ingredient)
+                @Html.DisplayName("Ingredient")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Quantity)
+                @Html.DisplayName("Quantity")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreatedDate)
+                @Html.DisplayName("Date")
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -52,3 +62,8 @@
 }
     </tbody>
 </table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

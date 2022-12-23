@@ -1,13 +1,16 @@
 ﻿using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SilverSolutions1151.Data;
+using SilverSolutions1151.Models;
 using SilverSolutions1151.Models.Entity;
 using SilverSolutions1151.Models.Paging;
 
 namespace SilverSolutions1151.Controllers
 {
+    [Authorize]
     public class InvoicesController : Controller
     {
 
@@ -99,45 +102,45 @@ namespace SilverSolutions1151.Controllers
         //
         // GET: /Invoice/
 
-        public ActionResult Index(string filter, int? page, int? pagesize, bool? proposal = false)
-        {
-            #region remember filter stuff
-            //if (filter == "clear")
-            //{
-            //    Session["invoiceText"] = null;
-            //    Session["invoiceFrom"] = null;
-            //    Session["invoiceTo"] = null;
-            //}
-            //else
-            //{
-            //    if ((Session["invoiceText"] != null) || (Session["invoiceFrom"] != null) || (Session["invoiceTo"] != null))
-            //    {
-            //        return RedirectToAction("Search", new { text = Session["invoiceText"], from = Session["invoiceFrom"], to = Session["invoiceTo"], proposal = proposal });
-            //    }
-            //}
-            #endregion
+        //public ActionResult Index(string filter, int? page, int? pagesize, bool? proposal = false)
+        //{
+        //    #region remember filter stuff
+        //    //if (filter == "clear")
+        //    //{
+        //    //    Session["invoiceText"] = null;
+        //    //    Session["invoiceFrom"] = null;
+        //    //    Session["invoiceTo"] = null;
+        //    //}
+        //    //else
+        //    //{
+        //    //    if ((Session["invoiceText"] != null) || (Session["invoiceFrom"] != null) || (Session["invoiceTo"] != null))
+        //    //    {
+        //    //        return RedirectToAction("Search", new { text = Session["invoiceText"], from = Session["invoiceFrom"], to = Session["invoiceTo"], proposal = proposal });
+        //    //    }
+        //    //}
+        //    #endregion
 
 
-            int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
-            var invoices = _context.Invoice.Include(i => i.InvoiceDetails).Include(i => i.Customer);
-            ViewBag.IsProposal = proposal;
+        //    int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
+        //    var invoices = _context.Invoice.Include(i => i.InvoiceDetails).Include(i => i.Customer);
+        //    ViewBag.IsProposal = proposal;
 
-            IPagedList<Invoice> invoices_paged = null;
-            if (proposal == true)
-            {
-                //invoices = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<Invoice, Models.Customer>)invoices.Where(i => i.InvoiceNumber == 0);  //we can not use  Where(i => i.IsProposal) from within the LINQ db context                
-            }
-            else
-            {
-                //invoices = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<Invoice, Models.Customer>)invoices.Where(i => i.InvoiceNumber > 0);  //we can not use  Where(i => i.IsProposal) from within the LINQ db context                
-            }
-            pagesize = pagesize ?? 1;
-            invoices_paged = invoices.OrderByDescending(i => i.TimeStamp).ToPagedList(currentPageIndex, (pagesize.HasValue) ? pagesize.Value : defaultPageSize);
+        //    IPagedList<Invoice> invoices_paged = null;
+        //    if (proposal == true)
+        //    {
+        //        //invoices = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<Invoice, Models.Customer>)invoices.Where(i => i.InvoiceNumber == 0);  //we can not use  Where(i => i.IsProposal) from within the LINQ db context                
+        //    }
+        //    else
+        //    {
+        //        //invoices = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<Invoice, Models.Customer>)invoices.Where(i => i.InvoiceNumber > 0);  //we can not use  Where(i => i.IsProposal) from within the LINQ db context                
+        //    }
+        //    pagesize = pagesize ?? 1;
+        //    invoices_paged = invoices.OrderByDescending(i => i.TimeStamp).ToPagedList(currentPageIndex, (pagesize.HasValue) ? pagesize.Value : defaultPageSize);
 
-            FillIndexViewBags(invoices_paged);
+        //    FillIndexViewBags(invoices_paged);
 
-            return View(invoices_paged);
-        }
+        //    return View(invoices_paged);
+        //}
 
         //
         // GET: /Invoice/Details/5
@@ -189,7 +192,7 @@ namespace SilverSolutions1151.Controllers
                     i.InvoiceNumber = next_invoice.InvoiceNumber + 1;
             }
             ViewBag.IsProposal = proposal;
-            ViewData["CustomerID"] = new SelectList(_context.Customers.OrderBy(c=> c.CustomerName), "CustomerId", "CustomerName");
+            ViewData["CustomerID"] = new SelectList(_context.Customers.OrderBy(c=> c.CustomerName), "CustomerID", "CustomerName");
             //ViewBag.CustomerID = new SelectList(_context.Customers.OrderBy(c => c.CustomerName), "CustomerID", "CustomerName");
             return View(i);
         }
@@ -197,11 +200,23 @@ namespace SilverSolutions1151.Controllers
         //
         // POST: /Invoice/Create
 
+
+        public ActionResult Index()
+        {
+            //if (Session["AdminLogin"].ToString() != "")
+            //{
+            List<Invoice> OrderAndCustomerList = _context.Invoice.OrderByDescending(s => s.TimeStamp).ToList();
+            return View(OrderAndCustomerList);
+            //}
+
+            //return RedirectToAction("Login", "AdminPanel");
+        }
+
         [HttpPost]
         [System.Web.Mvc.ValidateInput(false)]
         public ActionResult Create(Invoice invoice, bool? proposal = false)
         {
-            ViewData["CustomerID"] = new SelectList(_context.Customers.OrderBy(c=>c.CustomerName), "CustomerId", "CustomerName");
+            ViewData["CustomerID"] = new SelectList(_context.Customers.OrderBy(c=>c.CustomerName), "CustomerID", "CustomerName");
             //ViewBag.CustomerID = new SelectList(_context.Customers.OrderBy(c => c.CustomerName), "CustomerID", "Name", invoice.CustomerID);
             ViewBag.IsProposal = proposal;
 

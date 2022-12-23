@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SilverSolutions1151.Data;
@@ -6,6 +7,7 @@ using SilverSolutions1151.Data.Entity;
 
 namespace SilverSolutions1151.Controllers
 {
+    [Authorize]
     public class CatalogController : Controller
     {
         private readonly ApplicationDbContext _context;

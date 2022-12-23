@@ -6,9 +6,8 @@ namespace SilverSolutions1151.Models.Entity
 {
     public class InvoiceDetails
     {
-        public Guid Id { get; set; }
-       
-        public Guid InvoiceID { get; set; }
+        public int InvoiceDetailsID { get; set; }
+        public int InvoiceID { get; set; }
         public virtual Invoice Invoice { get; set; }
 
         [Required]

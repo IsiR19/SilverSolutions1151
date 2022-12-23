@@ -11,7 +11,8 @@ namespace SilverSolutions1151.Models.Entity
             InvoiceDetails = new List<InvoiceDetails>();
         }
 
-        public Guid InvoiceID { get; set; }
+        public int InvoiceID { get; set; }
+
 
         [DisplayName("Invoice Number")]
         public int InvoiceNumber { get; set; }
@@ -42,7 +43,13 @@ namespace SilverSolutions1151.Models.Entity
         [DisplayName("Due Date")]
         public DateTime DueDate { get; set; }
 
+        [DisplayName("Advance Payment Tax")]
+        [Range(0.00, 100.0, ErrorMessage = "Value must be a % between 0 and 100")]
+        public decimal AdvancePaymentTax { get; set; }
+
         public bool Paid { get; set; }
+
+        
         public virtual ICollection<InvoiceDetails> InvoiceDetails { get; set; }
 
         #region Calculated fields
@@ -67,6 +74,18 @@ namespace SilverSolutions1151.Models.Entity
                 return InvoiceDetails.Sum(i => i.Total);
             }
         }
+
+        public decimal AdvancePaymentTaxAmount
+        {
+            get
+            {
+                if (InvoiceDetails == null)
+                    return 0;
+
+                return NetTotal * (AdvancePaymentTax / 100);
+            }
+        }
+
         /// <summary>
         /// Total with tax
         /// </summary>
@@ -88,9 +107,27 @@ namespace SilverSolutions1151.Models.Entity
         {
             get
             {
-                return TotalWithVAT;
+                return TotalWithVAT - AdvancePaymentTaxAmount;
             }
         }
+
+        public decimal TotalDiscountedPrice
+        {
+            get
+            {
+                return TotalWithVAT - AdvancePaymentTaxAmount;
+            }
+        }
+
+        public InvoiceType InvoiceType { get; set; }
+
+
         #endregion
     }
+}
+
+public enum InvoiceType
+{
+    ProForma = 0,
+    Invoice = 1,
 }

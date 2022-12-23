@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SilverSolutions1151.Data;
 
@@ -11,13 +12,14 @@ using SilverSolutions1151.Data;
 namespace SilverSolutions1151.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221221125343_a")]
+    partial class a
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.12")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -548,9 +550,6 @@ namespace SilverSolutions1151.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("InvoiceNumber")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InvoiceType")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")

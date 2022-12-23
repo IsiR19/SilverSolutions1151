@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SilverSolutions1151.Data;
 using SilverSolutions1151.Models;
 
 namespace SilverSolutions1151.Controllers
 {
+    [Authorize]
     public class CustomerController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,6 +20,12 @@ namespace SilverSolutions1151.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Customers.ToListAsync());
+        }
+
+        public async Task<JsonResult> Index(string prefix)
+        {
+            var customers = await _context.Customers.Where(x => x.CustomerName.Contains(prefix)).ToListAsync();
+            return Json(customers);
         }
 
         // GET: Customer/Details/5
@@ -153,5 +161,7 @@ namespace SilverSolutions1151.Controllers
         {
             return _context.Customers.Any(e => e.CustomerId == id);
         }
+
+
     }
 }
