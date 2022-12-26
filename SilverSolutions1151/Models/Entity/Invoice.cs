@@ -50,7 +50,7 @@ namespace SilverSolutions1151.Models.Entity
         public bool Paid { get; set; }
 
         
-        public virtual ICollection<InvoiceDetails> InvoiceDetails { get; set; }
+        public virtual List<InvoiceDetails> InvoiceDetails { get; set; }
 
         #region Calculated fields
         public decimal VATAmount

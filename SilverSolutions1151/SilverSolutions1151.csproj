@@ -14,6 +14,63 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\scipts\Angular\angular-animate.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-animate.min.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-animate.min.js.map" />
+    <Content Remove="wwwroot\scipts\Angular\angular-aria.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-aria.min.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-aria.min.js.map" />
+    <Content Remove="wwwroot\scipts\Angular\angular-cookies.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-cookies.min.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-cookies.min.js.map" />
+    <Content Remove="wwwroot\scipts\Angular\angular-csp.css" />
+    <Content Remove="wwwroot\scipts\Angular\angular-loader.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-loader.min.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-loader.min.js.map" />
+    <Content Remove="wwwroot\scipts\Angular\angular-message-format.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-message-format.min.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-message-format.min.js.map" />
+    <Content Remove="wwwroot\scipts\Angular\angular-messages.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-messages.min.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-messages.min.js.map" />
+    <Content Remove="wwwroot\scipts\Angular\angular-mocks.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-parse-ext.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-parse-ext.min.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-parse-ext.min.js.map" />
+    <Content Remove="wwwroot\scipts\Angular\angular-resource.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-resource.min.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-resource.min.js.map" />
+    <Content Remove="wwwroot\scipts\Angular\angular-route.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-route.min.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-route.min.js.map" />
+    <Content Remove="wwwroot\scipts\Angular\angular-sanitize.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-sanitize.min.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-sanitize.min.js.map" />
+    <Content Remove="wwwroot\scipts\Angular\angular-touch.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-touch.min.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular-touch.min.js.map" />
+    <Content Remove="wwwroot\scipts\Angular\angular.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular.min.js" />
+    <Content Remove="wwwroot\scipts\Angular\angular.min.js.map" />
+    <Content Remove="wwwroot\scipts\Angular\bootstrap.js" />
+    <Content Remove="wwwroot\scipts\Angular\bootstrap.min.js" />
+    <Content Remove="wwwroot\scipts\Angular\jquery-1.10.2.intellisense.js" />
+    <Content Remove="wwwroot\scipts\Angular\jquery-1.10.2.js" />
+    <Content Remove="wwwroot\scipts\Angular\jquery-1.10.2.min.js" />
+    <Content Remove="wwwroot\scipts\Angular\jquery-1.10.2.min.map" />
+    <Content Remove="wwwroot\scipts\Angular\jquery.validate-vsdoc.js" />
+    <Content Remove="wwwroot\scipts\Angular\jquery.validate.js" />
+    <Content Remove="wwwroot\scipts\Angular\jquery.validate.min.js" />
+    <Content Remove="wwwroot\scipts\Angular\jquery.validate.unobtrusive.js" />
+    <Content Remove="wwwroot\scipts\Angular\jquery.validate.unobtrusive.min.js" />
+    <Content Remove="wwwroot\scipts\Angular\modernizr-2.6.2.js" />
+    <Content Remove="wwwroot\scipts\Angular\respond.js" />
+    <Content Remove="wwwroot\scipts\Angular\respond.min.js" />
+    <Content Remove="wwwroot\scipts\Angular\sitemap.xml" />
+    <Content Remove="wwwroot\scipts\Angular\_references.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="bin\Debug\net6.0\publish\appsettings.Development.json" />
     <Content Include="bin\Debug\net6.0\publish\appsettings.json" />
     <Content Include="bin\Debug\net6.0\publish\SilverSolutions1151.deps.json" />
@@ -390,10 +447,70 @@
     <None Include="bin\Debug\net6.0\publish\zh-Hant\Microsoft.CodeAnalysis.VisualBasic.Workspaces.resources.dll" />
     <None Include="bin\Debug\net6.0\publish\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll" />
     <None Include="bin\Debug\net6.0\publish\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
+    <None Include="wwwroot\scipts\Angular\angular-animate.js" />
+    <None Include="wwwroot\scipts\Angular\angular-animate.min.js" />
+    <None Include="wwwroot\scipts\Angular\angular-animate.min.js.map" />
+    <None Include="wwwroot\scipts\Angular\angular-aria.js" />
+    <None Include="wwwroot\scipts\Angular\angular-aria.min.js" />
+    <None Include="wwwroot\scipts\Angular\angular-aria.min.js.map" />
+    <None Include="wwwroot\scipts\Angular\angular-cookies.js" />
+    <None Include="wwwroot\scipts\Angular\angular-cookies.min.js" />
+    <None Include="wwwroot\scipts\Angular\angular-cookies.min.js.map" />
+    <None Include="wwwroot\scipts\Angular\angular-csp.css" />
+    <None Include="wwwroot\scipts\Angular\angular-loader.js" />
+    <None Include="wwwroot\scipts\Angular\angular-loader.min.js" />
+    <None Include="wwwroot\scipts\Angular\angular-loader.min.js.map" />
+    <None Include="wwwroot\scipts\Angular\angular-message-format.js" />
+    <None Include="wwwroot\scipts\Angular\angular-message-format.min.js" />
+    <None Include="wwwroot\scipts\Angular\angular-message-format.min.js.map" />
+    <None Include="wwwroot\scipts\Angular\angular-messages.js" />
+    <None Include="wwwroot\scipts\Angular\angular-messages.min.js" />
+    <None Include="wwwroot\scipts\Angular\angular-messages.min.js.map" />
+    <None Include="wwwroot\scipts\Angular\angular-mocks.js" />
+    <None Include="wwwroot\scipts\Angular\angular-parse-ext.js" />
+    <None Include="wwwroot\scipts\Angular\angular-parse-ext.min.js" />
+    <None Include="wwwroot\scipts\Angular\angular-parse-ext.min.js.map" />
+    <None Include="wwwroot\scipts\Angular\angular-resource.js" />
+    <None Include="wwwroot\scipts\Angular\angular-resource.min.js" />
+    <None Include="wwwroot\scipts\Angular\angular-resource.min.js.map" />
+    <None Include="wwwroot\scipts\Angular\angular-route.js" />
+    <None Include="wwwroot\scipts\Angular\angular-route.min.js" />
+    <None Include="wwwroot\scipts\Angular\angular-route.min.js.map" />
+    <None Include="wwwroot\scipts\Angular\angular-sanitize.js" />
+    <None Include="wwwroot\scipts\Angular\angular-sanitize.min.js" />
+    <None Include="wwwroot\scipts\Angular\angular-sanitize.min.js.map" />
+    <None Include="wwwroot\scipts\Angular\angular-touch.js" />
+    <None Include="wwwroot\scipts\Angular\angular-touch.min.js" />
+    <None Include="wwwroot\scipts\Angular\angular-touch.min.js.map" />
+    <None Include="wwwroot\scipts\Angular\angular.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="wwwroot\scipts\Angular\angular.min.js" />
+    <None Include="wwwroot\scipts\Angular\angular.min.js.map" />
+    <None Include="wwwroot\scipts\Angular\bootstrap.js" />
+    <None Include="wwwroot\scipts\Angular\bootstrap.min.js" />
+    <None Include="wwwroot\scipts\Angular\jquery-1.10.2.intellisense.js" />
+    <None Include="wwwroot\scipts\Angular\jquery-1.10.2.js" />
+    <None Include="wwwroot\scipts\Angular\jquery-1.10.2.min.js" />
+    <None Include="wwwroot\scipts\Angular\jquery-1.10.2.min.map" />
+    <None Include="wwwroot\scipts\Angular\jquery.validate-vsdoc.js" />
+    <None Include="wwwroot\scipts\Angular\jquery.validate.js" />
+    <None Include="wwwroot\scipts\Angular\jquery.validate.min.js" />
+    <None Include="wwwroot\scipts\Angular\jquery.validate.unobtrusive.js" />
+    <None Include="wwwroot\scipts\Angular\jquery.validate.unobtrusive.min.js" />
+    <None Include="wwwroot\scipts\Angular\modernizr-2.6.2.js" />
+    <None Include="wwwroot\scipts\Angular\respond.js" />
+    <None Include="wwwroot\scipts\Angular\respond.min.js" />
+    <None Include="wwwroot\scipts\Angular\sitemap.xml" />
+    <None Include="wwwroot\scipts\Angular\_references.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="angularjs" Version="1.8.2" />
+    <PackageReference Include="AngularJS.Core" Version="1.8.2" />
+    <PackageReference Include="jQuery" Version="3.6.1" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.9" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.10" />
@@ -409,8 +526,40 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Api\" />
     <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\scipts\Angular\errors.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\scipts\Angular\version.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\scipts\Home\app.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\scipts\Home\SalesInvoiceController.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Scripts\angular.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Home\app.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Home\HomeInvoiceListController.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Home\HomeProductStockController.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Home\InvoiceController.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

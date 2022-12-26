@@ -530,6 +530,26 @@ namespace SilverSolutions1151.Migrations
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("SilverSolutions1151.Models.Entity.Category", b =>
+                {
+                    b.Property<int>("CategoryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryID"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoryID");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("SilverSolutions1151.Models.Entity.Invoice", b =>
                 {
                     b.Property<int>("InvoiceID")
@@ -629,6 +649,155 @@ namespace SilverSolutions1151.Migrations
                     b.HasIndex("CatalogId");
 
                     b.ToTable("Packing");
+                });
+
+            modelBuilder.Entity("SilverSolutions1151.Models.Entity.Product", b =>
+                {
+                    b.Property<int>("ProductID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductID"), 1L, 1);
+
+                    b.Property<int?>("CategoryID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductID");
+
+                    b.HasIndex("CategoryID");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("SilverSolutions1151.Models.Entity.ProductStock", b =>
+                {
+                    b.Property<Guid>("ProductStockID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int?>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductQtyID")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("PurchasePrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("SalesPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("ProductStockID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("ProductStocks");
+                });
+
+            modelBuilder.Entity("SilverSolutions1151.Models.Entity.Sale", b =>
+                {
+                    b.Property<int>("SalesID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SalesID"), 1L, 1);
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CustomerAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerPhone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DiscountParcentage")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OrderNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("Subtotal")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("TotalAmout")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("VatParcentage")
+                        .HasColumnType("int");
+
+                    b.HasKey("SalesID");
+
+                    b.ToTable("Sale");
+                });
+
+            modelBuilder.Entity("SilverSolutions1151.Models.Entity.SalesDetail", b =>
+                {
+                    b.Property<int>("SalesDetailID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SalesDetailID"), 1L, 1);
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double?>("LineTotal")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SalesID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<double?>("UnitPrice")
+                        .HasColumnType("float");
+
+                    b.HasKey("SalesDetailID");
+
+                    b.HasIndex("SalesID");
+
+                    b.ToTable("SalesDetails");
                 });
 
             modelBuilder.Entity("SilverSolutions1151.Models.Entity.SalesOrder", b =>
@@ -902,6 +1071,33 @@ namespace SilverSolutions1151.Migrations
                     b.Navigation("Catalog");
                 });
 
+            modelBuilder.Entity("SilverSolutions1151.Models.Entity.Product", b =>
+                {
+                    b.HasOne("SilverSolutions1151.Models.Entity.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryID");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("SilverSolutions1151.Models.Entity.ProductStock", b =>
+                {
+                    b.HasOne("SilverSolutions1151.Models.Entity.Product", "Product")
+                        .WithMany("ProductStocks")
+                        .HasForeignKey("ProductID");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("SilverSolutions1151.Models.Entity.SalesDetail", b =>
+                {
+                    b.HasOne("SilverSolutions1151.Models.Entity.Sale", "Sale")
+                        .WithMany("SalesDetails")
+                        .HasForeignKey("SalesID");
+
+                    b.Navigation("Sale");
+                });
+
             modelBuilder.Entity("SilverSolutions1151.Models.Entity.SalesOrderLine", b =>
                 {
                     b.HasOne("SilverSolutions1151.Models.Entity.SalesOrder", "SalesOrder")
@@ -923,9 +1119,24 @@ namespace SilverSolutions1151.Migrations
                     b.Navigation("RawMaterials");
                 });
 
+            modelBuilder.Entity("SilverSolutions1151.Models.Entity.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("SilverSolutions1151.Models.Entity.Invoice", b =>
                 {
                     b.Navigation("InvoiceDetails");
+                });
+
+            modelBuilder.Entity("SilverSolutions1151.Models.Entity.Product", b =>
+                {
+                    b.Navigation("ProductStocks");
+                });
+
+            modelBuilder.Entity("SilverSolutions1151.Models.Entity.Sale", b =>
+                {
+                    b.Navigation("SalesDetails");
                 });
 
             modelBuilder.Entity("SilverSolutions1151.Models.Entity.SalesOrder", b =>
