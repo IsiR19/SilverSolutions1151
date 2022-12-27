@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Invoices\**" />
+    <Content Remove="Views\Invoices\**" />
+    <EmbeddedResource Remove="Views\Invoices\**" />
+    <None Remove="Views\Invoices\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Migrations\20221126131748_initial.cs" />
     <Compile Remove="Migrations\20221126131748_initial.Designer.cs" />
   </ItemGroup>

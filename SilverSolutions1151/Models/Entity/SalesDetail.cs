@@ -7,7 +7,9 @@ namespace SilverSolutions1151.Models.Entity
         public int SalesDetailID { get; set; }
         [ForeignKey("Sale")]
         public Nullable<int> SalesID { get; set; }
+        [ForeignKey("Product")]
         public Nullable<int> ProductId { get; set; }
+        public Nullable<int> ProductName { get; set; }
         public Nullable<double> UnitPrice { get; set; }
         public Nullable<int> Quantity { get; set; }
         public Nullable<double> LineTotal { get; set; }

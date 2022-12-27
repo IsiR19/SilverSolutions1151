@@ -2,11 +2,7 @@
     ViewBag.Title = "Invoice";
 }
 
-@section scripts
-{
-    
-    <script src="~/scipts/home/salesinvoicecontroller.js"></script>
-}
+
 <style>
     .BorderLess {
         border: none;
@@ -67,7 +63,7 @@
                             <td class="left strong">
                                 <select ng-model="cart.ProductId" ng-click="SetValueOfProduct(cart.ProductId);SubTotalCalculation();">
                                     <option>--Select--</option>
-                                    <option ng-repeat="product in ProductList" value="{{product.ProductId}}">{{product.Name}}</option>
+                                    <option ng-repeat="ProductList" value="{{product.ProductId}}">{{product.ProductId}}</option>
                                 </select>
                             </td>
                             <td class="left">{{cart.CategoryName}}</td>
@@ -96,7 +92,7 @@
                                 <td class="left">
                                     <strong>Subtotal</strong>
                                 </td>
-                                <td class="right">${{Sale.Subtotal}}</td>
+                                <td class="right">R{{Sale.Subtotal}}</td>
                             </tr>
                             <tr>
                                 <td class="left">
@@ -117,7 +113,7 @@
                                         </select>
                                     </strong>
                                 </td>
-                                <td class="right">${{Sale.DiscountAmount}}</td>
+                                <td class="right">R{{Sale.DiscountAmount}}</td>
                             </tr>
                             <tr>
                                 <td class="left">
@@ -129,14 +125,14 @@
                                         </select>
                                     </strong>
                                 </td>
-                                <td class="right">${{Sale.VatAmount}}</td>
+                                <td class="right">R{{Sale.VatAmount}}</td>
                             </tr>
                             <tr>
                                 <td class="left">
                                     <strong>Total</strong>
                                 </td>
                                 <td class="right">
-                                    <strong>${{Sale.TotalAmount}}</strong>
+                                    <strong>R{{Sale.TotalAmount}}</strong>
                                 </td>
                             </tr>
                         </tbody>
@@ -149,5 +145,12 @@
         </div>
     </div>
 </div>
+@section scripts
+{
+    
+    <script src="~/scipts/home/salesinvoicecontroller.js"></script>
+}
+
+
 
 

@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SilverSolutions1151.Data;
-using SilverSolutions1151.Helpers;
+using SilverSolutions1151.Data.Entity;
 using SilverSolutions1151.Models.Entity;
-
 
 namespace SilverSolutions1151.Controllers
 {
-
     public class SalesDetailsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -16,148 +19,166 @@ namespace SilverSolutions1151.Controllers
         {
             _context = context;
         }
+
+        // GET: SalesDetails
+        public async Task<IActionResult> Index(Sale sale)
+        {
+            var applicationDbContext = _context.SalesDetails.Include(s => s.Sale);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+        // GET: SalesDetails/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null || _context.SalesDetails == null)
+            {
+                return NotFound();
+            }
+
+            var salesDetail = await _context.SalesDetails
+                .Include(s => s.Sale)
+                .FirstOrDefaultAsync(m => m.SalesDetailID == id);
+            if (salesDetail == null)
+            {
+                return NotFound();
+            }
+
+            return View(salesDetail);
+        }
+
+        // GET: SalesDetails/Create
+        public IActionResult Create(Sale sale)
+        {
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductID", "Name");
+            ViewData["SalesID"] = new SelectList(_context.Sale, "SalesID", "SalesID");
+            return View();
+        }
+
+        // POST: SalesDetails/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public JsonResult SaveInvoiceSale(Sale sale, List<SalesDetail> salesDetails)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("SalesDetailID,SalesID,ProductId,ProductName,UnitPrice,Quantity,LineTotal,CreatedBy,CreatedOn,Status")] SalesDetail salesDetail)
         {
-            ReturnMessage retMessage = new ReturnMessage();
-            retMessage.IsSuccess = true;
+            var total = salesDetail.Quantity * salesDetail.UnitPrice;
+            salesDetail.LineTotal = total;
+                _context.Add(salesDetail);
+                await _context.SaveChangesAsync();
 
-            foreach (var item in salesDetails)
+            var sale = await _context.Sale.FindAsync(salesDetail.SalesID);
+            if(sale != null)
             {
-                sale.SalesDetails.Add(new SalesDetail { ProductId = item.ProductId, UnitPrice = item.UnitPrice, Quantity = item.Quantity, LineTotal = item.LineTotal });
-                //var prd = db.ProductStocks.Where(x => x.ProductId == item.ProductId && x.Quantity > 0).FirstOrDefault();
-                //prd.Quantity = prd.Quantity - item.Quantity;
-                //db.Entry(prd).State = EntityState.Modified;
-            }
-            _context.Sale.Add(sale);
-            retMessage.Messagae = "Save Success!";
-            try
-            {
-                _context.SaveChanges();
-            }
-            catch (Exception)
-            {
-                retMessage.IsSuccess = false;
-            }
-
-            return Json(retMessage);
-
-        }
-     
-        public JsonResult EditInvoiceSale(Sale sale, List<SalesDetail> salesDetails, List<int> deleted)
-        {
-            ReturnMessage retMessage = new ReturnMessage();
-
-            retMessage.IsSuccess = true;
-
-            if (deleted != null)
-            {
-                foreach (var item in deleted)
+                sale.TotalAmout = sale.TotalAmout + salesDetail.LineTotal;
+                sale.TotalAmout = sale.TotalAmout + (sale.TotalAmout * (double)(sale.VatParcentage / 100m));
+                sale.Subtotal = sale.TotalAmout;
+                if(sale.DiscountParcentage > 0)
                 {
-                    var data = _context.SalesDetails.Where(x => x.SalesDetailID == item).SingleOrDefault(); ;
-                    _context.SalesDetails.Remove(data);
+                    sale.TotalAmout = sale.TotalAmout + (double)((decimal)sale.DiscountParcentage / 100m) * sale.TotalAmout;
                 }
+
+                _context.Update(sale);
+                await _context.SaveChangesAsync();
+            }
+            ViewData["SalesID"] = new SelectList(_context.Sale, "SalesID", "SalesID", salesDetail.SalesID);
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductID", "Name", salesDetail.ProductId);
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: SalesDetails/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.SalesDetails == null)
+            {
+                return NotFound();
             }
 
-            foreach (var item in salesDetails)
+            var salesDetail = await _context.SalesDetails.FindAsync(id);
+            if (salesDetail == null)
             {
-                if (item.SalesDetailID > 0)
+                return NotFound();
+            }
+            ViewData["SalesID"] = new SelectList(_context.Sale, "SalesID", "SalesID", salesDetail.SalesID);
+            return View(salesDetail);
+        }
+
+        // POST: SalesDetails/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("SalesDetailID,SalesID,ProductId,ProductName,UnitPrice,Quantity,LineTotal,CreatedBy,CreatedOn,Status")] SalesDetail salesDetail)
+        {
+            if (id != salesDetail.SalesDetailID)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
                 {
-                    _context.Entry(item).State = EntityState.Modified;
-                    retMessage.Messagae = "Update Success!";
+                    _context.Update(salesDetail);
+                    await _context.SaveChangesAsync();
                 }
-                else
+                catch (DbUpdateConcurrencyException)
                 {
-                    sale.SalesDetails.Add(new SalesDetail { ProductId = item.ProductId, UnitPrice = item.UnitPrice, Quantity = item.Quantity, LineTotal = item.LineTotal });
-                    // var prd = db.ProductStocks.Where(x => x.ProductId == item.ProductId && x.Quantity > 0).FirstOrDefault();
-                    // prd.Quantity = prd.Quantity - item.Quantity;
-                    //db.Entry(prd).State = EntityState.Modified;
-                    _context.Sale.Add(sale);
-                    retMessage.Messagae = "Save Success!";
+                    if (!SalesDetailExists(salesDetail.SalesDetailID))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
+                return RedirectToAction(nameof(Index));
             }
-
-
-            try
-            {
-                _context.SaveChanges();
-            }
-            catch (Exception)
-            {
-                retMessage.IsSuccess = false;
-            }
-         
-            return Json(retMessage);
+            ViewData["SalesID"] = new SelectList(_context.Sale, "SalesID", "SalesID", salesDetail.SalesID);
+            return View(salesDetail);
         }
 
-
-        [HttpGet]
-        public JsonResult GetAllSales()
+        // GET: SalesDetails/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
-
-            var dataList = _context.Sale.ToList();
-            var modefiedData = dataList.Select(x => new
+            if (id == null || _context.SalesDetails == null)
             {
-                SalesId = x.SalesID,
-                OrderNo = x.OrderNo,
-                CustomerName = x.CustomerName,
-                CustomerPhone = x.CustomerPhone,
-                CustomerAddress = x.CustomerAddress,
-                OrderDate = x.OrderDate,
-                TotalAmout = x.TotalAmout
-            }).ToList();
+                return NotFound();
+            }
 
-            return Json(dataList);
+            var salesDetail = await _context.SalesDetails
+                .Include(s => s.Sale)
+                .FirstOrDefaultAsync(m => m.SalesDetailID == id);
+            if (salesDetail == null)
+            {
+                return NotFound();
+            }
 
-        }
-        [HttpGet]
-        public JsonResult GetInvoiceBySalesId(int salesId)
-        {
-
-            List<Sale> dataList = (from sd in _context.SalesDetails.ToList()
-                                   join s in _context.Sale on sd.SalesID equals s.SalesID
-                                   where sd.SalesID == salesId
-                                   select new Sale
-                                   {
-                                       SalesID = (int)sd.SalesID,
-                                       OrderNo = s.OrderNo,
-                                       CustomerName = s.CustomerName,
-                                       CustomerPhone = s.CustomerPhone,
-                                       CustomerAddress = s.CustomerAddress,
-                                       OrderDate = s.OrderDate,
-                                       PaymentMethod = s.PaymentMethod,
-                                       TotalAmout = s.TotalAmout,
-                                       SalesDetailId = sd.SalesDetailID,
-                                       ProductId = sd.ProductId,
-                                       UnitPrice = sd.UnitPrice,
-                                       Subtotal = s.Subtotal,
-                                       Quantity = sd.Quantity,
-                                       LineTotal = sd.LineTotal,
-                                       DiscountParcentage = s.DiscountParcentage,
-                                       VatParcentage = s.VatParcentage
-                                   }).ToList();
-
-            return Json(dataList);
+            return View(salesDetail);
         }
 
-        public JsonResult GetAllProduct()
+        // POST: SalesDetails/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var dataList = (from prd in _context.Products.Include("Category").ToList()
-                            join stk in _context.ProductStocks on prd.ProductID equals stk.ProductID
-                            where stk.Quantity > 0
-                            select new
-                            {
-                                ProductId = prd.ProductID,
-                                CategoryId = prd.CategoryID,
-                                Name = prd.Name,
-                                Status = prd.Status,
-                                CategoryName = prd.Category.Name,
-                                PurchasePrice = stk.PurchasePrice,
-                                SalesPrice = stk.SalesPrice
-                            }).ToList();
+            if (_context.SalesDetails == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.SalesDetails'  is null.");
+            }
+            var salesDetail = await _context.SalesDetails.FindAsync(id);
+            if (salesDetail != null)
+            {
+                _context.SalesDetails.Remove(salesDetail);
+            }
+            
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
-
-            return Json(dataList);
+        private bool SalesDetailExists(int id)
+        {
+          return _context.SalesDetails.Any(e => e.SalesDetailID == id);
         }
     }
 }

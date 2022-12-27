@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using SilverSolutions1151.Data;
+using SilverSolutions1151.Data.Entity;
 using SilverSolutions1151.Models.Entity;
 
 namespace SilverSolutions1151.Controllers
@@ -23,7 +24,7 @@ namespace SilverSolutions1151.Controllers
         // GET: Sales
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Sale.ToListAsync());
+              return View(await _context.Sale.ToListAsync());
         }
 
         // GET: Sales/Details/5
@@ -47,7 +48,20 @@ namespace SilverSolutions1151.Controllers
         // GET: Sales/Create
         public IActionResult Create()
         {
-            return View();
+            Sale sale = new Sale();
+            sale.SalesDetails = new List<SalesDetail>();
+
+            //for a while we are generating rows from server side but good practice //is to genrate it from client side(JQuery/JavaScript)
+            SalesDetail row1 = new SalesDetail();
+            sale.SalesDetails.Add(row1);
+            sale.VatParcentage = 15;
+            sale.TotalAmout = 0;
+            sale.Subtotal = 0;
+            var orderNo = $"{RandomString(5)} - {RandomNumber(1000, 9999)}";  
+            sale.OrderNo = orderNo;
+            return View(sale);
+            //sale.SalesDetails.Add(salesDetail);
+            //return View("Create",sale);
         }
 
         // POST: Sales/Create
@@ -55,16 +69,15 @@ namespace SilverSolutions1151.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SalesID,OrderNo,CustomerName,CustomerPhone,CustomerAddress,OrderDate,PaymentMethod,TotalAmout,CreatedBy,CreatedOn,Status,Subtotal,DiscountParcentage,VatParcentage")] Sale sale)
+        public async Task<IActionResult> Create(Sale sale)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(sale);
+            sale.PaymentMethod = "N/A";
+            _context.Add(sale);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(sale);
+                return RedirectToAction("Create", "SalesDetails", sale);
         }
+
+        
 
         // GET: Sales/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -149,20 +162,43 @@ namespace SilverSolutions1151.Controllers
             {
                 _context.Sale.Remove(sale);
             }
-
+            
             await _context.SaveChangesAsync();
-            return RedirectToActionResult(nameof(Index));
-        }
-
-        private IActionResult RedirectToActionResult(string v)
-        {
-            throw new NotImplementedException();
+            return RedirectToAction(nameof(Index));
         }
 
         private bool SaleExists(int id)
         {
-            return _context.Sale.Any(e => e.SalesID == id);
+          return _context.Sale.Any(e => e.SalesID == id);
+        }
+
+        private int RandomNumber(int min, int max)
+        {
+            var _random = new Random();
+            return _random.Next(min, max);
+        }
+        public string RandomString(int size, bool lowerCase = false)
+        {
+            var builder = new StringBuilder(size);
+            var _random = new Random();
+            // Unicode/ASCII Letters are divided into two blocks
+            // (Letters 65–90 / 97–122):   
+            // The first group containing the uppercase letters and
+            // the second group containing the lowercase.  
+
+            // char is a single Unicode character  
+            char offset = lowerCase ? 'a' : 'A';
+            const int lettersOffset = 26; // A...Z or a..z: length = 26  
+
+            for (var i = 0; i < size; i++)
+            {
+                var @char = (char)_random.Next(offset, offset + lettersOffset);
+                builder.Append(@char);
+            }
+
+            return lowerCase ? builder.ToString().ToUpper() : builder.ToString();
         }
     }
 }
+
 
