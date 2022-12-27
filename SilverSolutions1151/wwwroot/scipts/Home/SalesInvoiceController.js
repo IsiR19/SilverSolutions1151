@@ -18,6 +18,7 @@
             $scope.InvoiceCart.push({ ProductId: null, CategoryName: '', UnitPrice: 0, Quantity: 1, LineTotal: 0 });
         }
         $scope.SetValueOfProduct = function (productId) {
+            productId = 1;
             var dataObj = $filter('filter')($scope.ProductList, { ProductId: parseInt(productId) })[0];
             const index = $scope.InvoiceCart.findIndex((x) => x.ProductId === productId);
             $scope.InvoiceCart[index].CategoryName = dataObj.CategoryName;
