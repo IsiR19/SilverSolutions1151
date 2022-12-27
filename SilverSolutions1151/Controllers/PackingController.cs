@@ -84,13 +84,13 @@ namespace SilverSolutions1151.Controllers
                     }
                 }
      
-                    decimal tobaccoUsed = ((decimal)packaging.Quantity * packing.Quantity);
+                    //decimal tobaccoUsed = ((decimal)packaging.Quantity * packing.Quantity);
                     
                     var updatemanufacturingStage = new ManufacturingStage
                     {
                         Id = Guid.NewGuid(),
                         ProductionStage = ProductionStage.Packing,
-                        Quantity = -tobaccoUsed,
+                        Quantity = packing.Quantity,
                         IngredientId = ingredientId,
                         ProductTypeId = productType.Id,
                         CreatedDate = DateTime.Now
@@ -98,7 +98,12 @@ namespace SilverSolutions1151.Controllers
 
                     _context.Add(updatemanufacturingStage);
                     await _context.SaveChangesAsync();
+
+                
                 }
+
+
+
             
             return RedirectToAction(nameof(Index));
             
