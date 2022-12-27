@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Rotativa;
 using SilverSolutions1151.Data;
 using SilverSolutions1151.Data.Entity;
 using SilverSolutions1151.Models.Entity;
@@ -25,6 +27,42 @@ namespace SilverSolutions1151.Controllers
         public async Task<IActionResult> Index()
         {
               return View(await _context.Sale.ToListAsync());
+        }
+
+        public async Task<IActionResult> Print(int id)
+        {
+            if (id == null || _context.Sale == null)
+            {
+                return NotFound();
+            }
+
+            var sale = await _context.Sale.FindAsync(id);
+            if (sale == null)
+            {
+                return NotFound();
+            }
+            var details = _context.SalesDetails.Where(x => x.SalesID == id);
+            if(details != null)
+            {
+                foreach(var item in details)
+                {
+                    if(item.ProductId != null)
+                    {
+                        var product = await _context.Products.FindAsync(item.ProductId);
+                        item.ProductName = product.Name;
+                    }
+                    bool alreadyExist = sale.SalesDetails.Contains(item);
+                    if(!alreadyExist)
+                    {
+                        sale.SalesDetails.Add(item);
+                    }
+                }
+            }
+            else
+            {
+                sale.SalesDetails.Add(new SalesDetail());
+            }
+            return View(sale);
         }
 
         // GET: Sales/Details/5

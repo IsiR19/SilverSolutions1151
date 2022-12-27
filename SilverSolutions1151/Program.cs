@@ -55,7 +55,6 @@ app.UseCors(MyAllowSpecificOrigins);
 
 
 
-
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;

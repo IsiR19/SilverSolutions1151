@@ -23,6 +23,10 @@ namespace SilverSolutions1151.Models.Entity
         public Nullable<int> CreatedBy { get; set; }
         public Nullable<System.DateTime> CreatedOn { get; set; }
         public Nullable<int> Status { get; set; }
+        public Nullable<double> VatTotal { get; set; }
+
+        public Nullable<double> DiscountTotal { get; set; }
+
         public Nullable<double> Subtotal { get; set; }
         public Nullable<int> DiscountParcentage { get; set; }
         public Nullable<int> VatParcentage { get; set; }

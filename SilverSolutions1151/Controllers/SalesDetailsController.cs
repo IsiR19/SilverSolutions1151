@@ -21,9 +21,10 @@ namespace SilverSolutions1151.Controllers
         }
 
         // GET: SalesDetails
-        public async Task<IActionResult> Index(Sale sale)
+        public async Task<IActionResult> Index(SalesDetail salesDetail)
         {
-            var applicationDbContext = _context.SalesDetails.Include(s => s.Sale);
+            var applicationDbContext = _context.SalesDetails.Include(s => s.Sale)
+                .Where(s=> s.SalesID == salesDetail.SalesID);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -70,10 +71,12 @@ namespace SilverSolutions1151.Controllers
             if(sale != null)
             {
                 sale.TotalAmout = sale.TotalAmout + salesDetail.LineTotal;
+                sale.VatTotal = sale.TotalAmout * (double)(sale.VatParcentage / 100m);
                 sale.TotalAmout = sale.TotalAmout + (sale.TotalAmout * (double)(sale.VatParcentage / 100m));
                 sale.Subtotal = sale.TotalAmout;
                 if(sale.DiscountParcentage > 0)
                 {
+                    sale.DiscountTotal = (double)((decimal)sale.DiscountParcentage / 100m) * sale.TotalAmout;
                     sale.TotalAmout = sale.TotalAmout + (double)((decimal)sale.DiscountParcentage / 100m) * sale.TotalAmout;
                 }
 

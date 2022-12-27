@@ -4107,6 +4107,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
+    <PackageReference Include="Rotativa" Version="1.7.3" />
     <PackageReference Include="Rotativa.AspNetCore" Version="1.2.0" />
     <PackageReference Include="WebGrease" Version="1.6.0" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.3" />

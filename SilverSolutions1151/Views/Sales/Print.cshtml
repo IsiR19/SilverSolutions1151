@@ -1,148 +1,128 @@
 ﻿@model SilverSolutions1151.Models.Entity.Sale
-
 @{
-    ViewData["Title"] = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Invoice";
 }
 
-<h1>Create</h1>
 
-<h4>Sale</h4>
-<hr />
-<div class="row">
-    <div class="col-md-10">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="OrderNo" class="control-label"></label>
-                <input asp-for="OrderNo" class="form-control" />
-                <span asp-validation-for="OrderNo" class="text-danger"></span>
+<style>
+    .BorderLess {
+        border: none;
+    }
+</style>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <input id="OrderNo" value="@ViewBag.InvoiceNum" readonly="readonly" />
+            Order
+            <strong>@ViewBag.InvoiceNum</strong>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-sm-6">
+                    <div>
+                        <strong>Silver Solutions 1151 cc</strong>
+                    </div>
+                    <div>Unit 9</div>
+                    <div>7 Chrysenthumum Street</div>
+                    <div>Ext 6 Lenasia</div>
+                    <div>Email: </div>
+                    <div>Phone: </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="float-right">
+                        <div>
+                            <input asp-for="CustomerName" class="BorderLess" readonly="readonly" />
+                        </div>
+                        <div><textarea class="BorderLess" asp-for= "CustomerAddress" readonly="readonly"></textarea></div>
+                        <div><input class="BorderLess" asp-for="CustomerPhone" type="number" readonly="readonly" /></div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="CustomerName" class="control-label"></label>
-                <input asp-for="CustomerName" class="form-control" />
-                <span asp-validation-for="CustomerName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CustomerPhone" class="control-label"></label>
-                <input asp-for="CustomerPhone" class="form-control" />
-                <span asp-validation-for="CustomerPhone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CustomerAddress" class="control-label"></label>
-                <input asp-for="CustomerAddress" class="form-control" />
-                <span asp-validation-for="CustomerAddress" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OrderDate" class="control-label"></label>
-                <input asp-for="OrderDate" class="form-control" />
-                <span asp-validation-for="OrderDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-            <table class="table table-striped table-bordered" id="salesdetails">
-                <thead>
-                    <tr>
-                        <th>
-                            Item
-                        </th>
-                        <th>
-                            Unit Cost
-                        </th>
-                        <th>
-                            Total Cost
-                        </th>
-                    </tr>
+
+            <div class="table-responsive-sm">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th class="center">#</th>
+                            <th>Item</th>
+                            <th class="right">Unit Price</th>
+                            <th class="center">Quantity</th>
+                            <th class="right">Total</th>
+                        </tr>
+                    </thead>
                     <tbody>
-                        @for(int i = 0;i < Model.SalesDetails.Count;i++)
-                        {
-                            <tr>
-                                <td>
-                                    <input asp-for="@Model.SalesDetails[i].ProductName" class="form-control" />
-                                    @*@Html.EditorFor(m => m.SalesDetails[i].ProductName, new {htmlAttributes = new {@class="form-control"}})*@
-                                </td>
-                            <td>
-                                    @Html.EditorFor(m => m.SalesDetails[i].UnitPrice, new {htmlAttributes = new {@class="form-control"}})
-                            </td>
-                            <td>
-                                    @Html.EditorFor(m => m.SalesDetails[i].Quantity, new {htmlAttributes = new {@class="form-control"}})
-                            </td>
-                            <td>
-                                <button id="addbtn-@i" type="button" class="btn btn-sm btn-secondary visible"
-                                onlcick="AddItem(this)" stlye="left:75% position:absolute" >
-                                Add
-                                </button>
-                                    <button id="btnremove-@i" type="button" class="btn btn-sm btn-danger visible"
-                                        onlcick="DeleteItem(this)" stlye="left:75% position:absolute">
-                                        Delete
-                                    </button>
-                                   
-                            </td>
-                            </tr>
-                        }
+                @for (int i = 0; i < Model.SalesDetails.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <input asp-for="@Model.SalesDetails[i].ProductName" class="form-control" readonly="readonly" />
+                        </td>
+                        <td>
+                            <input asp-for="@Model.SalesDetails[i].UnitPrice" class="form-control" readonly="readonly" />
+                        </td>
+                        <td>
+                            <input asp-for="@Model.SalesDetails[i].Quantity" class="form-control" readonly="readonly" />
+                        </td>
+                        <td>
+                            <input asp-for="@Model.SalesDetails[i].LineTotal" class="form-control" readonly="readonly" />
+                        </td>
+                    </tr>
+                }
                     </tbody>
+                </table>
+            </div>
 
-                </thead>
-            </table>
-            <input type="hidden" id="hiddenLastIndex" value="0" />
+            <div class="row">
+                <div class="col-lg-4 col-sm-5">
+                </div>
+
+                <div class="col-lg-4 col-sm-5 ml-auto">
+                    <table class="table table-clear">
+                        <tbody>
+                            <tr>
+                                <td class="left">
+                                    <strong>Subtotal</strong>
+                                </td>
+                                <td class="right">R<input asp-for="Subtotal" readonly="readonly" type="text" style="min-width:100%" /></td>
+                            </tr>
+                            <tr>
+                                <td class="left">
+                                    <strong>
+                                        Discount
+                                        <input asp-for="DiscountParcentage" readonly="readonly" type="text" style="min-width:100%" />
+                                    </strong>
+                                </td>
+                                <td class="right">R<input asp-for="DiscountTotal" readonly="readonly" type="text" style="min-width:100%" /></td>
+                            </tr>
+                            <tr>
+                                <td class="left">
+                                    <strong>
+                                        VAT
+                                        <input asp-for="VatParcentage" readonly="readonly" type="text" style="min-width:100%" />
+                                    </strong>
+                                </td>
+                                <td class="right">R<input asp-for="VatTotal" readonly="readonly" type="text" style="min-width:100%" /></td>
+                            </tr>
+                            <tr>
+                                <td class="left">
+                                    <strong>Total</strong>
+                                </td>
+                                <td class="right">
+                                    <strong>R<input asp-for="TotalAmout" readonly="readonly" type="text" style="min-width:100%" /></strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
             </div>
-            <div class="form-group">
-                <label asp-for="Subtotal" class="control-label"></label>
-                <input asp-for="Subtotal" class="form-control" />
-                <span asp-validation-for="Subtotal" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DiscountParcentage" class="control-label"></label>
-                <input asp-for="DiscountParcentage" class="form-control" />
-                <span asp-validation-for="DiscountParcentage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VatParcentage" class="control-label"></label>
-                <input asp-for="VatParcentage" class="form-control" />
-                <span asp-validation-for="VatParcentage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TotalAmout" class="control-label"></label>
-                <input asp-for="TotalAmout" class="form-control" />
-                <span asp-validation-for="TotalAmout" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-<script>
-    function DeleteItem(btn) {
-        $(btn).closest('tr').remove();
-    }
-    function AddItem(btn) {
-        var table = document.getElementById("salesdetails");
-        var rows = table.getElementsByTagName("tr");
-        var rowOuterHtml = rows[rows.length -1].outerHTML;
-        var lastrowIdx = document.getElementById("hiddenLastIndex").value;
 
-        var nextrowIdx = eval(lastrowIdx) + 1;
-        document.getElementById("hiddenLastIndex").value = nextrowIdx;
-        rowOuterHtml = rowOuterHtml.replaceAll('_' + lastrowIdx + '_','_' + nextrowIdx + '_');
-        rowOuterHtml = rowOuterHtml.replaceAll('[' + lastrowIdx + ']', '[' + nextrowIdx + ']');
-        rowOuterHtml = rowOuterHtml.replaceAll('-' + lastrowIdx + '-', '-' + nextrowIdx + '-');
 
-        var newRow = table.insertRow();
-        newRow.innerHTML = rowOuterHtml;
-
-        var btnAddID = btn.id;
-        var btnDeleteid = btnAddID.replaceAll('addbtn','btnremove');
-
-        var delbtn = document.getElementById(btnDeleteid);
-        delbtn.classList.add("visible");
-        delbtn.classList.remove("invisible");
-
-        var addbtn = document.getElementById(btnAddID);
-        addbtn.classList.add("visible");
-        addbtn.classList.remove("invisible");
-</script>
 

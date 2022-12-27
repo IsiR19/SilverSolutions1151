@@ -74,6 +74,7 @@
                     @Html.DisplayFor(modelItem => item.TotalAmout)
                 </td>
             <td>
+                 <a asp-action="Print" asp-route-id="@item.SalesID">Print</a> |
                 <a asp-action="Edit" asp-route-id="@item.SalesID">Edit</a> |
                 <a asp-action="Delete" asp-route-id="@item.SalesID">Delete</a>
             </td>

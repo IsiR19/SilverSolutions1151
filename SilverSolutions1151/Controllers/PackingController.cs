@@ -84,20 +84,8 @@ namespace SilverSolutions1151.Controllers
                     }
                 }
      
-                    decimal tobaccoUsed = ((decimal)packaging.Quantity * packing.Quantity) / 3.2M;
-                    var manufacturingStage = new ManufacturingStage
-                    {
-                        Id = Guid.NewGuid(),
-                        ProductionStage = ProductionStage.Complete,
-                        Quantity = tobaccoUsed,
-                        IngredientId = ingredientId,
-                        ProductTypeId = productType.Id,
-                        CreatedDate = DateTime.Now
-                    };
-
-                    _context.Add(manufacturingStage);
-                    await _context.SaveChangesAsync();
-
+                    decimal tobaccoUsed = ((decimal)packaging.Quantity * packing.Quantity);
+                    
                     var updatemanufacturingStage = new ManufacturingStage
                     {
                         Id = Guid.NewGuid(),
