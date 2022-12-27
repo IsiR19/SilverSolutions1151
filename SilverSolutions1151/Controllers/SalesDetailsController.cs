@@ -139,5 +139,25 @@ namespace SilverSolutions1151.Controllers
 
             return Json(dataList);
         }
+
+        public JsonResult GetAllProduct()
+        {
+            var dataList = (from prd in _context.Products.Include("Category").ToList()
+                            join stk in _context.ProductStocks on prd.ProductID equals stk.ProductID
+                            where stk.Quantity > 0
+                            select new
+                            {
+                                ProductId = prd.ProductID,
+                                CategoryId = prd.CategoryID,
+                                Name = prd.Name,
+                                Status = prd.Status,
+                                CategoryName = prd.Category.Name,
+                                PurchasePrice = stk.PurchasePrice,
+                                SalesPrice = stk.SalesPrice
+                            }).ToList();
+
+
+            return Json(dataList);
+        }
     }
 }

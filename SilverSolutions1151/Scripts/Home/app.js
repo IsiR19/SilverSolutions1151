@@ -1,5 +1,5 @@
 ﻿var deps = [];
-var app = angular.module('SilverSolutions', deps);
+var app = angular.module('myApp', deps);
 
 app.factory('focus', function ($timeout, $window) {
     return function (id) {
