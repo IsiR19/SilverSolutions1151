@@ -10,7 +10,8 @@
            <tr>
                <td>Date:</td>
                <td>
-                   @Html.TextBox("dtSearchDate","",htmlAttributes:new{@class="form-control"})
+                   <label asp-for="SearchDate" class="control-label"></label>
+                   <input asp-for="SearchDate" class="form-control"/>
                </td>
                <td>
                 <input type="submit" value="Search" />

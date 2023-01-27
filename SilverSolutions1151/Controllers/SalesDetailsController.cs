@@ -67,6 +67,53 @@ namespace SilverSolutions1151.Controllers
                 _context.Add(salesDetail);
                 await _context.SaveChangesAsync();
 
+
+            var quantity = salesDetail.Quantity;
+            var productName = _context.Products.Where(x => x.ProductID == salesDetail.ProductId).FirstOrDefault();
+            if (productName.Name.Contains("17"))
+            {
+                quantity = quantity * 17;
+            }
+            else if (productName.Name.Contains("50"))
+            {
+                quantity= quantity * 50;
+            }
+            else if (productName.Name.ToLower().Contains("1kg"))
+            {
+                quantity = quantity * 1000;
+            }
+
+            var productId = _context.ProductType.FirstOrDefault();
+            var ingredients = _context.Ingredients.Where(x => x.Description == "Tobacco").FirstOrDefault();
+            var ingredientId = ingredients.Id;
+
+
+                var updateSold = new ManufacturingStage
+            {
+                Id = Guid.NewGuid(),
+                ProductionStage = ProductionStage.Sold,
+                Quantity = (decimal)quantity,
+                CreatedDate = DateTime.Now,
+                IngredientId = ingredientId,
+                ProductTypeId = productId.Id
+                };
+
+            _context.Add(updateSold);
+            await _context.SaveChangesAsync();
+
+            var updatePackaging = new ManufacturingStage
+            {
+                Id = Guid.NewGuid(),
+                ProductionStage = ProductionStage.Packing,
+                Quantity = (decimal)-quantity,
+                CreatedDate = DateTime.Now,
+                IngredientId = ingredientId,
+                ProductTypeId = productId.Id
+            };
+
+            _context.Add(updatePackaging);
+            await _context.SaveChangesAsync();
+
             var sale = await _context.Sale.FindAsync(salesDetail.SalesID);
             if(sale != null)
             {
@@ -82,6 +129,8 @@ namespace SilverSolutions1151.Controllers
 
                 _context.Update(sale);
                 await _context.SaveChangesAsync();
+
+               
             }
             ViewData["SalesID"] = new SelectList(_context.Sale, "SalesID", "SalesID", salesDetail.SalesID);
             ViewData["ProductId"] = new SelectList(_context.Products, "ProductID", "Name", salesDetail.ProductId);

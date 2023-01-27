@@ -17,12 +17,7 @@ namespace SilverSolutions1151.Data.Entity
         [Column("CreatedDate")]
         public DateTime CreatedDate
         {
-            get
-            {
-                this.createdDate = DateTime.Now;
-                return this.createdDate;
-            }
-            set { this.createdDate = value; }
+            get;set;
         }
     }
 }

@@ -12,7 +12,7 @@ using SilverSolutions1151.Models.Entity;
 
 namespace SilverSolutions1151.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class PackingController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -6,7 +6,7 @@ using SilverSolutions1151.Models;
 
 namespace SilverSolutions1151.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class CustomerController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace SilverSolutions1151.Controllers
 {
-    [Authorize]
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -48,32 +48,28 @@ namespace SilverSolutions1151.Controllers
             ProductionReport productReport = new ProductionReport();
             if (SearchDate.HasValue)
             {
+                DateTime search = SearchDate.Value.AddHours(23).AddMinutes(59).AddSeconds(59);
+
                 productReport.OpeningBalance = _context.ManufacturingStage
-                    .Where(x => x.ProductionStage == ProductionStage.RawTobacco)
-                    .Where(x => x.CreatedDate.ToShortDateString() == SearchDate.Value.ToShortDateString())
+                    .Where(x => x.ProductionStage == ProductionStage.RawTobacco && x.CreatedDate <= search)
                     .Sum(x => x.Quantity);
                 productReport.InProgress = _context.ManufacturingStage
-                    .Where(x => x.ProductionStage == ProductionStage.Mixing)
-                    .Where(x => x.CreatedDate.ToString("dd/MM/YYYY") == SearchDate.Value.ToString("dd/MM/YYYY"))
+                    .Where(x => x.ProductionStage == ProductionStage.Mixing && x.CreatedDate <= search)
                     .Sum(x => x.Quantity);
                 productReport.Packing = _context.ManufacturingStage
-                    .Where(x => x.ProductionStage == ProductionStage.Packing)
-                    .Where(x => x.CreatedDate.ToString("dd/MM/YYYY") == SearchDate.Value.ToString("dd/MM/YYYY"))
+                    .Where(x => x.ProductionStage == ProductionStage.Packing && x.CreatedDate <= search)
                     .Sum(x => x.Quantity);
                 productReport.ReadyStockk = _context.ManufacturingStage
-                    .Where(x => x.ProductionStage == ProductionStage.Complete)
-                    .Where(x => x.CreatedDate.ToString("dd/MM/YYYY") == SearchDate.Value.ToString("dd/MM/YYYY"))
+                    .Where(x => x.ProductionStage == ProductionStage.Complete && x.CreatedDate <= search)
                     .Sum(x => x.Quantity);
                 productReport.Sold = _context.ManufacturingStage
-                    .Where(x => x.ProductionStage == ProductionStage.Sold)
-                    .Where(x => x.CreatedDate == SearchDate.Value)
+                    .Where(x => x.ProductionStage == ProductionStage.Sold && x.CreatedDate <= search)
                     .Sum(x => x.Quantity);
             }
             else
             {
                 productReport.OpeningBalance = _context.ManufacturingStage
                     .Where(x => x.ProductionStage == ProductionStage.RawTobacco)
-                    .Where(x => x.CreatedDate == DateTime.Now.AddDays(-1))
                     .Sum(x => x.Quantity);
                 productReport.InProgress = _context.ManufacturingStage
                     .Where(x => x.ProductionStage == ProductionStage.Mixing)
