@@ -56,13 +56,26 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
             <li class="mb-1">
-                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#invoicing-collapse" aria-expanded="false">
+                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#manufacturing-collapse" aria-expanded="false">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Invoicing</span>
+                    <span>Manufacturing</span>
+                </button>
+                <div class="collapse" id="manufacturing-collapse" style="">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a asp-controller="ManufacturingStage" asp-action="Index" class="link-light d-inline-flex text-decoration-none rounded">Production Line</a></li>
+                    </ul>
+                </div>
+            </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+            <li class="mb-1">
+                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#invoicing-collapse" aria-expanded="false">
+                    <i class="fas fa-fw fa-messages-dollar"></i>
+                    <span>Sales</span>
                 </button>
                 <div class="collapse" id="management-collapse" style="">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a asp-controller="Sales" asp-action="Index" class="link-light d-inline-flex text-decoration-none rounded">Sales</a></li>
+                        <li><a asp-controller="Sales" asp-action="Index" class="link-light d-inline-flex text-decoration-none rounded">Invoicing</a></li>
                     </ul>
                 </div>
             </li>
@@ -80,7 +93,65 @@
             </div>
         </footer>
         </div>
-  
+    @*<header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SilverSolutions1151</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="drpAdmin" data-bs-toggle="dropdown" aria-expanded="false">Admin</a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdown1">
+                                <li>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Packaging" asp-action="Index">Packaging</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="ProductTypes" asp-action="Index">Product Type</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Ingredients" asp-action="Index">Ingredients</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+                                </li>
+                                
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="drpManufacturing" data-bs-toggle="dropdown" aria-expanded="false">Manufacturing</a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdown3">
+                                <li>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="ManufacturingStage" asp-action="Index">Manufacturing</a>
+                                </li>
+                                <li>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Packing" asp-action="Index">Packing</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="drpInvoicing" data-bs-toggle="dropdown" aria-expanded="false">Invoicing</a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdown4">
+                                <li>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Sales" asp-action="Index">Invoice</a>
+                                </li>
+                                
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>*@
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
