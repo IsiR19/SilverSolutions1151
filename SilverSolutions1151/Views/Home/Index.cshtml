@@ -11,7 +11,7 @@
                <td>Date:</td>
                <td>
                    <label asp-for="SearchDate" class="control-label"></label>
-                   <input asp-for="SearchDate" class="form-control"/>
+                <input asp-for="SearchDate" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
                </td>
                <td>
                 <input type="submit" value="Search" />
@@ -26,14 +26,19 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="OpeningBalance" class="control-label">Tobacco</label>
+                <label asp-for="OpeningBalance" class="control-label">Raw Tobacco Leaves</label>
                 <input asp-for="OpeningBalance" class="form-control" id="OpeningBalanceLabel" readonly="readonly" />
             </div>
 
             <div class="form-group">
-                <label asp-for="InProgress" class="control-label">Tobacco Ingedients Mixing</label>
+                <label asp-for="InProgress" class="control-label">Mixed Tobacco in process</label>
                 <input asp-for="InProgress" class="form-control" readonly="readonly"/>
                 <span asp-validation-for="InProgress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Packing" class="control-label">Packaging</label>
+                <input asp-for="Packing" class="form-control" readonly="readonly" />
+                <span asp-validation-for="Packing" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ReadyStockk" class="control-label">Ready Stock</label>
@@ -41,19 +46,9 @@
                 <span asp-validation-for="ReadyStockk" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Sold" class="control-label"></label>
+                <label asp-for="Sold" class="control-label">Total Sales</label>
                 <input asp-for="Sold" class="form-control" readonly="readonly" />
                 <span asp-validation-for="Sold" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Packing" class="control-label"></label>
-                <input asp-for="Packing" class="form-control" readonly="readonly" />
-                <span asp-validation-for="Packing" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ClosedBalance" class="control-label"></label>
-                <input asp-for="ClosedBalance" class="form-control" readonly="readonly" />
-                <span asp-validation-for="ClosedBalance" class="text-danger"></span>
             </div>
         </form>
     </div>

@@ -25,6 +25,7 @@ namespace SilverSolutions1151.Controllers
         // GET: ManufacturingStage
         public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
+            
             ViewBag.CurrentSort = sortOrder;
             if (searchString != null)
             {
