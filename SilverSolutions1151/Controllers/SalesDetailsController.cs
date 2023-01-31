@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SilverSolutions1151.Data;
 using SilverSolutions1151.Data.Entity;
-using SilverSolutions1151.Migrations;
 using SilverSolutions1151.Models.Entity;
 
 namespace SilverSolutions1151.Controllers
@@ -255,7 +254,7 @@ namespace SilverSolutions1151.Controllers
                 return NotFound();
             }
 
-            return RedirectToAction("Edit", "Sales", new { id = salesDetail.SalesID });
+            return View(salesDetail);
         }
 
         // POST: SalesDetails/Delete/5
