@@ -7112,6 +7112,7 @@
     <PackageReference Include="angularjs" Version="1.8.2" />
     <PackageReference Include="AngularJS.Core" Version="1.8.2" />
     <PackageReference Include="Antlr" Version="3.5.0.2" />
+    <PackageReference Include="AspNetCore.Reporting" Version="2.1.0" />
     <PackageReference Include="jQuery" Version="3.6.1" />
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Cors" Version="5.2.9" />
@@ -7127,6 +7128,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
     <PackageReference Include="Rotativa" Version="1.7.3" />
     <PackageReference Include="Rotativa.AspNetCore" Version="1.2.0" />
+    <PackageReference Include="System.CodeDom" Version="7.0.0" />
     <PackageReference Include="WebGrease" Version="1.6.0" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.3" />
   </ItemGroup>

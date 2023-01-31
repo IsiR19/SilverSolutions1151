@@ -46,7 +46,7 @@ namespace SilverSolutions1151.Controllers
             var ManufacturingStage = from s in applicationDbContext
                            select s;
           
-            int pageSize = 3;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
             return View(ManufacturingStage.ToPagedList(pageNumber, pageSize));
         }
@@ -88,8 +88,36 @@ namespace SilverSolutions1151.Controllers
 
             
                 decimal producedQuantity = manufacturingStage.Quantity;
-                manufacturingStage.Id = Guid.NewGuid();
-                
+            manufacturingStage.Id = Guid.NewGuid();
+           
+           switch (manufacturingStage.ProductionStage)
+                {
+                case ProductionStage.Mixing:
+                    var qtyTobacco = _context.ManufacturingStage.Where(x => x.ProductionStage == ProductionStage.RawTobacco).Sum(x => x.Quantity);
+                    if (qtyTobacco < producedQuantity)
+                    {
+                        return ValidationProblem($"Quantity added is more than quantity available. Quantity available :{qtyTobacco}");
+                    }
+                    else
+                    {
+                        break;
+                    }
+                case ProductionStage.Complete:
+                    var qtyMixing = _context.ManufacturingStage.Where(x => x.ProductionStage == ProductionStage.Mixing).Sum(x => x.Quantity);
+                    if (qtyMixing < producedQuantity)
+                    {
+                     
+                        return ValidationProblem($"Quantity added is more than quantity available. Quantity available :{qtyMixing}");
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+            }
+
+
+
                     var ingredients = _context.Ingredients.Where(x => x.ProductTypeId == manufacturingStage.ProductTypeId);
                     {
                         foreach (var ingredient in ingredients)
