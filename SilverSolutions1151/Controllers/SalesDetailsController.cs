@@ -274,7 +274,7 @@ namespace SilverSolutions1151.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Edit", "Sales", new { id = salesDetail.SalesID });
         }
 
         private bool SalesDetailExists(int id)
