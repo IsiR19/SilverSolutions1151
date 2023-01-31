@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using SilverSolutions1151.Models.Entity;
 
 namespace SilverSolutions1151.Controllers
 {
+    [Authorize]
     public class SalesDetailsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -87,7 +89,7 @@ namespace SilverSolutions1151.Controllers
             var ingredients = _context.Ingredients.Where(x => x.Description == "Tobacco").FirstOrDefault();
             var ingredientId = ingredients.Id;
 
-
+            //Update the sold items 
                 var updateSold = new ManufacturingStage
             {
                 Id = Guid.NewGuid(),
@@ -100,7 +102,7 @@ namespace SilverSolutions1151.Controllers
 
             _context.Add(updateSold);
             await _context.SaveChangesAsync();
-
+            //update pacakaging
             var updatePackaging = new ManufacturingStage
             {
                 Id = Guid.NewGuid(),
@@ -117,15 +119,22 @@ namespace SilverSolutions1151.Controllers
             var sale = await _context.Sale.FindAsync(salesDetail.SalesID);
             if(sale != null)
             {
-                sale.TotalAmout = sale.TotalAmout + salesDetail.LineTotal;
+                //sale.TotalAmout = sale.Subtotal + salesDetail.LineTotal;
+                sale.Subtotal = sale.Subtotal + salesDetail.LineTotal;
+                sale.TotalAmout = sale.Subtotal;
                 sale.VatTotal = sale.TotalAmout * (double)(sale.VatParcentage / 100m);
                 sale.TotalAmout = sale.TotalAmout + (sale.TotalAmout * (double)(sale.VatParcentage / 100m));
-                sale.Subtotal = sale.TotalAmout;
+               
                 if(sale.DiscountParcentage > 0)
                 {
                     sale.DiscountTotal = (double)((decimal)sale.DiscountParcentage / 100m) * sale.TotalAmout;
                     sale.TotalAmout = sale.TotalAmout + (double)((decimal)sale.DiscountParcentage / 100m) * sale.TotalAmout;
                 }
+
+                
+                sale.Subtotal = (double?)Math.Round((decimal)sale.Subtotal, 2);
+                sale.VatTotal = (double?)Math.Round((decimal)sale.VatTotal, 2);
+                sale.TotalAmout = (double?)Math.Round((decimal)sale.TotalAmout, 2);
 
                 _context.Update(sale);
                 await _context.SaveChangesAsync();
@@ -134,6 +143,8 @@ namespace SilverSolutions1151.Controllers
             }
             ViewData["SalesID"] = new SelectList(_context.Sale, "SalesID", "SalesID", salesDetail.SalesID);
             ViewData["ProductId"] = new SelectList(_context.Products, "ProductID", "Name", salesDetail.ProductId);
+
+
            
             return RedirectToAction("Edit", "Sales", new {id = sale.SalesID });
         }
@@ -217,15 +228,22 @@ namespace SilverSolutions1151.Controllers
             var sale = await _context.Sale.FindAsync(salesDetail.SalesID);
             if (sale != null)
             {
-                sale.TotalAmout = sale.TotalAmout + salesDetail.LineTotal;
+                //sale.TotalAmout = sale.Subtotal + salesDetail.LineTotal;
+                sale.Subtotal = sale.Subtotal + salesDetail.LineTotal;
+                sale.TotalAmout = sale.Subtotal;
                 sale.VatTotal = sale.TotalAmout * (double)(sale.VatParcentage / 100m);
                 sale.TotalAmout = sale.TotalAmout + (sale.TotalAmout * (double)(sale.VatParcentage / 100m));
-                sale.Subtotal = sale.TotalAmout;
+
                 if (sale.DiscountParcentage > 0)
                 {
                     sale.DiscountTotal = (double)((decimal)sale.DiscountParcentage / 100m) * sale.TotalAmout;
                     sale.TotalAmout = sale.TotalAmout + (double)((decimal)sale.DiscountParcentage / 100m) * sale.TotalAmout;
                 }
+
+
+                sale.Subtotal = (double?)Math.Round((decimal)sale.Subtotal, 2);
+                sale.VatTotal = (double?)Math.Round((decimal)sale.VatTotal, 2);
+                sale.TotalAmout = (double?)Math.Round((decimal)sale.TotalAmout, 2);
 
                 _context.Update(sale);
                 await _context.SaveChangesAsync();
@@ -273,6 +291,82 @@ namespace SilverSolutions1151.Controllers
             }
             
             await _context.SaveChangesAsync();
+
+            var total = salesDetail.Quantity * salesDetail.UnitPrice;
+            salesDetail.LineTotal = total;
+           
+            var quantity = salesDetail.Quantity;
+            var productName = _context.Products.Where(x => x.ProductID == salesDetail.ProductId).FirstOrDefault();
+            if (productName.Name.Contains("17"))
+            {
+                quantity = quantity * 17;
+            }
+            else if (productName.Name.Contains("50"))
+            {
+                quantity = quantity * 50;
+            }
+            else if (productName.Name.ToLower().Contains("1kg"))
+            {
+                quantity = quantity * 1000;
+            }
+
+
+            var productId = _context.ProductType.FirstOrDefault();
+            var ingredients = _context.Ingredients.Where(x => x.Description == "Tobacco").FirstOrDefault();
+            var ingredientId = ingredients.Id;
+
+            var updateSold = new ManufacturingStage
+            {
+                Id = Guid.NewGuid(),
+                ProductionStage = ProductionStage.Sold,
+                Quantity = (decimal)-quantity,
+                CreatedDate = DateTime.Now,
+                IngredientId = ingredientId,
+                ProductTypeId = productId.Id
+            };
+
+            _context.Add(updateSold);
+            await _context.SaveChangesAsync();
+
+            var updatePackaging = new ManufacturingStage
+            {
+                Id = Guid.NewGuid(),
+                ProductionStage = ProductionStage.Packing,
+                Quantity = (decimal)quantity,
+                CreatedDate = DateTime.Now,
+                IngredientId = ingredientId,
+                ProductTypeId = productId.Id
+            };
+
+            _context.Add(updatePackaging);
+            await _context.SaveChangesAsync();
+
+            var sale = await _context.Sale.FindAsync(salesDetail.SalesID);
+            if (sale != null)
+            {
+                //sale.TotalAmout = sale.Subtotal + salesDetail.LineTotal;
+                sale.Subtotal = sale.Subtotal - salesDetail.LineTotal;
+                sale.TotalAmout = sale.Subtotal;
+                sale.VatTotal = sale.TotalAmout * (double)(sale.VatParcentage / 100m);
+                sale.TotalAmout = sale.TotalAmout + (sale.TotalAmout * (double)(sale.VatParcentage / 100m));
+
+                if (sale.DiscountParcentage > 0)
+                {
+                    sale.DiscountTotal = (double)((decimal)sale.DiscountParcentage / 100m) * sale.TotalAmout;
+                    sale.TotalAmout = sale.TotalAmout + (double)((decimal)sale.DiscountParcentage / 100m) * sale.TotalAmout;
+                }
+
+
+                sale.Subtotal = (double?)Math.Round((decimal)sale.Subtotal, 2);
+                sale.VatTotal = (double?)Math.Round((decimal)sale.VatTotal, 2);
+                sale.TotalAmout = (double?)Math.Round((decimal)sale.TotalAmout, 2);
+
+                _context.Update(sale);
+                await _context.SaveChangesAsync();
+
+
+            }
+
             return RedirectToAction("Edit", "Sales", new { id = salesDetail.SalesID });
         }
 

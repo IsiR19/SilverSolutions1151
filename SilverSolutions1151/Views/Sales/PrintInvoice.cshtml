@@ -13,9 +13,7 @@
     <div class="card">
         <div class="card-header">
             <label asp-for="OrderNo" class="control-label">Tax Invoice</label>
-        </div>
-        <div class="float-right">
-            <button>@Html.ActionLink("Downlad as PDF", "PrintInvoice")</button>
+
         </div>
         <div class="card-body">
             <div class="row mb-4">
@@ -24,7 +22,7 @@
                         <strong>From:</strong>
                     </div>
                     <div>
-                       Silver Solutions 1151 cc
+                        Silver Solutions 1151 cc
                     </div>
                     <div>Unit 9</div>
                     <div>7 Chrysenthumum Street</div>
@@ -50,7 +48,7 @@
                         <div>
                             <input asp-for="CustomerName" class="BorderLess" readonly="readonly" />
                         </div>
-                        <div><textarea class="BorderLess" asp-for= "CustomerAddress" readonly="readonly"></textarea></div>
+                        <div><textarea class="BorderLess" asp-for="CustomerAddress" readonly="readonly"></textarea></div>
                         <div><input class="BorderLess" asp-for="CustomerPhone" type="number" readonly="readonly" /></div>
                     </div>
                 </div>
@@ -67,23 +65,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                @for (int i = 0; i < Model.SalesDetails.Count; i++)
-                {
-                    <tr>
-                        <td>
-                            <input asp-for="@Model.SalesDetails[i].ProductName" class="form-control" readonly="readonly" />
-                        </td>
-                        <td>
-                            <input asp-for="@Model.SalesDetails[i].UnitPrice" class="form-control" readonly="readonly" />
-                        </td>
-                        <td>
-                            <input asp-for="@Model.SalesDetails[i].Quantity" class="form-control" readonly="readonly" />
-                        </td>
-                        <td>
-                            <input asp-for="@Model.SalesDetails[i].LineTotal" class="form-control" readonly="readonly" />
-                        </td>
-                    </tr>
-                }
+                        @for (int i = 0; i < Model.SalesDetails.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    <input asp-for="@Model.SalesDetails[i].ProductName" class="form-control" readonly="readonly" />
+                                </td>
+                                <td>
+                                    <input asp-for="@Model.SalesDetails[i].UnitPrice" class="form-control" readonly="readonly" />
+                                </td>
+                                <td>
+                                    <input asp-for="@Model.SalesDetails[i].Quantity" class="form-control" readonly="readonly" />
+                                </td>
+                                <td>
+                                    <input asp-for="@Model.SalesDetails[i].LineTotal" class="form-control" readonly="readonly" />
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>
@@ -93,12 +91,12 @@
                     <div>
                         <strong>Banking Details:</strong>
                     </div>
-                   <div>Bank Name:FNB</div>
-                   <div>Account Name:Silver Solutions 1151</div>
+                    <div>Bank Name:FNB</div>
+                    <div>Account Name:Silver Solutions 1151</div>
                     <div>Account Number:62356204603</div>
-                   <div>Branch Code:250-737</div>
+                    <div>Branch Code:250-737</div>
                     <div>Account Type:Business Account</div>
-                        
+
                 </div>
 
                 <div class="col-sm-6">
@@ -122,42 +120,8 @@
                     </div>
                 </div>
             </div>
-
-           @* <div class="row">
-                <div class="col-lg-2 col-sm-10">
-                <div class="col-lg-10 col-sm-10 ml-auto">
-                    <table class="table table-clear">
-                        <tbody>
-                            <tr>
-                                <td class="left">
-                                    <strong>Subtotal</strong>
-                                </td>
-                                <td class="right">R<input asp-for="Subtotal" readonly="readonly" type="text" style="min-width:100%" /></td>
-                            </tr>
-                            <tr>
-                                <td class="left">
-                                    <strong>
-                                        VAT
-                                        <input asp-for="VatParcentage" readonly="readonly" type="text" style="min-width:100%" />
-                                    </strong>
-                                </td>
-                                <td class="right">R<input asp-for="VatTotal" readonly="readonly" type="text" style="min-width:100%" /></td>
-                            </tr>
-                            <tr>
-                                <td class="left">
-                                    <strong>Total</strong>
-                                </td>
-                                <td class="right">
-                                    <strong>R<input asp-for="TotalAmout" readonly="readonly" type="text" style="min-width:100%" /></strong>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>*@
+        </div>
     </div>
-</div>
 
 
 

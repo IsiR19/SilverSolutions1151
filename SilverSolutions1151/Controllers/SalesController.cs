@@ -71,6 +71,8 @@ namespace SilverSolutions1151.Controllers
             return View(sale);
         }
 
+        
+
         // GET: Sales/Details/5
         public async Task<IActionResult> Details(int? id)
         {

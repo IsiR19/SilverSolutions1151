@@ -12,7 +12,7 @@ using X.PagedList;
 
 namespace SilverSolutions1151.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class ManufacturingStageController : Controller
     {
         private readonly ApplicationDbContext _context;

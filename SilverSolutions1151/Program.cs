@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Rotativa.AspNetCore;
 using SilverSolutions1151.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -52,7 +53,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 app.UseCors(MyAllowSpecificOrigins);
-
 
 
 using (var scope = app.Services.CreateScope())

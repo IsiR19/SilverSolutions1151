@@ -16,7 +16,6 @@ namespace SilverSolutions1151.Models.Entity
         public string CustomerName { get; set; }
         public string CustomerPhone { get; set; }
         public string CustomerAddress { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public Nullable<System.DateTime> OrderDate { get; set; }
         public string PaymentMethod { get; set; }
         public Nullable<double> TotalAmout { get; set; }

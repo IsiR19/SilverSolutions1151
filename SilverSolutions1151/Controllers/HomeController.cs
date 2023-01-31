@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace SilverSolutions1151.Controllers
 {
-    
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

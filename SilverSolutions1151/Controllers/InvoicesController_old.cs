@@ -10,7 +10,7 @@ using SilverSolutions1151.Models.Paging;
 
 namespace SilverSolutions1151.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class InvoicesController_old : Controller
     {
 

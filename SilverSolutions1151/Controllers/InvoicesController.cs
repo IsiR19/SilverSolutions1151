@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SilverSolutions1151.Data;
 using SilverSolutions1151.Models.Entity;
@@ -13,6 +14,7 @@ using ValidateAntiForgeryTokenAttribute = Microsoft.AspNetCore.Mvc.ValidateAntiF
 
 namespace SilverSolutions1151.Controllers
 {
+    [Authorize]
     public class InvoicesController : Controller
     {
         private readonly ApplicationDbContext _context;
