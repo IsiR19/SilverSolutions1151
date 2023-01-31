@@ -121,17 +121,35 @@ namespace SilverSolutions1151.Controllers
         
 
         // GET: Sales/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null || _context.Sale == null)
-            {
-                return NotFound();
-            }
+         
 
             var sale = await _context.Sale.FindAsync(id);
             if (sale == null)
             {
                 return NotFound();
+            }
+            var details = _context.SalesDetails.Where(x => x.SalesID == id);
+            if (details != null)
+            {
+                foreach (var item in details)
+                {
+                    if (item.ProductId != null)
+                    {
+                        var product = await _context.Products.FindAsync(item.ProductId);
+                        item.ProductName = product.Name;
+                    }
+                    bool alreadyExist = sale.SalesDetails.Contains(item);
+                    if (!alreadyExist)
+                    {
+                        sale.SalesDetails.Add(item);
+                    }
+                }
+            }
+            else
+            {
+                sale.SalesDetails.Add(new SalesDetail());
             }
             return View(sale);
         }

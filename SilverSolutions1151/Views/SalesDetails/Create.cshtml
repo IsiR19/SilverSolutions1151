@@ -33,7 +33,7 @@
                 <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" asp-route-id="@ViewBag.SalesID" />
             </div>
         </form>
     </div>

@@ -134,7 +134,8 @@ namespace SilverSolutions1151.Controllers
             }
             ViewData["SalesID"] = new SelectList(_context.Sale, "SalesID", "SalesID", salesDetail.SalesID);
             ViewData["ProductId"] = new SelectList(_context.Products, "ProductID", "Name", salesDetail.ProductId);
-            return RedirectToAction("Index", "SalesDetails", salesDetail);
+           
+            return RedirectToAction("Edit", "Sales", new {id = sale.SalesID });
         }
 
         // GET: SalesDetails/Edit/5
@@ -187,7 +188,7 @@ namespace SilverSolutions1151.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["SalesID"] = new SelectList(_context.Sale, "SalesID", "SalesID", salesDetail.SalesID);
-            return View(salesDetail);
+            return RedirectToAction("Edit", "Sales", salesDetail.SalesID);
         }
 
         // GET: SalesDetails/Delete/5
