@@ -64,7 +64,10 @@ namespace SilverSolutions1151.Controllers
             }
 
             sale.Subtotal = sale.TotalAmout - sale.VatTotal;
-
+            sale.Subtotal = (double?)Math.Round((decimal)sale.Subtotal, 2);
+            sale.VatTotal = (double?)Math.Round((decimal)sale.VatTotal, 2);
+            sale.TotalAmout = (double?)Math.Round((decimal)sale.TotalAmout, 2);
+            sale.OrderDate = sale.OrderDate;
             return View(sale);
         }
 
