@@ -23,8 +23,6 @@ namespace SilverSolutions1151.Controllers
         // GET: SalesDetails
         public async Task<IActionResult> Index(SalesDetail salesDetail)
         {
-            //var applicationDbContext = _context.SalesDetails.Include(s => s.Sale)
-            //    .Where(s=> s.SalesID == salesDetail.SalesID);
             var salesDetails = await _context.SalesDetails.Where(x => x.SalesID == salesDetail.SalesID).ToListAsync();
             
             return View(salesDetails);

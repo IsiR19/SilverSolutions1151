@@ -62,6 +62,9 @@ namespace SilverSolutions1151.Controllers
             {
                 sale.SalesDetails.Add(new SalesDetail());
             }
+
+            sale.Subtotal = sale.TotalAmout - sale.VatTotal;
+
             return View(sale);
         }
 
@@ -144,11 +147,9 @@ namespace SilverSolutions1151.Controllers
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
-            {
                 try
                 {
+                sale.PaymentMethod = "cash";
                     _context.Update(sale);
                     await _context.SaveChangesAsync();
                 }
@@ -163,9 +164,7 @@ namespace SilverSolutions1151.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(sale);
+            return RedirectToAction("Create", "SalesDetails", sale);
         }
 
         // GET: Sales/Delete/5
