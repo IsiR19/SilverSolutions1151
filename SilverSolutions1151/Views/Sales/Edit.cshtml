@@ -95,8 +95,8 @@
                                     <input asp-for="@Model.SalesDetails[i].LineTotal" class="form-control" readonly="readonly" />
                                 </td>
                                 <td>
-                                    <a asp-action="Edit" asp-route-id="@Model.SalesDetails[i].SalesDetailID">Edit</a> |
-                                    <a asp-action="Delete" asp-route-id="@Model.SalesDetails[i].SalesDetailID">Delete</a>
+                                    <a asp-action="Edit" asp-controller="SalesDetails" asp-route-id="@Model.SalesDetails[i].SalesDetailID">Edit</a> |
+                                    <a asp-action="Delete" asp-controller="SalesDetails" asp-route-id="@Model.SalesDetails[i].SalesDetailID">Delete</a>
                                 </td>
                             </tr>
                         }

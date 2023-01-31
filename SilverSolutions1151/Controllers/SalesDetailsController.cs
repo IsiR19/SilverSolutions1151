@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SilverSolutions1151.Data;
 using SilverSolutions1151.Data.Entity;
+using SilverSolutions1151.Migrations;
 using SilverSolutions1151.Models.Entity;
 
 namespace SilverSolutions1151.Controllers
@@ -162,33 +163,80 @@ namespace SilverSolutions1151.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("SalesDetailID,SalesID,ProductId,ProductName,UnitPrice,Quantity,LineTotal,CreatedBy,CreatedOn,Status")] SalesDetail salesDetail)
         {
-            if (id != salesDetail.SalesDetailID)
+            var total = salesDetail.Quantity * salesDetail.UnitPrice;
+            salesDetail.LineTotal = total;
+            _context.Add(salesDetail);
+            await _context.SaveChangesAsync();
+
+
+            var quantity = salesDetail.Quantity;
+            var productName = _context.Products.Where(x => x.ProductID == salesDetail.ProductId).FirstOrDefault();
+            if (productName.Name.Contains("17"))
             {
-                return NotFound();
+                quantity = quantity * 17;
+            }
+            else if (productName.Name.Contains("50"))
+            {
+                quantity = quantity * 50;
+            }
+            else if (productName.Name.ToLower().Contains("1kg"))
+            {
+                quantity = quantity * 1000;
             }
 
-            if (ModelState.IsValid)
+            var productId = _context.ProductType.FirstOrDefault();
+            var ingredients = _context.Ingredients.Where(x => x.Description == "Tobacco").FirstOrDefault();
+            var ingredientId = ingredients.Id;
+
+
+            var updateSold = new ManufacturingStage
             {
-                try
+                Id = Guid.NewGuid(),
+                ProductionStage = ProductionStage.Sold,
+                Quantity = (decimal)quantity,
+                CreatedDate = DateTime.Now,
+                IngredientId = ingredientId,
+                ProductTypeId = productId.Id
+            };
+
+            _context.Add(updateSold);
+            await _context.SaveChangesAsync();
+
+            var updatePackaging = new ManufacturingStage
+            {
+                Id = Guid.NewGuid(),
+                ProductionStage = ProductionStage.Packing,
+                Quantity = (decimal)-quantity,
+                CreatedDate = DateTime.Now,
+                IngredientId = ingredientId,
+                ProductTypeId = productId.Id
+            };
+
+            _context.Add(updatePackaging);
+            await _context.SaveChangesAsync();
+
+            var sale = await _context.Sale.FindAsync(salesDetail.SalesID);
+            if (sale != null)
+            {
+                sale.TotalAmout = sale.TotalAmout + salesDetail.LineTotal;
+                sale.VatTotal = sale.TotalAmout * (double)(sale.VatParcentage / 100m);
+                sale.TotalAmout = sale.TotalAmout + (sale.TotalAmout * (double)(sale.VatParcentage / 100m));
+                sale.Subtotal = sale.TotalAmout;
+                if (sale.DiscountParcentage > 0)
                 {
-                    _context.Update(salesDetail);
-                    await _context.SaveChangesAsync();
+                    sale.DiscountTotal = (double)((decimal)sale.DiscountParcentage / 100m) * sale.TotalAmout;
+                    sale.TotalAmout = sale.TotalAmout + (double)((decimal)sale.DiscountParcentage / 100m) * sale.TotalAmout;
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SalesDetailExists(salesDetail.SalesDetailID))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+
+                _context.Update(sale);
+                await _context.SaveChangesAsync();
+
+
             }
             ViewData["SalesID"] = new SelectList(_context.Sale, "SalesID", "SalesID", salesDetail.SalesID);
-            return RedirectToAction("Edit", "Sales", salesDetail.SalesID);
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductID", "Name", salesDetail.ProductId);
+
+            return RedirectToAction("Edit", "Sales", new { id = sale.SalesID });
         }
 
         // GET: SalesDetails/Delete/5
@@ -207,7 +255,7 @@ namespace SilverSolutions1151.Controllers
                 return NotFound();
             }
 
-            return View(salesDetail);
+            return RedirectToAction("Edit", "Sales", new { id = salesDetail.SalesID });
         }
 
         // POST: SalesDetails/Delete/5
