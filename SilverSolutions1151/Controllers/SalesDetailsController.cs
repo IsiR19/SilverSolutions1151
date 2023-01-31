@@ -23,9 +23,11 @@ namespace SilverSolutions1151.Controllers
         // GET: SalesDetails
         public async Task<IActionResult> Index(SalesDetail salesDetail)
         {
-            var applicationDbContext = _context.SalesDetails.Include(s => s.Sale)
-                .Where(s=> s.SalesID == salesDetail.SalesID);
-            return View(await applicationDbContext.ToListAsync());
+            //var applicationDbContext = _context.SalesDetails.Include(s => s.Sale)
+            //    .Where(s=> s.SalesID == salesDetail.SalesID);
+            var salesDetails = await _context.SalesDetails.Where(x => x.SalesID == salesDetail.SalesID).ToListAsync();
+            
+            return View(salesDetails);
         }
 
         // GET: SalesDetails/Details/5
@@ -134,7 +136,7 @@ namespace SilverSolutions1151.Controllers
             }
             ViewData["SalesID"] = new SelectList(_context.Sale, "SalesID", "SalesID", salesDetail.SalesID);
             ViewData["ProductId"] = new SelectList(_context.Products, "ProductID", "Name", salesDetail.ProductId);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "SalesDetails", salesDetail);
         }
 
         // GET: SalesDetails/Edit/5

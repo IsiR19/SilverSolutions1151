@@ -15,9 +15,14 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="SalesID" />
             <div class="form-group">
-                <label asp-for="OrderNo" class="control-label"></label>
+                <label asp-for="OrderNo" class="control-label">Invoice Number</label>
                 <input asp-for="OrderNo" class="form-control" readonly="readonly" />
                 <span asp-validation-for="OrderNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderDate" class="control-label"></label>
+                <input asp-for="OrderDate" class="form-control"/>
+                <span asp-validation-for="OrderDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CustomerName" class="control-label"></label>
@@ -35,30 +40,9 @@
                 <span asp-validation-for="CustomerAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="OrderDate" class="control-label"></label>
-                <input asp-for="OrderDate" class="form-control" readonly="readonly" />
-                <span asp-validation-for="OrderDate" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <label asp-for="Subtotal" class="control-label"></label>
-                <input asp-for="Subtotal" class="form-control" readonly="readonly" />
-                <span asp-validation-for="Subtotal" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DiscountParcentage" class="control-label"></label>
-                <input asp-for="DiscountParcentage" class="form-control" readonly="readonly" />
-                <span asp-validation-for="DiscountParcentage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="VatParcentage" class="control-label"></label>
                 <input asp-for="VatParcentage" class="form-control" readonly="readonly" />
                 <span asp-validation-for="VatParcentage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TotalAmout" class="control-label"></label>
-                <input asp-for="TotalAmout" class="form-control" readonly="readonly" />
-                <span asp-validation-for="TotalAmout" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

@@ -8,7 +8,8 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-success">Create New</a>
+    
+    <a asp-action="Create" class="btn btn-success" asp-route-id=@Html.Hidden("SalesId")>Create New</a>
 </p>
 <table class="table">
     <thead>
