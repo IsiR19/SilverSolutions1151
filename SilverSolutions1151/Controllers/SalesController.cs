@@ -223,6 +223,66 @@ namespace SilverSolutions1151.Controllers
             var sale = await _context.Sale.FindAsync(id);
             if (sale != null)
             {
+                var salesDetails = _context.SalesDetails.Where(x => x.SalesID == sale.SalesID).ToList();
+                if(salesDetails.Count > 0 )
+                { 
+                foreach(var item in salesDetails)
+                {
+
+
+                    _context.SalesDetails.Remove(item);
+                    await _context.SaveChangesAsync();
+
+                    var total = item.Quantity * item.UnitPrice;
+                    item.LineTotal = total;
+
+                    var quantity = item.Quantity;
+                    var productName = _context.Products.Where(x => x.ProductID == item.ProductId).FirstOrDefault();
+                    if (productName.Name.Contains("17"))
+                    {
+                        quantity = quantity * 17;
+                    }
+                    else if (productName.Name.Contains("50"))
+                    {
+                        quantity = quantity * 50;
+                    }
+                    else if (productName.Name.ToLower().Contains("1kg"))
+                    {
+                        quantity = quantity * 1000;
+                    }
+
+
+                    var productId = _context.ProductType.FirstOrDefault();
+                    var ingredients = _context.Ingredients.Where(x => x.Description == "Tobacco").FirstOrDefault();
+                    var ingredientId = ingredients.Id;
+
+                    var updateSold = new ManufacturingStage
+                    {
+                        Id = Guid.NewGuid(),
+                        ProductionStage = ProductionStage.Sold,
+                        Quantity = (decimal)-quantity,
+                        CreatedDate = DateTime.Now,
+                        IngredientId = ingredientId,
+                        ProductTypeId = productId.Id
+                    };
+
+                    _context.Add(updateSold);
+                    await _context.SaveChangesAsync();
+
+                    var updatePackaging = new ManufacturingStage
+                    {
+                        Id = Guid.NewGuid(),
+                        ProductionStage = ProductionStage.Packing,
+                        Quantity = (decimal)quantity,
+                        CreatedDate = DateTime.Now,
+                        IngredientId = ingredientId,
+                        ProductTypeId = productId.Id
+                    };
+
+                    _context.Add(updatePackaging);
+                    await _context.SaveChangesAsync();
+                }
+                }
                 _context.Sale.Remove(sale);
             }
             
