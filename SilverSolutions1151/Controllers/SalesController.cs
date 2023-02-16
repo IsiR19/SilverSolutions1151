@@ -60,7 +60,9 @@ namespace SilverSolutions1151.Controllers
             }
             else
             {
-                sale.SalesDetails.Add(new SalesDetail());
+                SalesDetail row1 = new SalesDetail();
+                sale.SalesDetails.Add(row1);
+                //sale.SalesDetails.Add(new SalesDetail());
             }
 
             sale.Subtotal = sale.TotalAmout - sale.VatTotal;
@@ -136,7 +138,7 @@ namespace SilverSolutions1151.Controllers
                 return NotFound();
             }
             var details = _context.SalesDetails.Where(x => x.SalesID == id);
-            if (details != null)
+            if (details.Count() > 0)
             {
                 foreach (var item in details)
                 {
@@ -154,6 +156,7 @@ namespace SilverSolutions1151.Controllers
             }
             else
             {
+                sale.SalesDetails = new List<SalesDetail>();
                 sale.SalesDetails.Add(new SalesDetail());
             }
             return View(sale);

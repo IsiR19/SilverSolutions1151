@@ -123,7 +123,7 @@ namespace SilverSolutions1151.Controllers
                         foreach (var ingredient in ingredients)
                         {
 
-                            decimal calculated = ((decimal)ingredient.Ratio / 100m) * manufacturingStage.Quantity;
+                            decimal calculated = ((decimal)ingredient.Ratio) * manufacturingStage.Quantity;
 
                            if (ingredient.Description == "Tobacco")
                             {
