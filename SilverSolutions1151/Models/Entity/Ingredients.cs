@@ -9,6 +9,6 @@ namespace SilverSolutions1151.Data.Entity
         public Guid ProductTypeId { get; set; }
         public virtual ProductType ProductType { get; set; }
         public string Description { get; set; }
-        public int? Ratio { get; set; }
+        public decimal? Ratio { get; set; }
     }
 }

@@ -100,8 +100,7 @@ namespace SilverSolutions1151.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+           
                 try
                 {
                     _context.Update(ingredients);
@@ -119,7 +118,7 @@ namespace SilverSolutions1151.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
+            
             ViewData["ProductTypeId"] = new SelectList(_context.ProductType, "Id", "Name", ingredients.ProductTypeId);
             return View(ingredients);
         }
