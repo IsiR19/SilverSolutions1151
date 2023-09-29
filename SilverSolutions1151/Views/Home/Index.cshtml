@@ -29,21 +29,27 @@
                 <label asp-for="OpeningBalance" class="control-label">Raw Tobacco Leaves</label>
                 <input asp-for="OpeningBalance" class="form-control" id="OpeningBalanceLabel" readonly="readonly" />
             </div>
+            <div class="form-group">
+                <label asp-for="OpeningBalance" class="control-label">Manufacturing</label>
+                <input asp-for="OpeningBalance" class="form-control" id="OpeningBalanceLabel" readonly="readonly" />
+            </div>
+
 
             <div class="form-group">
                 <label asp-for="InProgress" class="control-label">Mixed Tobacco in process</label>
                 <input asp-for="InProgress" class="form-control" readonly="readonly"/>
                 <span asp-validation-for="InProgress" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ReadyStockk" class="control-label">Ready Stock</label>
-                <input asp-for="ReadyStockk" class="form-control" readonly="readonly" />
-                <span asp-validation-for="ReadyStockk" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <label asp-for="Packing" class="control-label">Packaging</label>
                 <input asp-for="Packing" class="form-control" readonly="readonly" />
                 <span asp-validation-for="Packing" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReadyStockk" class="control-label">Ready Stock</label>
+                <input asp-for="ReadyStockk" class="form-control" />
+                <span asp-validation-for="ReadyStockk" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Sold" class="control-label">Total Sales</label>

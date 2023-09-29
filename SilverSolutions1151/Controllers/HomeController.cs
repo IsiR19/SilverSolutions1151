@@ -19,7 +19,7 @@ namespace SilverSolutions1151.Controllers
             _logger = logger;
             _context = context;
         }
-
+        [AllowAnonymous]
         public IActionResult Index()
         {
             ProductionReport productReport = new ProductionReport();
