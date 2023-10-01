@@ -1,5 +1,7 @@
 ﻿using SilverSolutions1151.Controllers;
 using SilverSolutions1151.Data;
+using SilverSolutions1151.Data.Entity;
+using SilverSolutions1151.Models.Entity;
 using SilverSolutions1151.Repository.Interfaces;
 
 namespace SilverSolutions1151.Repository
@@ -17,10 +19,26 @@ namespace SilverSolutions1151.Repository
         public int GetRawTobaccoBalance(DateTime endDate)
         {
             {
-                return Decimal.ToInt32(_context.ManufacturingStage
-                    .Where(x => x.ProductionStage == ProductionStage.RawTobacco && x.CreatedDate <= endDate)
+                return Decimal.ToInt32(_context.Manufacturing
+                    .Where(x => x.ProductionStage == Models.Entity.ProductionStage.RawTobacco && x.ManufactureDate <= endDate)
                     .Sum(x => x.Quantity));
             }
+        }
+        public bool AddRawTobacco(int quantity, DateTime manufactureDate)
+        {
+            _context.Add(new Manufacture
+            {
+                Id = Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                Quantity = quantity,
+                ManufactureDate = manufactureDate,
+                ProductionStage = Models.Entity.ProductionStage.RawTobacco,
+                CreatedBy = "Admin",
+                ModifiedBy = "Admin"
+            });
+            _context.SaveChanges();
+            return true;
+
         }
 
         public int GetManufactureBalance(DateTime endDate)
@@ -32,24 +50,98 @@ namespace SilverSolutions1151.Repository
             }
         }
 
-        public int GetMixingBalance(DateTime endDate)
+        public bool AddMixedTobacco(int quantity, DateTime manufactureDate)
         {
-            throw new NotImplementedException();
+            _context.Add(new Manufacture
+            {
+                Id = Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                Quantity = quantity,
+                ManufactureDate = manufactureDate,
+                ProductionStage = Models.Entity.ProductionStage.Mixing,
+                CreatedBy = "Admin",
+                ModifiedBy = "Admin"
+            });
+            _context.SaveChanges();
+            return true;
         }
 
-        public int GetPackagingBalance(DateTime endDate)
+        public bool RemoveRawTobacco(int quantity, DateTime manufactureDate)
         {
-            throw new NotImplementedException();
+            _context.Add(new Manufacture
+            {
+                Id = Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                Quantity = -quantity,
+                ManufactureDate = manufactureDate,
+                ProductionStage = Models.Entity.ProductionStage.RawTobacco,
+                CreatedBy = "Admin",
+                ModifiedBy = "Admin"
+            });
+            _context.SaveChanges();
+            return true;
+        }
+
+        public int GetMixedTobaccoBalance(DateTime endDate)
+        {
+            return Decimal.ToInt32(_context.Manufacturing
+                     .Where(x => x.ProductionStage == Models.Entity.ProductionStage.Mixing && x.ManufactureDate <= endDate)
+                     .Sum(x => x.Quantity));
+        }
+
+        public bool RemoveMixedTobacco(int quantity, DateTime manufactureDate)
+        {
+            _context.Add(new Manufacture
+            {
+                Id = Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                Quantity = -quantity,
+                ManufactureDate = manufactureDate,
+                ProductionStage = Models.Entity.ProductionStage.Mixing,
+                CreatedBy = "Admin",
+                ModifiedBy = "Admin"
+            });
+            _context.SaveChanges();
+            return true;
+        }
+
+        public bool AddReadyStockTobacco(int quantity, DateTime manufactureDate)
+        {
+            _context.Add(new Manufacture
+            {
+                Id = Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                Quantity = quantity,
+                ManufactureDate = manufactureDate,
+                ProductionStage = Models.Entity.ProductionStage.Complete,
+                CreatedBy = "Admin",
+                ModifiedBy = "Admin"
+            });
+            _context.SaveChanges();
+            return true;
         }
 
         public int GetReadyStockBalance(DateTime endDate)
         {
-            throw new NotImplementedException();
+            return Decimal.ToInt32(_context.Manufacturing
+                     .Where(x => x.ProductionStage == Models.Entity.ProductionStage.Complete && x.ManufactureDate <= endDate)
+                     .Sum(x => x.Quantity));
         }
 
-        public int GetSalesBalance(DateTime endDate)
+        public bool RemoveReadyStock(int quantity, DateTime manufactureDate)
         {
-            throw new NotImplementedException();
+            _context.Add(new Manufacture
+            {
+                Id = Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                Quantity = -quantity,
+                ManufactureDate = manufactureDate,
+                ProductionStage = Models.Entity.ProductionStage.Complete,
+                CreatedBy = "Admin",
+                ModifiedBy = "Admin"
+            });
+            _context.SaveChanges();
+            return true;
         }
     }
 }

@@ -3,10 +3,14 @@
     public interface IManufactureRepository
     {
         int GetRawTobaccoBalance(DateTime endDate);
-        int GetManufactureBalance(DateTime endDate);
-        int GetMixingBalance(DateTime endDate);
-        int GetPackagingBalance(DateTime endDate);
+        bool AddRawTobacco(int quantity, DateTime manufactureDate);
+        bool RemoveRawTobacco(int quantity,DateTime manufactureDate);
+        bool AddMixedTobacco(int quantity,DateTime manufactureDate);
+        int GetMixedTobaccoBalance(DateTime endDate);
+        bool RemoveMixedTobacco(int quantity, DateTime manufactureDate);
         int GetReadyStockBalance(DateTime endDate);
-        int GetSalesBalance(DateTime endDate);
+        bool AddReadyStockTobacco(int quantity, DateTime manufactureDate);
+        bool RemoveReadyStock(int quantity, DateTime manufactureDate);
+
     }
 }

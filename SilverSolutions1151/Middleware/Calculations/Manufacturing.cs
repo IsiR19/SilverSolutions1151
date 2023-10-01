@@ -19,10 +19,5 @@ namespace SilverSolutions1151.Middleware.Calculations
 
             return new Balances();
         }
-
-        public async Task<int> GetTobaccoBalance(DateTime startDate, DateTime endDate)
-        {
-            return GetRawTobaccoBalance(endDate);
-        }
     }
 }

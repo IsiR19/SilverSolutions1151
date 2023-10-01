@@ -3,60 +3,197 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-@using (Html.BeginForm("Index", "Home", FormMethod.Post))
-{
-    
-       <table>
-           <tr>
-               <td>Date:</td>
-               <td>
-                   <label asp-for="SearchDate" class="control-label"></label>
-                <input asp-for="SearchDate" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
-               </td>
-               <td>
-                <input type="submit" value="Search" />
-               </td>
-           </tr>
-       </table>
-        
-   
-}
+<style type="text/css">
+    .search-date-container {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        padding: 0.375rem 0.75rem;
+    }
+
+    .search-label {
+        font-weight: bold;
+        margin-right: 0.5rem;
+    }
+
+    .control-label-bold
+    {
+    font-weight: bold;
+    }
+
+    .rounded-border-container {
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        padding: 1rem;
+        margin-top: 1rem;
+    }
+
+    .balance-label-container {
+        margin-bottom: 1rem;
+    }
+
+    .manufacture-date-label {
+        margin-right: 0.5rem;
+    }
+
+ </style>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
+        <div class="search-date-container">
+            <div class="search-label-container">
+                <label for="datePicker" class="search-label">Manufacture date</label>
+            </div>
+            <div class="date-picker-container">
+                <input type="date" id="datePicker" class="form-control" />
+            </div>
+            <button type="button" class="btn btn-primary" id="searchButton" onclick="SearchByDate()">Search</button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="OpeningBalance" class="control-label">Raw Tobacco Leaves</label>
-                <input asp-for="OpeningBalance" class="form-control" id="OpeningBalanceLabel" readonly="readonly" />
-            </div>
-            <div class="form-group">
-                <label asp-for="OpeningBalance" class="control-label">Manufacturing</label>
-                <input asp-for="OpeningBalance" class="form-control" id="OpeningBalanceLabel" readonly="readonly" />
+                <label asp-for="OpeningBalance" class="control-label-bold">Raw Tobacco Leaves</label>
+                <div class="rounded-border-container">
+                    <div class="balance-label-container">
+                        <label for="OpeningBalance" class="balance-label">Opening Balance: @Model.RawTobaccoBalancePreviousDay</label>
+                        <br />
+                        <label for="CurrentBalance" class="balance-label">Current Balance: @Model.RawTobaccoBalanceCurrentDay</label>
+                    </div>
+                    <div class="input-group">
+                        <label for="ManufactureDate" class="manufacture-date-label">Manufacture Date:</label>
+                        <input type="date" id="ManufactureDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    </div>
+                    <br/>
+                    <div class="input-group">
+
+                        <label asp-for="OpeningBalance" class="manufacture-date-label">Quantity</label>
+                        <input asp-for="OpeningBalance" class="form-control" id="OpeningBalanceLabel" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-primary" id="addBalanceButton" onclick="AddRawTobacco()">Add</button>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <button type="button" class="btn btn-success" id="viewtobaccobalnce" onclick="AddRawTobacco()">View Transactions</button>
+                    </div>
+                </div>
             </div>
 
+            <div class="form-group">
+                <label asp-for="OpeningBalance" class="control-label-bold">Manufacturing</label>
+                <div class="rounded-border-container">
+                    <div class="input-group">
+                        <label for="ManufactureDate" class="manufacture-date-label">Manufacture Date:</label>
+                        <input type="date" id="ManufacturingDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    </div>
+                    <br />
+                    <div class="input-group">
+
+                        <label asp-for="OpeningBalance" class="manufacture-date-label">Ingredient Qty:</label>
+                        <input asp-for="OpeningBalance" class="form-control" id="IngredientQty" />
+                    </div>
+                    <br />
+                    <div class="input-group">
+
+                        <label asp-for="OpeningBalance" class="manufacture-date-label">Quantity</label>
+                        <input asp-for="OpeningBalance" class="form-control" id="ManufacturingQty" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-primary" id="addManufacturButton" onclick="AddManufacturing()">Add</button>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="input-group">
+                        <button type="button" class="btn btn-success" id="viewtobaccobalnce" onclick="AddRawTobacco()">View Transactions</button>
+                    </div>
+                </div>
+            </div>
 
             <div class="form-group">
-                <label asp-for="InProgress" class="control-label">Mixed Tobacco in process</label>
-                <input asp-for="InProgress" class="form-control" readonly="readonly"/>
-                <span asp-validation-for="InProgress" class="text-danger"></span>
+                <label asp-for="OpeningBalance" class="control-label-bold">Mixed Tobacco</label>
+                <div class="rounded-border-container">
+                    <div class="balance-label-container">
+                        <label for="OpeningBalance" class="balance-label">Opening Balance: @Model.MixedTobaccoBalancePreviousDay</label>
+                        <br />
+                        <label for="CurrentBalance" class="balance-label">Current Balance: @Model.MixedTobaccoBalanceCurrentDay</label>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
-                <label asp-for="Packing" class="control-label">Packaging</label>
-                <input asp-for="Packing" class="form-control" readonly="readonly" />
-                <span asp-validation-for="Packing" class="text-danger"></span>
+                <label asp-for="OpeningBalance" class="control-label-bold">Packaging</label>
+                <div class="rounded-border-container">
+                    <div class="input-group">
+                        <label for="ManufactureDate" class="manufacture-date-label">Manufacture Date:</label>
+                        <input type="date" id="PackingDate" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    </div>
+                    <br />
+                    <div class="input-group">
+
+                        <label asp-for="OpeningBalance" class="manufacture-date-label">Box Qty(g):</label>
+                        <input asp-for="OpeningBalance" class="form-control" id="boxQty" />
+                    </div>
+                    <br />
+                    <div class="input-group">
+
+                        <label asp-for="OpeningBalance" class="manufacture-date-label">Number of boxes:</label>
+                        <input asp-for="OpeningBalance" class="form-control" id="numOfBoxes" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-primary" id="addManufacturButton" onclick="AddPackaging()">Add</button>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="input-group">
+                        <button type="button" class="btn btn-success" id="viewtobaccobalnce" onclick="AddRawTobacco()">View Transactions</button>
+                    </div>
+                </div>
             </div>
+
             <div class="form-group">
-                <label asp-for="ReadyStockk" class="control-label">Ready Stock</label>
-                <input asp-for="ReadyStockk" class="form-control" />
-                <span asp-validation-for="ReadyStockk" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Sold" class="control-label">Total Sales</label>
-                <input asp-for="Sold" class="form-control" readonly="readonly" />
-                <span asp-validation-for="Sold" class="text-danger"></span>
+                <label asp-for="OpeningBalance" class="control-label-bold">Mixed Tobacco</label>
+                <div class="rounded-border-container">
+                    <div class="balance-label-container">
+                        <label for="OpeningBalance" class="balance-label">Opening Balance: @Model.ReadyStockBalancePreviousDay</label>
+                        <br />
+                        <label for="CurrentBalance" class="balance-label">Current Balance: @Model.ReadyStockBalanceCurrentDay</label>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
 </div>
 
+@section Scripts
+    {
+    <script type="text/javascript">
+        function AddRawTobacco() {
+            console.log('AddRawTobacco function executed.');
+            var openingBalance = document.getElementById("OpeningBalanceLabel").value;
+            var manufacturedate = document.getElementById("ManufactureDate").value;
+            console.log(manufacturedate);
+            var url = '@Url.Action("AddTobacco", "Home")' + '?openingBalance=' + openingBalance + '&manufactureDate=' + manufacturedate;
+            window.location.href = url;
+        }
+        function AddManufacturing() {
+            console.log('AddManufacturing function executed.');
+            var manufacturingQty = document.getElementById("ManufacturingQty").value;
+            var ingredientQty = document.getElementById("IngredientQty").value;
+            var manufacturedate = document.getElementById("ManufacturingDate").value;
+            console.log(manufacturedate);
+            var url = '@Url.Action("AddManufacturing", "Home")' + '?manufacturingQty=' + manufacturingQty + '&manufactureDate=' + manufacturedate + '&ingredientQty=' + ingredientQty;
+            window.location.href = url;
+        }
+        function AddPackaging() {
+            console.log('AddPackaging function executed.');
+            var gramQty = document.getElementById("boxQty").value;
+            var numofboxes = document.getElementById("numOfBoxes").value;
+            var manufacturedate = document.getElementById("PackingDate").value;
+            console.log(manufacturedate);
+            var url = '@Url.Action("AddPackaging", "Home")' + '?quantityInGrams=' + gramQty + '&packingDate=' + manufacturedate + '&numberOfBoxes=' + numofboxes;
+            window.location.href = url;
+        }
+    </script>
+}
