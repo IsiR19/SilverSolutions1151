@@ -47,11 +47,11 @@
             <div class="row">
                 <div class="col-md-2 form-group">
                     <label class="control-label">From Date</label>
-                    <input asp-for="FromDate" class="form-control" type="date" id="fromDate" value="@ViewData["fromDateFilter"]" />
+                    <input asp-for="FromDate" class="form-control" type="date" id="fromDate" value="@TempData["fromDateFilter"]" />
                 </div>
                 <div class="col-md-2 form-group">
                     <label class="control-label">To Date</label>
-                    <input asp-for="ToDate" class="form-control" type="date" id="toDate" value="@ViewData["toDateFilter"]" />
+                    <input asp-for="ToDate" class="form-control" type="date" id="toDate" value="@TempData["toDateFilter"]" />
                 </div>
                 <div class="col-md-1 form-group">
                     <button class="btn btn-primary" style="margin-left:31px;height:35px;" onclick="filter()">Search Leads</button>
@@ -101,18 +101,18 @@
 
         <a asp-action="Index"
            asp-route-pageNumber="@(Model.PageIndex - 1)"
-           asp-route-currentFilter="@ViewData["CurrentFilter"]"
-           asp-route-fromDateFilter="@ViewData["fromDateFilter"]"
-           asp-route-toDateFilter="@ViewData["toDateFilter"]"
+           asp-route-currentFilter="@TempData["CurrentFilter"]"
+           asp-route-fromDateFilter="@TempData["fromDateFilter"]"
+           asp-route-toDateFilter="@TempData["toDateFilter"]"
            class="btn btn-light @prevDisabled">
             Previous
         </a>
         <a asp-action="Index"
-           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-sortOrder="@TempData["CurrentSort"]"
            asp-route-pageNumber="@(Model.PageIndex + 1)"
-           asp-route-currentFilter="@ViewData["CurrentFilter"]"
-           asp-route-fromDateFilter="@ViewData["fromDateFilter"]"
-           asp-route-toDateFilter="@ViewData["toDateFilter"]"
+           asp-route-currentFilter="@TempData["CurrentFilter"]"
+           asp-route-fromDateFilter="@TempData["fromDateFilter"]"
+           asp-route-toDateFilter="@TempData["toDateFilter"]"
            class="btn btn-light @nextDisabled">
             Next
         </a>

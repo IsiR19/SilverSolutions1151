@@ -32,15 +32,27 @@ namespace SilverSolutions1151.Controllers
             DateTime? fromDateFilter,
             DateTime? toDateFilter,
             DateTime? toDate,
-            int? pageNumber)
+            int? pageNumber, string currentFilter)
         {
-            if (fromDate !=null && toDate != null)
+            if (fromDate != null && toDate != null || !String.IsNullOrEmpty(stage))
+            {
                 pageNumber = 1;
-            else fromDate = fromDateFilter;
-            toDate = toDateFilter;
+                if (String.IsNullOrEmpty(stage))
+                    stage = TempData["stage"].ToString();
+                else
+                    TempData["stage"] = stage;
+            }
+            else
+            {
+                fromDate = fromDateFilter;
+                toDate = toDateFilter;
+                stage = currentFilter;
+            }
 
-            ViewData["fromDateFilter"] = fromDate;
-            ViewData["toDateFilter"] = toDate;
+
+            TempData["CurrentFilter"] = stage;
+            TempData["fromDateFilter"] = fromDate;
+            TempData["toDateFilter"] = toDate;
             var manufacturing = new List<Manufacture>();
             if (Enum.TryParse(typeof(Models.Entity.ProductionStage),stage,out var result))
             {
@@ -48,7 +60,7 @@ namespace SilverSolutions1151.Controllers
             }
     
             
-            var viewmodel = await PaginatedList<Manufacture>.CreateAsync(manufacturing.AsQueryable().AsNoTracking(), pageNumber ?? 1, 10);
+            var viewmodel = await PaginatedList<Manufacture>.CreateAsync(manufacturing.AsQueryable().AsNoTracking(), pageNumber ?? 1, 20);
 
             return View(viewmodel);  
         }
