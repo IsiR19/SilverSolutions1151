@@ -18,15 +18,18 @@ namespace SilverSolutions1151.Controllers
         private readonly IRawTobaccoService _rawtobaccoService;
         private readonly ITobaccoMixingService _tabaccoMixingService;
         private readonly IReadyStockService _readyStockService;
+        private readonly ISoldStockService _soldstockService;
 
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context,
-            IRawTobaccoService rawTobaccoService, ITobaccoMixingService tabaccoMixingService, IReadyStockService readyStockService)
+            IRawTobaccoService rawTobaccoService, ITobaccoMixingService tabaccoMixingService, 
+            IReadyStockService readyStockService, ISoldStockService soldstockService)
         {
             _logger = logger;
             _context = context;
             _rawtobaccoService = rawTobaccoService;
             _tabaccoMixingService = tabaccoMixingService;
             _readyStockService = readyStockService;
+            _soldstockService = soldstockService;
         }
         [AllowAnonymous]
         public IActionResult Index()
@@ -42,6 +45,10 @@ namespace SilverSolutions1151.Controllers
             //Ready Stock
             productReport.ReadyStockBalanceCurrentDay = _readyStockService.GetReadyStockByDate(DateTime.Now);
             productReport.ReadyStockBalancePreviousDay = _readyStockService.GetReadyStockByDate(DateTime.Now.AddDays(-1));
+            //Sold 
+            productReport.SoldBalanceCurrentDay = _soldstockService.GeSoldByDate(DateTime.Now);
+            productReport.SoldBalancePreviousDay = _soldstockService.GeSoldByDate(DateTime.Now.AddDays(-1));
+
             
             return View(productReport);
         }

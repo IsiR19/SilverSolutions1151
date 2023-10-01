@@ -13,6 +13,8 @@ namespace SilverSolutions1151.Data.Entity
         public int MixedTobaccoBalanceCurrentDay { get; set; }
         public int ReadyStockBalancePreviousDay { get; set; }
         public int ReadyStockBalanceCurrentDay { get; set; }
+        public int SoldBalancePreviousDay { get; set; }
+        public int SoldBalanceCurrentDay { get; set; }
         public decimal OpeningBalance { get; set; }
         public decimal ClosedBalance { get; set; }
         public decimal InProgress { get; set; }

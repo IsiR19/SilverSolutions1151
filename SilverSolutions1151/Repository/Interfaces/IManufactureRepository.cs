@@ -1,4 +1,6 @@
-﻿namespace SilverSolutions1151.Repository.Interfaces
+﻿using SilverSolutions1151.Models.Entity;
+
+namespace SilverSolutions1151.Repository.Interfaces
 {
     public interface IManufactureRepository
     {
@@ -11,6 +13,8 @@
         int GetReadyStockBalance(DateTime endDate);
         bool AddReadyStockTobacco(int quantity, DateTime manufactureDate);
         bool RemoveReadyStock(int quantity, DateTime manufactureDate);
+        int GetSoldStockBalanceByDate(DateTime endDate);
+        List<Manufacture> GetManufactureItemsByDateAndType(Models.Entity.ProductionStage stage,DateTime? startDate,DateTime? endDate);
 
     }
 }

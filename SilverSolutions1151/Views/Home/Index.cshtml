@@ -78,7 +78,7 @@
                     </div>
                     <br/>
                     <div class="input-group">
-                        <button type="button" class="btn btn-success" id="viewtobaccobalnce" onclick="AddRawTobacco()">View Transactions</button>
+                        <button type="button" class="btn btn-success" id="viewtobaccobalnce" onclick="ViewRawTobbacoTransaction()">View Transactions</button>
                     </div>
                 </div>
             </div>
@@ -105,10 +105,6 @@
                             <button type="button" class="btn btn-primary" id="addManufacturButton" onclick="AddManufacturing()">Add</button>
                         </div>
                     </div>
-                    <br />
-                    <div class="input-group">
-                        <button type="button" class="btn btn-success" id="viewtobaccobalnce" onclick="AddRawTobacco()">View Transactions</button>
-                    </div>
                 </div>
             </div>
 
@@ -119,6 +115,10 @@
                         <label for="OpeningBalance" class="balance-label">Opening Balance: @Model.MixedTobaccoBalancePreviousDay</label>
                         <br />
                         <label for="CurrentBalance" class="balance-label">Current Balance: @Model.MixedTobaccoBalanceCurrentDay</label>
+                    </div>
+                    <br />
+                    <div class="input-group">
+                        <button type="button" class="btn btn-success" id="viewtobaccobalnce" onclick="ViewMixedTobbacoTransaction()">View Transactions</button>
                     </div>
                 </div>
             </div>
@@ -145,20 +145,35 @@
                             <button type="button" class="btn btn-primary" id="addManufacturButton" onclick="AddPackaging()">Add</button>
                         </div>
                     </div>
-                    <br />
-                    <div class="input-group">
-                        <button type="button" class="btn btn-success" id="viewtobaccobalnce" onclick="AddRawTobacco()">View Transactions</button>
-                    </div>
                 </div>
             </div>
 
             <div class="form-group">
-                <label asp-for="OpeningBalance" class="control-label-bold">Mixed Tobacco</label>
+                <label asp-for="OpeningBalance" class="control-label-bold">Ready Stock</label>
                 <div class="rounded-border-container">
                     <div class="balance-label-container">
                         <label for="OpeningBalance" class="balance-label">Opening Balance: @Model.ReadyStockBalancePreviousDay</label>
                         <br />
                         <label for="CurrentBalance" class="balance-label">Current Balance: @Model.ReadyStockBalanceCurrentDay</label>
+                    </div>
+                    <br />
+                    <div class="input-group">
+                        <button type="button" class="btn btn-success" id="viewtobaccobalnce" onclick="ViewReadyStockTransaction()">View Transactions</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="OpeningBalance" class="control-label-bold">Sold</label>
+                <div class="rounded-border-container">
+                    <div class="balance-label-container">
+                        <label for="OpeningBalance" class="balance-label">Opening Balance: @Model.SoldBalancePreviousDay</label>
+                        <br />
+                        <label for="CurrentBalance" class="balance-label">Current Balance: @Model.SoldBalanceCurrentDay</label>
+                    </div>
+                    <br />
+                    <div class="input-group">
+                        <button type="button" class="btn btn-success" id="viewtobaccobalnce" onclick="ViewReadyStockTransaction()">View Transactions</button>
                     </div>
                 </div>
             </div>
@@ -193,6 +208,26 @@
             var manufacturedate = document.getElementById("PackingDate").value;
             console.log(manufacturedate);
             var url = '@Url.Action("AddPackaging", "Home")' + '?quantityInGrams=' + gramQty + '&packingDate=' + manufacturedate + '&numberOfBoxes=' + numofboxes;
+            window.location.href = url;
+        }
+        function ViewRawTobbacoTransaction() {
+            console.log('ViewRawTobbacoTransaction function executed.');
+            var url = '@Url.Action("Index", "Manufacture")' + '?stage=RawTobacco';
+            window.location.href = url;
+        }
+        function ViewMixedTobbacoTransaction() {
+            console.log('ViewRawTobbacoTransaction function executed.');
+            var url = '@Url.Action("Index", "Manufacture")' + '?stage=Mixing';
+            window.location.href = url;
+        }
+        function ViewReadyStockTransaction() {
+            console.log('ViewRawTobbacoTransaction function executed.');
+            var url = '@Url.Action("Index", "Manufacture")' + '?stage=Complete';
+            window.location.href = url;
+        }
+        function ViewSoldTransaction() {
+            console.log('ViewRawTobbacoTransaction function executed.');
+            var url = '@Url.Action("Index", "Manufacture")' + '?stage=Sold';
             window.location.href = url;
         }
     </script>

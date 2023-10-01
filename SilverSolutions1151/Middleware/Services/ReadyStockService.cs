@@ -28,5 +28,10 @@ namespace SilverSolutions1151.Middleware.Services
         {
             return _manufactureRepository.GetReadyStockBalance(endDate);
         }
+
+        public bool RemoveReadyStock(int quantity, DateTime manufactureDate)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

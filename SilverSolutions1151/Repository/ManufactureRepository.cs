@@ -143,5 +143,30 @@ namespace SilverSolutions1151.Repository
             _context.SaveChanges();
             return true;
         }
+
+        public int GetSoldStockBalanceByDate(DateTime endDate)
+        {
+            return Decimal.ToInt32(_context.Manufacturing
+                     .Where(x => x.ProductionStage == Models.Entity.ProductionStage.Sold && x.ManufactureDate <= endDate)
+                     .Sum(x => x.Quantity));
+        }
+
+        public List<Manufacture> GetManufactureItemsByDateAndType(Models.Entity.ProductionStage stage, DateTime? startDate, DateTime? endDate)
+        {
+            if(startDate == null || endDate == null)
+            {
+                return _context.Manufacturing
+                    .Where(x => x.ProductionStage == stage)
+                    .OrderByDescending(x => x.ManufactureDate).ToList();
+            }
+            else
+            {
+                return _context.Manufacturing
+                   .Where(x => x.ProductionStage == stage &&
+                   x.ManufactureDate >= startDate &&
+                   x.ManufactureDate <= endDate)
+                   .OrderByDescending(x => x.ManufactureDate).ToList();
+            }
+        }
     }
 }

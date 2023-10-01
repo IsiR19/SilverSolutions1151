@@ -24,6 +24,7 @@ builder.Services.AddTransient<IManufactureRepository,ManufactureRepository>();
 builder.Services.AddTransient<IRawTobaccoService, TobaccoService>();
 builder.Services.AddTransient<ITobaccoMixingService, TobaccoMixingService>();
 builder.Services.AddTransient<IReadyStockService, ReadyStockService>();    
+builder.Services.AddTransient<ISoldStockService,SoldStockService>();
 
 builder.Services.AddCors(options =>
 {
