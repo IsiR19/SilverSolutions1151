@@ -32,67 +32,32 @@ namespace SilverSolutions1151.Controllers
             _soldstockService = soldstockService;
         }
         [AllowAnonymous]
-        public IActionResult Index()
+        public IActionResult Index(DateTime? SearchDate)
         {
             ProductionReport productReport = new ProductionReport();
-
-
-            productReport.RawTobaccoBalanceCurrentDay = _rawtobaccoService.GetRawTobaccoByDate(DateTime.Now);
-            productReport.RawTobaccoBalancePreviousDay = _rawtobaccoService.GetRawTobaccoByDate(DateTime.Now.AddDays(-1));
+            DateTime filterDate = DateTime.Now;
+            if(SearchDate != null)
+            {
+                filterDate = (DateTime)SearchDate;
+            }
+            productReport.SearchDate = filterDate;
+         
+            productReport.RawTobaccoBalanceCurrentDay = _rawtobaccoService.GetRawTobaccoByDate(filterDate);
+            productReport.RawTobaccoBalancePreviousDay = _rawtobaccoService.GetRawTobaccoByDate(filterDate.AddDays(-1));
             //Mixed
-            productReport.MixedTobaccoBalanceCurrentDay = _tabaccoMixingService.GetMixedTobaccoByDate(DateTime.Now);
-            productReport.MixedTobaccoBalancePreviousDay = _tabaccoMixingService.GetMixedTobaccoByDate(DateTime.Now.AddDays(-1));
+            productReport.MixedTobaccoBalanceCurrentDay = _tabaccoMixingService.GetMixedTobaccoByDate(filterDate);
+            productReport.MixedTobaccoBalancePreviousDay = _tabaccoMixingService.GetMixedTobaccoByDate(filterDate.AddDays(-1));
             //Ready Stock
-            productReport.ReadyStockBalanceCurrentDay = _readyStockService.GetReadyStockByDate(DateTime.Now);
+            productReport.ReadyStockBalanceCurrentDay = _readyStockService.GetReadyStockByDate(filterDate);
             productReport.ReadyStockBalancePreviousDay = _readyStockService.GetReadyStockByDate(DateTime.Now.AddDays(-1));
             //Sold 
-            productReport.SoldBalanceCurrentDay = _soldstockService.GeSoldByDate(DateTime.Now);
-            productReport.SoldBalancePreviousDay = _soldstockService.GeSoldByDate(DateTime.Now.AddDays(-1));
+            productReport.SoldBalanceCurrentDay = _soldstockService.GeSoldByDate(filterDate);
+            productReport.SoldBalancePreviousDay = _soldstockService.GeSoldByDate(filterDate.AddDays(-1));
 
             
             return View(productReport);
         }
-        [HttpPost]
-        public IActionResult Index(DateTime? SearchDate)
-        {
-            ProductionReport productReport = new ProductionReport();
-            if (SearchDate.HasValue)
-            {
-                DateTime search = SearchDate.Value.AddHours(23).AddMinutes(59).AddSeconds(59);
 
-                productReport.OpeningBalance = _rawtobaccoService.GetRawTobaccoByDate((DateTime)SearchDate);
-                productReport.InProgress = _context.ManufacturingStage
-                    .Where(x => x.ProductionStage == ProductionStage.Mixing && x.CreatedDate <= search)
-                    .Sum(x => x.Quantity);
-                productReport.Packing = _context.ManufacturingStage
-                    .Where(x => x.ProductionStage == ProductionStage.Packing && x.CreatedDate <= search)
-                    .Sum(x => x.Quantity);
-                productReport.ReadyStockk = _context.ManufacturingStage
-                    .Where(x => x.ProductionStage == ProductionStage.Complete && x.CreatedDate <= search)
-                    .Sum(x => x.Quantity);
-                productReport.Sold = _context.ManufacturingStage
-                    .Where(x => x.ProductionStage == ProductionStage.Sold && x.CreatedDate <= search)
-                    .Sum(x => x.Quantity);
-            }
-            else
-            {
-                productReport.OpeningBalance = _context.ManufacturingStage
-                    .Where(x => x.ProductionStage == ProductionStage.RawTobacco)
-                    .Sum(x => x.Quantity);
-                productReport.InProgress = _context.ManufacturingStage
-                    .Where(x => x.ProductionStage == ProductionStage.Mixing)
-                    .Sum(x => x.Quantity);
-                productReport.Packing = _context.ManufacturingStage.Where(x => x.ProductionStage == ProductionStage.Packing)
-                    .Sum(x => x.Quantity);
-                productReport.ReadyStockk = _context.ManufacturingStage
-                    .Where(x => x.ProductionStage == ProductionStage.Complete)
-                    .Sum(x => x.Quantity);
-                productReport.Sold = _context.ManufacturingStage
-                    .Where(x => x.ProductionStage == ProductionStage.Sold)
-                    .Sum(x => x.Quantity);
-            };
-            return View(productReport);
-        }
       
         public IActionResult AddTobacco(decimal? openingBalance,DateTime? manufacturedate)
         {
