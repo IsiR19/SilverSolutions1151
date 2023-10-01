@@ -31,6 +31,8 @@ namespace SilverSolutions1151.Data
         public DbSet<SilverSolutions1151.Models.Entity.Sale> Sale { get; set; }
         public DbSet<SilverSolutions1151.Models.Entity.SalesDetail> SalesDetails { get; set; }
         public DbSet<Manufacture> Manufacturing { get; set; }
+        public DbSet<CustomerInvoice> CustomerInvoice { get; set; }
+        public DbSet<InvoiceItem> InvoiceItem { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductStock> ProductStocks { get; set; }
