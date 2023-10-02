@@ -25,6 +25,8 @@ builder.Services.AddTransient<IRawTobaccoService, TobaccoService>();
 builder.Services.AddTransient<ITobaccoMixingService, TobaccoMixingService>();
 builder.Services.AddTransient<IReadyStockService, ReadyStockService>();    
 builder.Services.AddTransient<ISoldStockService,SoldStockService>();
+builder.Services.AddTransient<ISalesRepository,SalesRepository>();
+builder.Services.AddTransient<ISalesService,SalesService>();
 
 builder.Services.AddCors(options =>
 {

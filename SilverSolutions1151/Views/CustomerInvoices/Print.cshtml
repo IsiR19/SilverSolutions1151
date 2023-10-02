@@ -1,0 +1,129 @@
+﻿@model SilverSolutions1151.Models.InvoiceTotals
+@{
+    ViewBag.Title = "Invoice";
+}
+<div class="float-right">
+    <button onclick="window.print()">Print</button>
+</div>
+
+<style>
+    .BorderLess {
+        border: none;
+    }
+</style>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <label asp-for="Invoice.InvoiceNumber" class="control-label">Tax Invoice</label>
+        </div>
+        <div class="float-right">
+            @*<button>@Html.ActionLink("Downlad as PDF", "PrintInvoice")</button>*@
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-sm-6">
+                    <div>
+                        <strong>From:</strong>
+                    </div>
+                    <div>
+                       Silver Solutions 1151 cc
+                    </div>
+                    <div>Unit 9</div>
+                    <div>7 Chrysenthemum Street</div>
+                    <div>Ext 6 Lenasia</div>
+                    <div>Phone:+27 72 480 6944 </div>
+                    <div>Income Tax No: 9830690146 </div>
+                    <div>V.A.T Reg No: 4110262203 </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="float-right">
+                        <div>
+                            <label asp-for="Invoice.InvoiceNumber" class="control-label">Invoice #:</label>
+                            <input asp-for="Invoice.InvoiceNumber" class="BorderLess" readonly="readonly" />
+                        </div>
+                        <div>
+                            <label asp-for="Invoice.InvoiceDate" class="control-label">Invoice Date:</label>
+                            <input asp-for="Invoice.InvoiceDate" class="BorderLess" readonly="readonly" />
+                        </div>
+                        <div>
+                            <label asp-for="Invoice.CustomerName" class="control-label">Bill To</label>
+                        </div>
+                        <div>
+                            <input asp-for="Invoice.CustomerName" class="BorderLess" readonly="readonly" />
+                        </div>
+                        <div><textarea class="BorderLess" asp-for= "Invoice.CustomerAddress" readonly="readonly"></textarea></div>
+                        <div><input class="BorderLess" asp-for="Invoice.CustomerPhone" type="number" readonly="readonly" /></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive-sm">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th class="right">Unit Price</th>
+                            <th class="center">Quantity</th>
+                            <th class="right">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                @for (int i = 0; i < Model.Invoice.InvoiceItems.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <input asp-for="@Model.Invoice.InvoiceItems[i].Description" class="form-control" readonly="readonly" />
+                        </td>
+                        <td>
+                                    <input asp-for="@Model.Invoice.InvoiceItems[i].Price" class="form-control" readonly="readonly" />
+                        </td>
+                        <td>
+                                    <input asp-for="@Model.Invoice.InvoiceItems[i].Quantity" class="form-control" readonly="readonly" />
+                        </td>
+                    </tr>
+                }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-sm-6">
+                    <div>
+                        <strong>Banking Details:</strong>
+                    </div>
+                   <div>Bank Name:FNB</div>
+                   <div>Account Name:Silver Solutions 1151</div>
+                    <div>Account Number:62356204603</div>
+                   <div>Branch Code:250-737</div>
+                    <div>Account Type:Business Account</div>
+                        
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="float-right">
+                        <div>
+                            <label asp-for="SubTotal" class="control-label"></label>
+                            <input asp-for="SubTotal" class="BorderLess" readonly="readonly" />
+                        </div>
+                        <div>
+                            <label asp-for="VatPercentage" class="control-label">Vat%</label>
+                            <input asp-for="VatPercentage" class="BorderLess" readonly="readonly" />
+                        </div>
+                        <div>
+                            <label asp-for="VatTotal" class="control-label">Vat Amount</label>
+                            <input asp-for="VatTotal" class="BorderLess" readonly="readonly" />
+                        </div>
+                        <div>
+                            <label asp-for="Total" class="control-label">Total</label>
+                            <input asp-for="Total" class="BorderLess" readonly="readonly" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+
+

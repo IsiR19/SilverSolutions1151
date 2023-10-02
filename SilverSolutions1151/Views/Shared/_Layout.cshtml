@@ -72,7 +72,12 @@
                 </button>
                 <div class="collapse" id="invoicing-collapse" style="">
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a asp-controller="Sales" asp-action="Index" class="link-light d-inline-flex text-decoration-none rounded">Invoicing</a></li>
+                        <li><a asp-controller="CustomerInvoices" asp-action="Index" class="link-light d-inline-flex text-decoration-none rounded">View Invoices</a></li>
+                    </ul>
+                </div>
+                <div class="collapse" id="invoicing-collapse" style="">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a asp-controller="CustomerInvoices" asp-action="Create" class="link-light d-inline-flex text-decoration-none rounded">Create Invoice</a></li>
                     </ul>
                 </div>
             </li>
