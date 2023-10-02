@@ -10,13 +10,13 @@ namespace SilverSolutions1151.Repository
     {
         private readonly ILogger<SalesRepository> _logger;
         private readonly ApplicationDbContext _context;
-        private readonly IManufactureRepository _manufactureRepository;
+        //private readonly IManufactureRepository _manufactureRepository;
 
         public SalesRepository(ILogger<SalesRepository> logger, ApplicationDbContext context,IManufactureRepository manufactureRepository)
         {
                 _context = context;
             _logger = logger;   
-            _manufactureRepository = manufactureRepository;
+            //_manufactureRepository = manufactureRepository;
         }
 
         public bool CreateInvoiceDetails(CustomerInvoice customerInvoice)
@@ -36,8 +36,33 @@ namespace SilverSolutions1151.Repository
             customerInvoice.CreatedDate = DateTime.Now;
             customerInvoice.IsDeleted = false;
             _context.Add(customerInvoice);
+
+            //Add Sold Stock
+            _context.Add(new Manufacture
+            {
+                Id = Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                Quantity = totalStockSold,
+                ManufactureDate = customerInvoice.InvoiceDate,
+                ProductionStage = Models.Entity.ProductionStage.Sold,
+                CreatedBy = "Admin",
+                ModifiedBy = "Admin"
+            });
+            //Remove Ready Stock
+            _context.Add(new Manufacture
+            {
+                Id = Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                Quantity = -totalStockSold,
+                ManufactureDate = customerInvoice.InvoiceDate,
+                ProductionStage = Models.Entity.ProductionStage.Complete,
+                CreatedBy = "Admin",
+                ModifiedBy = "Admin"
+            });
+
+
             _context.SaveChangesAsync();
-            _manufactureRepository.AddSoldStock(totalStockSold, customerInvoice.InvoiceDate);
+            //_manufactureRepository.AddSoldStock(totalStockSold, customerInvoice.InvoiceDate);
             return true;
         }
 
@@ -73,9 +98,30 @@ namespace SilverSolutions1151.Repository
                     totalStockAdded += existingItem.Quantity;
                 }
             }
-            _manufactureRepository.RemoveSoldStock(totalStockAdded, DateTime.Now);
-           
-            // Update or add any invoice items that were modified or added in the form data
+
+            //Add Sold Stock
+            _context.Add(new Manufacture
+            {
+                Id = Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                Quantity = -totalStockAdded,
+                ManufactureDate = customerInvoice.InvoiceDate,
+                ProductionStage = Models.Entity.ProductionStage.Sold,
+                CreatedBy = "Admin",
+                ModifiedBy = "Admin"
+            });
+            //Remove Ready Stock
+            _context.Add(new Manufacture
+            {
+                Id = Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                Quantity = totalStockAdded,
+                ManufactureDate = customerInvoice.InvoiceDate,
+                ProductionStage = Models.Entity.ProductionStage.Complete,
+                CreatedBy = "Admin",
+                ModifiedBy = "Admin"
+            });
+
             totalStockAdded = 0;
             foreach (var item in customerInvoice.InvoiceItems)
             {
@@ -106,9 +152,32 @@ namespace SilverSolutions1151.Repository
                 }
             }
 
+            //Add Sold Stock
+            _context.Add(new Manufacture
+            {
+                Id = Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                Quantity = totalStockAdded,
+                ManufactureDate = customerInvoice.InvoiceDate,
+                ProductionStage = Models.Entity.ProductionStage.Sold,
+                CreatedBy = "Admin",
+                ModifiedBy = "Admin"
+            });
+            //Remove Ready Stock
+            _context.Add(new Manufacture
+            {
+                Id = Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                Quantity = -totalStockAdded,
+                ManufactureDate = customerInvoice.InvoiceDate,
+                ProductionStage = Models.Entity.ProductionStage.Complete,
+                CreatedBy = "Admin",
+                ModifiedBy = "Admin"
+            });
+
             await _context.SaveChangesAsync();
 
-            _manufactureRepository.AddSoldStock(totalStockAdded, customerInvoice.InvoiceDate);
+            //_manufactureRepository.AddSoldStock(totalStockAdded, customerInvoice.InvoiceDate);
 
 
             customerInvoice = await _context.CustomerInvoice
