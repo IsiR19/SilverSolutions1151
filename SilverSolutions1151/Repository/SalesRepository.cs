@@ -16,6 +16,7 @@ namespace SilverSolutions1151.Repository
         {
                 _context = context;
             _logger = logger;   
+            _manufactureRepository = manufactureRepository;
         }
 
         public bool CreateInvoiceDetails(CustomerInvoice customerInvoice)
