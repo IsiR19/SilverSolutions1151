@@ -37,10 +37,7 @@ namespace SilverSolutions1151.Repository
             customerInvoice.IsDeleted = false;
             _context.Add(customerInvoice);
             _context.SaveChangesAsync();
-
-            _manufactureRepository.AddSoldStock(totalStockSold, DateTime.Now);
-            _manufactureRepository.RemoveReadyStock(totalStockSold, DateTime.Now);
-
+            _manufactureRepository.AddSoldStock(totalStockSold, customerInvoice.InvoiceDate);
             return true;
         }
 
@@ -77,7 +74,7 @@ namespace SilverSolutions1151.Repository
                 }
             }
             _manufactureRepository.RemoveSoldStock(totalStockAdded, DateTime.Now);
-            _manufactureRepository.AddReadyStockTobacco(totalStockAdded, DateTime.Now);
+           
             // Update or add any invoice items that were modified or added in the form data
             totalStockAdded = 0;
             foreach (var item in customerInvoice.InvoiceItems)
@@ -111,8 +108,8 @@ namespace SilverSolutions1151.Repository
 
             await _context.SaveChangesAsync();
 
-            _manufactureRepository.AddSoldStock(totalStockAdded, DateTime.Now);
-            _manufactureRepository.RemoveReadyStock(totalStockAdded, DateTime.Now);
+            _manufactureRepository.AddSoldStock(totalStockAdded, customerInvoice.InvoiceDate);
+
 
             customerInvoice = await _context.CustomerInvoice
                 .Include(ci => ci.InvoiceItems)
