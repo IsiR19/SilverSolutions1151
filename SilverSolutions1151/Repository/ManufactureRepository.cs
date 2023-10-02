@@ -117,7 +117,7 @@ namespace SilverSolutions1151.Repository
                 CreatedBy = "Admin",
                 ModifiedBy = "Admin"
             });
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
             return true;
         }
 

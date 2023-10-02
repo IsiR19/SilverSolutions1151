@@ -37,6 +37,8 @@ namespace SilverSolutions1151.Repository
             customerInvoice.IsDeleted = false;
             _context.Add(customerInvoice);
 
+            _context.SaveChanges();
+
             //Add Sold Stock
             _context.Add(new Manufacture
             {
