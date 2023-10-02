@@ -168,5 +168,38 @@ namespace SilverSolutions1151.Repository
                    .OrderByDescending(x => x.ManufactureDate).ToList();
             }
         }
+
+        public bool AddSoldStock(int quantity, DateTime manufactureDate)
+        {
+            _context.Add(new Manufacture
+            {
+                Id = Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                Quantity = quantity,
+                ManufactureDate = manufactureDate,
+                ProductionStage = Models.Entity.ProductionStage.Sold,
+                CreatedBy = "Admin",
+                ModifiedBy = "Admin"
+            });
+            _context.SaveChanges();
+            return true;
+        }
+
+        public bool RemoveSoldStock(int quantity, DateTime manufactureDate)
+        {
+            _context.Add(new Manufacture
+            {
+                Id = Guid.NewGuid(),
+                CreatedDate = DateTime.Now,
+                Quantity = -quantity,
+                ManufactureDate = manufactureDate,
+                ProductionStage = Models.Entity.ProductionStage.Sold,
+                CreatedBy = "Admin",
+                ModifiedBy = "Admin"
+            });
+            _context.SaveChanges();
+            return true;
+        }
+
     }
 }

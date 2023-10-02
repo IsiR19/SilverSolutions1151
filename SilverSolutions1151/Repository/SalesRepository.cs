@@ -10,8 +10,9 @@ namespace SilverSolutions1151.Repository
     {
         private readonly ILogger<SalesRepository> _logger;
         private readonly ApplicationDbContext _context;
+        private readonly IManufactureRepository _manufactureRepository;
 
-        public SalesRepository(ILogger<SalesRepository> logger, ApplicationDbContext context)
+        public SalesRepository(ILogger<SalesRepository> logger, ApplicationDbContext context,IManufactureRepository manufactureRepository)
         {
                 _context = context;
             _logger = logger;   
@@ -19,12 +20,14 @@ namespace SilverSolutions1151.Repository
 
         public bool CreateInvoiceDetails(CustomerInvoice customerInvoice)
         {
+            var totalStockSold = 0;
             customerInvoice.Id = Guid.NewGuid();
             foreach (var item in customerInvoice.InvoiceItems)
             {
                 item.InvoiceItemId = Guid.NewGuid();
                 item.CustomerInvoiceId = customerInvoice.Id;
                 _context.Add(item);
+                totalStockSold += item.Quantity ;
             }
             customerInvoice.CreatedBy = "Admin";
             customerInvoice.ModifiedBy = "Admin";
@@ -33,6 +36,10 @@ namespace SilverSolutions1151.Repository
             customerInvoice.IsDeleted = false;
             _context.Add(customerInvoice);
             _context.SaveChangesAsync();
+
+            _manufactureRepository.AddSoldStock(totalStockSold, DateTime.Now);
+            _manufactureRepository.RemoveReadyStock(totalStockSold, DateTime.Now);
+
             return true;
         }
 
@@ -59,15 +66,19 @@ namespace SilverSolutions1151.Repository
             existingInvoice.InvoiceItems = customerInvoice.InvoiceItems;
 
             // Remove any invoice items that were deleted in the form data
+            var totalStockAdded = 0;
             foreach (var existingItem in existingInvoice.InvoiceItems)
             {
                 if (!customerInvoice.InvoiceItems.Any(ci => ci.InvoiceItemId == existingItem.InvoiceItemId))
                 {
                     _context.Remove(existingItem);
+                    totalStockAdded += existingItem.Quantity;
                 }
             }
-
+            _manufactureRepository.RemoveSoldStock(totalStockAdded, DateTime.Now);
+            _manufactureRepository.AddReadyStockTobacco(totalStockAdded, DateTime.Now);
             // Update or add any invoice items that were modified or added in the form data
+            totalStockAdded = 0;
             foreach (var item in customerInvoice.InvoiceItems)
             {
                 if (item.InvoiceItemId == Guid.Empty)
@@ -76,6 +87,7 @@ namespace SilverSolutions1151.Repository
                     item.InvoiceItemId = Guid.NewGuid();
                     item.CustomerInvoiceId = existingInvoice.Id;
                     _context.Add(item);
+                    totalStockAdded += item.Quantity;
                 }
                 else
                 {
@@ -87,11 +99,19 @@ namespace SilverSolutions1151.Repository
                         existingItem.Price = item.Price;
                         existingItem.Quantity = item.Quantity;
                         existingItem.Weight = item.Weight;
+
+                        if(existingItem.Quantity != item.Quantity)
+                        {
+                            totalStockAdded += item.Quantity;
+                        }
                     }
                 }
             }
 
             await _context.SaveChangesAsync();
+
+            _manufactureRepository.AddSoldStock(totalStockAdded, DateTime.Now);
+            _manufactureRepository.RemoveReadyStock(totalStockAdded, DateTime.Now);
 
             customerInvoice = await _context.CustomerInvoice
                 .Include(ci => ci.InvoiceItems)
@@ -125,6 +145,7 @@ namespace SilverSolutions1151.Repository
             foreach (var item in invoiceItems)
             {
                 total =+ (item.Price * item.Quantity);
+                item.TotalPrice = total;
             }
 
             return total;

@@ -27,5 +27,6 @@ namespace SilverSolutions1151.Models.Entity
         public int Weight { get; set; }
         public Guid CustomerInvoiceId { get; set; }
         public CustomerInvoice Invoice { get; set; }
+        public decimal TotalPrice { get; set; } 
     }
 }

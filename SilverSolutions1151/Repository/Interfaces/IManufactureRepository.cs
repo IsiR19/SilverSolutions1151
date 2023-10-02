@@ -14,6 +14,8 @@ namespace SilverSolutions1151.Repository.Interfaces
         bool AddReadyStockTobacco(int quantity, DateTime manufactureDate);
         bool RemoveReadyStock(int quantity, DateTime manufactureDate);
         int GetSoldStockBalanceByDate(DateTime endDate);
+        bool AddSoldStock(int quantity,DateTime manufactureDate);
+        bool RemoveSoldStock(int quantity, DateTime manufactureDate);
         List<Manufacture> GetManufactureItemsByDateAndType(Models.Entity.ProductionStage stage,DateTime? startDate,DateTime? endDate);
 
     }

@@ -19,7 +19,7 @@ namespace SilverSolutions1151.Middleware.Services
         {
             var qty = numberOfBoxes * grams;
             if (_manufactureRepository.AddReadyStockTobacco(qty, manufactureDate))
-                return _tabaccoMixingService.RemoveMixedTobacco(qty, manufactureDate);
+                return _tabaccoMixingService.RemoveMixedTobacco(numberOfBoxes, manufactureDate);
 
             return false;
         }
