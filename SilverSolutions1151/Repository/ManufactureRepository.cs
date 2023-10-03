@@ -50,13 +50,18 @@ namespace SilverSolutions1151.Repository
             }
         }
 
-        public bool AddMixedTobacco(int quantity, DateTime manufactureDate)
+        public bool AddMixedTobacco(TobaccoMixture tobaccoMixture, DateTime manufactureDate)
         {
             _context.Add(new Manufacture
             {
                 Id = Guid.NewGuid(),
                 CreatedDate = DateTime.Now,
-                Quantity = quantity,
+                Quantity = tobaccoMixture.MixtureTotal,
+                Glycerine = tobaccoMixture.GlycerinQty,
+                Syrup = tobaccoMixture.SyrupQty,
+                Flavour = tobaccoMixture.FlavorQty,
+                Preservatives = tobaccoMixture.PreservativeQty,
+                Tobacco = tobaccoMixture.Tobacco,
                 ManufactureDate = manufactureDate,
                 ProductionStage = Models.Entity.ProductionStage.Mixing,
                 CreatedBy = "Admin",

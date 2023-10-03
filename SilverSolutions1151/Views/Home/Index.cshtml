@@ -38,11 +38,13 @@
     }
 
  </style>
+ <br />
+ <br/>
 <div class="row">
-    <div class="col-md-6">
-        <div class="search-date-container">
+    <div class="col-md-10">
+        <div class="search-date-container rounded-container">
             <div class="search-label-container">
-                <label for="datePicker" class="search-label">Manufacture date</label>
+                <label for="datePicker" class="search-label">Search manufacture date:</label>
             </div>
             <div class="date-picker-container">
                 <input type="date" id="datePicker" class="form-control" value=@Model.SearchDate />
@@ -51,6 +53,7 @@
         </div>
     </div>
 </div>
+<br/>
 <div class="row">
     <div class="col-md-12">
         <form asp-action="Create">
@@ -59,9 +62,9 @@
                 <label asp-for="OpeningBalance" class="control-label-bold">Raw Tobacco Leaves</label>
                 <div class="rounded-border-container">
                     <div class="balance-label-container">
-                        <label for="OpeningBalance" class="balance-label">Opening Balance: @Model.RawTobaccoBalancePreviousDay</label>
+                        <label for="OpeningBalance" class="balance-label">Opening Balance(Kg): @Model.RawTobaccoBalancePreviousDay</label>
                         <br />
-                        <label for="CurrentBalance" class="balance-label">Current Balance: @Model.RawTobaccoBalanceCurrentDay</label>
+                        <label for="CurrentBalance" class="balance-label">Current Balance(Kg): @Model.RawTobaccoBalanceCurrentDay</label>
                     </div>
                     <div class="input-group">
                         <label for="ManufactureDate" class="manufacture-date-label">Manufacture Date:</label>
@@ -70,7 +73,7 @@
                     <br/>
                     <div class="input-group">
 
-                        <label asp-for="OpeningBalance" class="manufacture-date-label">Quantity</label>
+                        <label asp-for="OpeningBalance" class="manufacture-date-label">Quantity(Kg):</label>
                         <input asp-for="OpeningBalance" class="form-control" id="OpeningBalanceLabel" />
                         <div class="input-group-append">
                             <button type="button" class="btn btn-primary" id="addBalanceButton" onclick="AddRawTobacco()">Add</button>
@@ -93,14 +96,32 @@
                     <br />
                     <div class="input-group">
 
-                        <label asp-for="OpeningBalance" class="manufacture-date-label">Ingredient Qty:</label>
-                        <input asp-for="OpeningBalance" class="form-control" id="IngredientQty" />
+                        <label asp-for="OpeningBalance" class="manufacture-date-label">Tobacco Qty(Kg):</label>
+                        <input asp-for="OpeningBalance" class="form-control" id="ManufacturingQty" />
+                    </div>
+                    <br/>
+                    <div class="input-group">
+
+                        <label asp-for="OpeningBalance" class="manufacture-date-label">Syrup Qty(kg):</label>
+                        <input asp-for="OpeningBalance" class="form-control" id="SyrupQty" />
                     </div>
                     <br />
                     <div class="input-group">
 
-                        <label asp-for="OpeningBalance" class="manufacture-date-label">Quantity</label>
-                        <input asp-for="OpeningBalance" class="form-control" id="ManufacturingQty" />
+                        <label asp-for="OpeningBalance" class="manufacture-date-label">Glycerine Qty(Kg):</label>
+                        <input asp-for="OpeningBalance" class="form-control" id="GlycerineQty" />
+                    </div>
+                    <br />
+                    <div class="input-group">
+
+                        <label asp-for="OpeningBalance" class="manufacture-date-label">Preservative Qty(Kg):</label>
+                        <input asp-for="OpeningBalance" class="form-control" id="PreservativeQty" />
+                    </div>
+                    <br />
+                    <div class="input-group">
+
+                        <label asp-for="OpeningBalance" class="manufacture-date-label">Flavour Qty(Kg):</label>
+                        <input asp-for="OpeningBalance" class="form-control" id="FlavourQty" />
                         <div class="input-group-append">
                             <button type="button" class="btn btn-primary" id="addManufacturButton" onclick="AddManufacturing()">Add</button>
                         </div>
@@ -109,16 +130,16 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="OpeningBalance" class="control-label-bold">Mixed Tobacco</label>
+                <label asp-for="OpeningBalance" class="control-label-bold">Tobacco mixing in progress</label>
                 <div class="rounded-border-container">
                     <div class="balance-label-container">
-                        <label for="OpeningBalance" class="balance-label">Opening Balance: @Model.MixedTobaccoBalancePreviousDay</label>
+                        <label for="OpeningBalance" class="balance-label">Opening Balance(Kg): @Model.MixedTobaccoBalancePreviousDay</label>
                         <br />
-                        <label for="CurrentBalance" class="balance-label">Current Balance: @Model.MixedTobaccoBalanceCurrentDay</label>
+                        <label for="CurrentBalance" class="balance-label">Current Balance(Kg): @Model.MixedTobaccoBalanceCurrentDay</label>
                     </div>
                     <br />
                     <div class="input-group">
-                        <button type="button" class="btn btn-success" id="viewtobaccobalnce" onclick="ViewMixedTobbacoTransaction()">View Transactions</button>
+                        <button type="button" class="btn btn-success" id="viewtobaccobalnce" onclick="ViewMixedTobbacoTransaction()">View</button>
                     </div>
                 </div>
             </div>
@@ -133,7 +154,7 @@
                     <br />
                     <div class="input-group">
 
-                        <label asp-for="OpeningBalance" class="manufacture-date-label">Box Qty(g):</label>
+                        <label asp-for="OpeningBalance" class="manufacture-date-label">Box Qty(Kg):</label>
                         <input asp-for="OpeningBalance" class="form-control" id="boxQty" />
                     </div>
                     <br />
@@ -174,9 +195,12 @@
                     <br />
                     <div class="input-group">
                         <button type="button" class="btn btn-success" id="viewtobaccobalnce" onclick="ViewSoldTransaction()">View</button>
+                        <button type="button" class="btn btn-primary ml-2" id="createinvoice" onclick="location.href='@Url.Action("Create", "CustomerInvoices")'">Create Invoice</button>
+                        <button type="button" class="btn btn-primary ml-2" id="viewinvoice" onclick="location.href='@Url.Action("Index", "CustomerInvoices")'">View Invoices</button>
                     </div>
                 </div>
             </div>
+
         </form>
     </div>
 </div>
@@ -195,10 +219,14 @@
         function AddManufacturing() {
             console.log('AddManufacturing function executed.');
             var manufacturingQty = document.getElementById("ManufacturingQty").value;
-            var ingredientQty = document.getElementById("IngredientQty").value;
+            var glycerineQty = document.getElementById("GlycerineQty").value;
+            var flavourQty = document.getElementById("FlavourQty").value;
+            var syrupQty = document.getElementById("SyrupQty").value;
+            var preservativeQty = document.getElementById("PreservativeQty").value;
             var manufacturedate = document.getElementById("ManufacturingDate").value;
             console.log(manufacturedate);
-            var url = '@Url.Action("AddManufacturing", "Home")' + '?manufacturingQty=' + manufacturingQty + '&manufactureDate=' + manufacturedate + '&ingredientQty=' + ingredientQty;
+            var url = '@Url.Action("AddManufacturing", "Home")' + '?manufacturingQty=' + manufacturingQty + '&manufactureDate=' + manufacturedate + '&glycerineQty=' + glycerineQty + '&flavourQty=' + flavourQty + '&syrupQty=' + syrupQty
+                + '&preservativeQty=' + preservativeQty;
             window.location.href = url;
         }
         function AddPackaging() {
@@ -217,7 +245,7 @@
         }
         function ViewMixedTobbacoTransaction() {
             console.log('ViewRawTobbacoTransaction function executed.');
-            var url = '@Url.Action("Index", "Manufacture")' + '?stage=Mixing';
+            var url = '@Url.Action("Mixing", "Manufacture")' + '?stage=Mixing';
             window.location.href = url;
         }
         function ViewReadyStockTransaction() {

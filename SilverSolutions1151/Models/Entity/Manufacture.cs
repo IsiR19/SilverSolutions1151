@@ -7,6 +7,11 @@ namespace SilverSolutions1151.Models.Entity
         public ProductionStage ProductionStage { get; set; }
         public decimal Quantity { get; set; }
         public DateTime ManufactureDate { get; set; }
+        public decimal Tobacco { get; set; } = 0;
+        public decimal Flavour { get; set; } = 0;
+        public decimal Preservatives { get; set; } = 0;
+        public decimal Syrup { get; set; } = 0;
+        public decimal Glycerine { get; set; } = 0;
     }
 
     public enum ProductionStage

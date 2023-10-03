@@ -1,11 +1,5 @@
 ﻿@model IEnumerable<SilverSolutions1151.Models.Entity.CustomerInvoice>
 
-@{
-    ViewData["Title"] = "Index";
-}
-
-<h1>Index</h1>
-
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -57,3 +51,13 @@
 }
     </tbody>
 </table>
+
+<br />
+<div class="row justify-content-end">
+    <div class="col-auto">
+        <a href="@Url.Action("Create", "CustomerInvoices")" class="btn btn-primary">Create</a>
+    </div>
+    <div class="col-auto">
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Back</a>
+    </div>
+</div>

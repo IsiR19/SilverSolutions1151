@@ -68,10 +68,11 @@ namespace SilverSolutions1151.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult AddManufacturing(decimal? manufacturingQty, DateTime? manufacturedate,decimal? ingredientQty)
+        public IActionResult AddManufacturing(decimal? manufacturingQty, DateTime? manufacturedate,decimal? glycerineQty, decimal? flavourQty
+            , decimal? syrupQty, decimal? preservativeQty)
         {
             // Update the database with the new opening balance
-            _tabaccoMixingService.AddTobaccoMixing((int)manufacturingQty, (DateTime)manufacturedate, (int)ingredientQty);
+            _tabaccoMixingService.AddTobaccoMixing((int)manufacturingQty, (DateTime)manufacturedate,glycerineQty,flavourQty,syrupQty,preservativeQty);
 
             // Return the view 
             return RedirectToAction("Index", "Home");

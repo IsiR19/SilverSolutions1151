@@ -81,6 +81,12 @@
     </div>
 </div>
 
+<br />
+<div class="row justify-content-end">
+    <div class="col-auto">
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Back</a>
+    </div>
+</div>
 <script>
     var table = document.getElementById("invoice-items-table");
     var button = document.getElementById("add-row-button");
@@ -104,10 +110,6 @@
         }
     };
 </script>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

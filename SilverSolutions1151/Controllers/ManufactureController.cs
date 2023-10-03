@@ -65,6 +65,44 @@ namespace SilverSolutions1151.Controllers
             return View(viewmodel);  
         }
 
-        
+        public async Task<IActionResult> Mixing(string stage,
+           DateTime? fromDate,
+           DateTime? fromDateFilter,
+           DateTime? toDateFilter,
+           DateTime? toDate,
+           int? pageNumber, string currentFilter)
+        {
+            if (fromDate != null && toDate != null || !String.IsNullOrEmpty(stage))
+            {
+                pageNumber = 1;
+                if (String.IsNullOrEmpty(stage))
+                    stage = TempData["stage"].ToString();
+                else
+                    TempData["stage"] = stage;
+            }
+            else
+            {
+                fromDate = fromDateFilter;
+                toDate = toDateFilter;
+                stage = currentFilter;
+            }
+
+
+            TempData["CurrentFilter"] = stage;
+            TempData["fromDateFilter"] = fromDate;
+            TempData["toDateFilter"] = toDate;
+            var manufacturing = new List<Manufacture>();
+            if (Enum.TryParse(typeof(Models.Entity.ProductionStage), stage, out var result))
+            {
+                manufacturing = _manufactureRepository.GetManufactureItemsByDateAndType((Models.Entity.ProductionStage)result, fromDate, toDate);
+            }
+
+
+            var viewmodel = await PaginatedList<Manufacture>.CreateAsync(manufacturing.AsQueryable().AsNoTracking(), pageNumber ?? 1, 20);
+
+            return View(viewmodel);
+        }
+
+
     }
 }

@@ -7,7 +7,7 @@ namespace SilverSolutions1151.Repository.Interfaces
         int GetRawTobaccoBalance(DateTime endDate);
         bool AddRawTobacco(int quantity, DateTime manufactureDate);
         bool RemoveRawTobacco(int quantity,DateTime manufactureDate);
-        bool AddMixedTobacco(int quantity,DateTime manufactureDate);
+        bool AddMixedTobacco(TobaccoMixture tobaccoMixture,DateTime manufactureDate);
         int GetMixedTobaccoBalance(DateTime endDate);
         bool RemoveMixedTobacco(int quantity, DateTime manufactureDate);
         int GetReadyStockBalance(DateTime endDate);

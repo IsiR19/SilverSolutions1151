@@ -1,5 +1,6 @@
 ﻿using SilverSolutions1151.Middleware.Extensions;
 using SilverSolutions1151.Middleware.Services.Interfaces;
+using SilverSolutions1151.Models.Entity;
 using SilverSolutions1151.Repository.Interfaces;
 
 namespace SilverSolutions1151.Middleware.Services
@@ -17,11 +18,23 @@ namespace SilverSolutions1151.Middleware.Services
             _tobaccoService = tobaccoService;
 
         }
-        public bool AddTobaccoMixing(int quantity, DateTime manufactureDate, int ingredientQty)
+        public bool AddTobaccoMixing(int quantity, DateTime manufactureDate, decimal? glycerineQty, decimal? flavourQty
+            , decimal? syrupQty, decimal? preservativeQty)
         {
-            var qty = quantity + ingredientQty;
-            if(_manufactureRepository.AddMixedTobacco(qty, manufactureDate))
-                return _tobaccoService.RemoveRawTobacco(quantity,manufactureDate);
+
+            var mixedTobacco = new TobaccoMixture
+            {
+                FlavorQty = flavourQty ?? 0,
+                GlycerinQty = glycerineQty ?? 0,
+                SyrupQty = syrupQty ?? 0,
+                PreservativeQty = preservativeQty ?? 0,
+                Tobacco = quantity
+            };
+            
+            mixedTobacco.MixtureTotal = mixedTobacco.FlavorQty + mixedTobacco.GlycerinQty + mixedTobacco.SyrupQty + mixedTobacco.PreservativeQty + mixedTobacco.Tobacco;
+            
+            if(_manufactureRepository.AddMixedTobacco(mixedTobacco, manufactureDate))
+                return _tobaccoService.RemoveRawTobacco((int)mixedTobacco.MixtureTotal, manufactureDate);
 
             return false;
         }

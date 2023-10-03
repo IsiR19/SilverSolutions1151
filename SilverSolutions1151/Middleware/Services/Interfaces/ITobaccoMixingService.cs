@@ -2,7 +2,8 @@
 {
     public interface ITobaccoMixingService
     {
-        bool AddTobaccoMixing(int quantity, DateTime manufactureDate,int ingredientQty);
+        bool AddTobaccoMixing(int quantity, DateTime manufactureDate,decimal? glycerineQty, decimal? flavourQty
+            , decimal? syrupQty, decimal? preservativeQty);
         int GetMixedTobaccoByDate(DateTime endDate);
         bool RemoveMixedTobacco(int quantity, DateTime manufactureDate);
 

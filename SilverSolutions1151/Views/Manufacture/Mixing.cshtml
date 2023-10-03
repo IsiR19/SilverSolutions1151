@@ -68,7 +68,22 @@
                         Production Stage
                     </th>
                     <th>
-                        Quantity
+                       Total Quantity
+                    </th>
+                    <th>
+                       Tobacco
+                    </th>
+                    <th>
+                        Glycerin
+                    </th>
+                    <th>
+                        Syrup
+                    </th>
+                    <th>
+                        Flavor
+                    </th>
+                    <th>
+                        Preservatives
                     </th>
                     <th>
                         Manufacture Date
@@ -85,6 +100,21 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Tobacco)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Glycerine)
+                        </td>
+                         <td>
+                            @Html.DisplayFor(modelItem => item.Syrup)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Flavour)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Preservatives)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ManufactureDate)
@@ -117,7 +147,7 @@
             Next
         </a>
     </div>
-    <br />
+    <br/>
     <div class="row justify-content-end">
         <div class="col-auto">
             <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Back</a>
