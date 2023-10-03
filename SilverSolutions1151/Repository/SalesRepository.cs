@@ -172,11 +172,10 @@ namespace SilverSolutions1151.Repository
             {
                 SubTotal = CalculateSubTotal(customerInvoice.InvoiceItems),
                 VatPercentage = customerInvoice.Vat,
-                VatTotal = CalculateVat(customerInvoice),
                 Invoice = customerInvoice,
                 
             };
-
+            invoiceTotals.VatTotal = CalculateVat(customerInvoice.Vat, invoiceTotals.SubTotal);
             invoiceTotals.Total = invoiceTotals.SubTotal + invoiceTotals.VatTotal;
 
            return invoiceTotals;
@@ -194,17 +193,11 @@ namespace SilverSolutions1151.Repository
             return total;
         }
 
-        private decimal CalculateVat(CustomerInvoice customerInvoice)
+        private decimal CalculateVat(decimal vatPercentage,decimal subtotal)
         {
-            decimal total = 0;
-            decimal vatPercentage = ((decimal)customerInvoice.Vat / 100);
-
-
-            foreach (var item in customerInvoice.InvoiceItems)
-            {
-             
-                total =+ (item.Price * vatPercentage);
-            }
+        
+            vatPercentage = ((decimal)vatPercentage / 100);
+            var total = vatPercentage * subtotal;
 
             return total;
         }
