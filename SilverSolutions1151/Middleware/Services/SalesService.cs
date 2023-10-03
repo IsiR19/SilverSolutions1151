@@ -9,16 +9,20 @@ namespace SilverSolutions1151.Middleware.Services
     {
         private readonly ILogger<SalesService> _logger;
         private readonly ISalesRepository _salesRepository;
+        private readonly IManufactureRepository _manufactureRepository;
 
-        public SalesService(ILogger<SalesService> logger, ISalesRepository salesRepository)
+        public SalesService(ILogger<SalesService> logger, ISalesRepository salesRepository, IManufactureRepository manufactureRepository)
         {
             _logger = logger;
             _salesRepository = salesRepository;
+            _manufactureRepository = manufactureRepository;
         }
 
         public bool CreateInvoice(CustomerInvoice customerInvoice)
         {
-            return _salesRepository.CreateInvoiceDetails(customerInvoice);
+            if (_salesRepository.CreateInvoiceDetails(customerInvoice))
+                AddManufacturingSoldStock(customerInvoice);
+            return true ;
         }
 
         public async Task<InvoiceTotals> GetInvoiceAsync(Guid invoiceId)
@@ -29,6 +33,17 @@ namespace SilverSolutions1151.Middleware.Services
         public async Task<CustomerInvoice> UpdateInvoice(Guid id,CustomerInvoice customerInvoice)
         {
             return await _salesRepository.UpdateInvoiceDetailsAsync(id,customerInvoice);
+        }
+
+        private async Task<bool> AddManufacturingSoldStock(CustomerInvoice customerInvoice)
+        {
+            if(customerInvoice.InvoiceItems.Count > 0)
+            {
+                int totalQuantity = customerInvoice.InvoiceItems.Sum(item => item.Quantity);
+                if(_manufactureRepository.AddSoldStock(totalQuantity,customerInvoice.InvoiceDate))
+                    _manufactureRepository.RemoveSoldStock(totalQuantity,customerInvoice.InvoiceDate);
+            }
+            return true;
         }
     }
 }

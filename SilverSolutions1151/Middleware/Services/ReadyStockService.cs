@@ -18,8 +18,8 @@ namespace SilverSolutions1151.Middleware.Services
         public bool AddReadyStock(int numberOfBoxes, DateTime manufactureDate, int grams)
         {
             var qty = numberOfBoxes * grams;
-            if (_manufactureRepository.AddReadyStockTobacco(qty, manufactureDate))
-                return _tabaccoMixingService.RemoveMixedTobacco(numberOfBoxes, manufactureDate);
+            if (_manufactureRepository.AddReadyStockTobacco(numberOfBoxes, manufactureDate))
+                return _tabaccoMixingService.RemoveMixedTobacco(qty, manufactureDate);
 
             return false;
         }
@@ -31,7 +31,7 @@ namespace SilverSolutions1151.Middleware.Services
 
         public bool RemoveReadyStock(int quantity, DateTime manufactureDate)
         {
-            throw new NotImplementedException();
+            return _manufactureRepository.RemoveReadyStock(quantity, manufactureDate);
         }
     }
 }

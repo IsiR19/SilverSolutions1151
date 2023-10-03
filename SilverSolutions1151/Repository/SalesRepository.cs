@@ -39,32 +39,6 @@ namespace SilverSolutions1151.Repository
 
             _context.SaveChanges();
 
-            //Add Sold Stock
-            _context.Add(new Manufacture
-            {
-                Id = Guid.NewGuid(),
-                CreatedDate = DateTime.Now,
-                Quantity = totalStockSold,
-                ManufactureDate = customerInvoice.InvoiceDate,
-                ProductionStage = Models.Entity.ProductionStage.Sold,
-                CreatedBy = "Admin",
-                ModifiedBy = "Admin"
-            });
-            //Remove Ready Stock
-            _context.Add(new Manufacture
-            {
-                Id = Guid.NewGuid(),
-                CreatedDate = DateTime.Now,
-                Quantity = -totalStockSold,
-                ManufactureDate = customerInvoice.InvoiceDate,
-                ProductionStage = Models.Entity.ProductionStage.Complete,
-                CreatedBy = "Admin",
-                ModifiedBy = "Admin"
-            });
-
-
-            _context.SaveChangesAsync();
-            //_manufactureRepository.AddSoldStock(totalStockSold, customerInvoice.InvoiceDate);
             return true;
         }
 

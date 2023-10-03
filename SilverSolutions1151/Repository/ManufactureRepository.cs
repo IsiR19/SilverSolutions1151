@@ -182,9 +182,7 @@ namespace SilverSolutions1151.Repository
                 ModifiedBy = "Admin"
             });
 
-            _context.SaveChangesAsync();
-
-            RemoveReadyStock(quantity, manufactureDate);
+            _context.SaveChanges();
             return true;
         }
 
@@ -200,7 +198,7 @@ namespace SilverSolutions1151.Repository
                 CreatedBy = "Admin",
                 ModifiedBy = "Admin"
             });
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
             AddReadyStockTobacco(quantity, manufactureDate);
             return true;
         }

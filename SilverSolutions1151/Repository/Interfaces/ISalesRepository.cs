@@ -9,5 +9,6 @@ namespace SilverSolutions1151.Repository.Interfaces
 
         Task<CustomerInvoice> UpdateInvoiceDetailsAsync(Guid id,CustomerInvoice customerInvoice);
         Task<InvoiceTotals> GetSalesInvoiceDetailsAsync(Guid Id);
+       
     }
 }

@@ -25,9 +25,14 @@ namespace SilverSolutions1151.Controllers
         // GET: CustomerInvoices
         public async Task<IActionResult> Index()
         {
-              return _context.CustomerInvoice != null ? 
-                          View(await _context.CustomerInvoice.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.CustomerInvoice'  is null.");
+            if (_context.CustomerInvoice != null)
+            {
+                return View(await _context.CustomerInvoice.OrderByDescending(invoice => invoice.InvoiceDate).ToListAsync());
+            }
+            else
+            {
+                return Problem("Entity set 'ApplicationDbContext.CustomerInvoice' is null.");
+            }
         }
 
         // GET: CustomerInvoices/Details/5
