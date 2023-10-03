@@ -186,7 +186,7 @@ namespace SilverSolutions1151.Repository
             decimal total = 0;
             foreach (var item in invoiceItems)
             {
-                total =+ (item.Price * item.Quantity);
+                total += (item.Price * item.Quantity);
                 item.TotalPrice = total;
             }
 
