@@ -93,18 +93,39 @@
                     <br />
                     <div class="input-group">
 
-                        <label asp-for="OpeningBalance" class="manufacture-date-label">Ingredient Qty:</label>
-                        <input asp-for="OpeningBalance" class="form-control" id="IngredientQty" />
+                        <label asp-for="OpeningBalance" class="manufacture-date-label">Tobacco Qty:</label>
+                        <input asp-for="OpeningBalance" class="form-control" id="ManufacturingQty" />
+
+                    </div>
+                    <br/>
+                    <div class="input-group">
+
+                        <label asp-for="OpeningBalance" class="manufacture-date-label">Flavour Qty:</label>
+                        <input asp-for="OpeningBalance" class="form-control" id="FlavourQty" />
                     </div>
                     <br />
                     <div class="input-group">
 
-                        <label asp-for="OpeningBalance" class="manufacture-date-label">Quantity</label>
-                        <input asp-for="OpeningBalance" class="form-control" id="ManufacturingQty" />
+                        <label asp-for="OpeningBalance" class="manufacture-date-label">Syrup Qty:</label>
+                        <input asp-for="OpeningBalance" class="form-control" id="SyrupQty" />
+                    </div>
+                    <br />
+                    <div class="input-group">
+
+                        <label asp-for="OpeningBalance" class="manufacture-date-label">Glycerine Qty:</label>
+                        <input asp-for="OpeningBalance" class="form-control" id="GlycerineQty" />
+                    </div>
+                    <br />
+                    <div class="input-group">
+
+                        <label asp-for="OpeningBalance" class="manufacture-date-label">Preservative Qty:</label>
+                        <input asp-for="OpeningBalance" class="form-control" id="PreservativeQty" />
                         <div class="input-group-append">
                             <button type="button" class="btn btn-primary" id="addManufacturButton" onclick="AddManufacturing()">Add</button>
                         </div>
                     </div>
+                    <br />
+                   
                 </div>
             </div>
 
@@ -195,6 +216,10 @@
         function AddManufacturing() {
             console.log('AddManufacturing function executed.');
             var manufacturingQty = document.getElementById("ManufacturingQty").value;
+            var ingredientQty = document.getElementById("IngredientQty").value;
+            var flavourQty = document.getElementById("FlavourQty").value;
+            var syrupQty = document.getElementById("SyrupQty").value;
+            var ingredientQty = document.getElementById("IngredientQty").value;
             var ingredientQty = document.getElementById("IngredientQty").value;
             var manufacturedate = document.getElementById("ManufacturingDate").value;
             console.log(manufacturedate);
