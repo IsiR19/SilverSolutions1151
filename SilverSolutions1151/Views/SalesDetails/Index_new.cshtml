@@ -1,0 +1,52 @@
+﻿@model SilverSolutions1151.Models.Entity.Sale
+
+@{
+    ViewData["Title"] = "Invoice Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+   @* <input asp-for="SalesID" class="form-control" type="hidden" />
+    <a asp-action="Create" class="btn btn-success" asp-route-id="@ViewBag.SalesID">Create New</a>*@
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Product
+            </th>
+            <th>
+                UnitPrice
+            </th>
+            <th>
+               Quantity
+            </th>
+            <th>
+               Total
+            </th>
+      
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.SalesDetails.Count; i++)
+        {
+            <tr>
+                <td>
+                    <input asp-for="@Model.SalesDetails[i].ProductName" class="form-control" readonly="readonly" />
+                </td>
+                <td>
+                    <input asp-for="@Model.SalesDetails[i].UnitPrice" class="form-control" readonly="readonly" />
+                </td>
+                <td>
+                    <input asp-for="@Model.SalesDetails[i].Quantity" class="form-control" readonly="readonly" />
+                </td>
+                <td>
+                    <input asp-for="@Model.SalesDetails[i].LineTotal" class="form-control" readonly="readonly" />
+                </td>
+            </tr>
+        }
+}
+    </tbody>
+</table>

@@ -1,0 +1,168 @@
+﻿@using SilverSolutions1151.Models.Entity;
+@using SilverSolutions1151.Models.Paganation;
+@model PaginatedList<Manufacture>;
+
+<style type="text/css">
+    .search {
+        position: relative;
+        box-shadow: 0 0 40px rgba(51, 51, 51, .1);
+        width: 100%;
+    }
+
+        .search input {
+            height: 35px;
+            text-indent: 25px;
+            border: 2px solid #d6d4d4;
+        }
+
+            .search input:focus {
+                box-shadow: none;
+                border: 2px solid blue;
+            }
+
+        .search .fa-search {
+            position: absolute;
+            top: 20px;
+            left: 16px;
+        }
+
+        .search button {
+            position: absolute;
+            top: 0px;
+            right: 2px;
+            height: 35px;
+            width: 110px;
+        }
+
+    .rounded-container {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 10px;
+    }
+</style>
+
+<div class="rounded-container">
+    <div class="row">
+        <form asp-action="Index" method="get">
+            <div class="row">
+                <div class="col-md-2 form-group">
+                    <label class="control-label">From Date</label>
+                    <input asp-for="FromDate" class="form-control" type="date" id="fromDate" value="@TempData["fromDateFilter"]" />
+                </div>
+                <div class="col-md-2 form-group">
+                    <label class="control-label">To Date</label>
+                    <input asp-for="ToDate" class="form-control" type="date" id="toDate" value="@TempData["toDateFilter"]" />
+                </div>
+                <div class="col-md-1 form-group">
+                    <button class="btn btn-primary" style="margin-left:31px;height:35px;" onclick="filter()">Search Leads</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="rounded-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Production Stage
+                    </th>
+                    <th>
+                       Total Quantity
+                    </th>
+                    <th>
+                       Tobacco
+                    </th>
+                    <th>
+                        Glycerin
+                    </th>
+                    <th>
+                        Syrup
+                    </th>
+                    <th>
+                        Flavor
+                    </th>
+                    <th>
+                        Preservatives
+                    </th>
+                    <th>
+                        Manufacture Date
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProductionStage)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Tobacco)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Glycerine)
+                        </td>
+                         <td>
+                            @Html.DisplayFor(modelItem => item.Syrup)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Flavour)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Preservatives)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ManufactureDate)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
+
+        <a asp-action="Index"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           asp-route-currentFilter="@TempData["CurrentFilter"]"
+           asp-route-fromDateFilter="@TempData["fromDateFilter"]"
+           asp-route-toDateFilter="@TempData["toDateFilter"]"
+           class="btn btn-light @prevDisabled">
+            Previous
+        </a>
+        <a asp-action="Index"
+           asp-route-sortOrder="@TempData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           asp-route-currentFilter="@TempData["CurrentFilter"]"
+           asp-route-fromDateFilter="@TempData["fromDateFilter"]"
+           asp-route-toDateFilter="@TempData["toDateFilter"]"
+           class="btn btn-light @nextDisabled">
+            Next
+        </a>
+    </div>
+    <br/>
+    <div class="row justify-content-end">
+        <div class="col-auto">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Back</a>
+        </div>
+    </div>
+</div>
+@section Scripts
+    {
+    <script type="text/javascript">
+        function filter() {
+            console.log('Filter function executed.');
+            var fromDate = document.getElementById("fromDate").value;
+            var toDate = document.getElementById("toDate").value;
+            var url = '@Url.Action("Index", "Manufacture")' + '?fromDate=' + fromDate + '&toDate=' + toDate;
+            window.location.href = url;
+        }
+    </script>
+    }

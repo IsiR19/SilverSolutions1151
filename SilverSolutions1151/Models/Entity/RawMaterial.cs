@@ -3,6 +3,5 @@
     public class RawMaterial : Entity
     {
         public string Name { get; set; }
-
     }
 }

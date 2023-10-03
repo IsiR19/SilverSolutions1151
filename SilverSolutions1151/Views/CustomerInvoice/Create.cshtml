@@ -1,0 +1,42 @@
+﻿@using SilverSolutions1151.Models.Entity
+@model CustomerInvoice
+
+<form asp-action="Create">
+    <div class="form-group">
+        <label for="CustomerName">Name</label>
+        <input asp-for="CustomerName" name="CustomerName" id="CustomerName" class="form-control" type="text" />
+    </div>
+    <div class="form-group">
+        <label for="CustomerName">Phone</label>
+        <input asp-for="CustomerPhone" name="CustomerPhone" id="CustomerPhone" class="form-control" type="text" />
+    </div>
+    <div class="form-group">
+        <label for="CustomerName">Address</label>
+        <input asp-for="CustomerAddress" name="CustomerAddress" id="CustomerAddress" class="form-control" type="text" />
+    </div>
+    <div class="form-group">
+        <label for="CustomerName">Vat</label>
+        <input asp-for="Vat" name="Vat" id="Vat" class="form-control" type="text" />
+    </div>
+    <div class="form-group">
+        <label for="CustomerName">Invoice Date</label>
+        <input asp-for="InvoiceDate" name="InvoiceDate" id="InvoiceDate" class="form-control" type="date" />
+    </div>
+    <h3>Line Items</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Weight(per box)</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody id="lineItems">
+
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-primary" id="addLineItem">Add Item</button>
+    <button type="submit" class="btn btn-success">Create Invoice</button>
+</form>
+

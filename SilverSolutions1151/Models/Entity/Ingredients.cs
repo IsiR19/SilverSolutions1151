@@ -1,15 +1,14 @@
-﻿using MessagePack;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SilverSolutions1151.Data.Entity
 {
     public class Ingredients
     {
-
         public Guid Id { get; set; }
-        public ProductType ProductType { get; set; }
+        [ForeignKey("ProductType")]
+        public Guid ProductTypeId { get; set; }
+        public virtual ProductType ProductType { get; set; }
         public string Description { get; set; }
-        public decimal? Quantity { get; set; }
-        public RawMaterial RawMaterial { get; set; }
-        public decimal? TotalQuantity { get; set; }
+        public decimal? Ratio { get; set; }
     }
 }
