@@ -17,9 +17,13 @@ namespace SilverSolutions1151.Middleware.Services
         }
         public bool AddReadyStock(int numberOfBoxes, DateTime manufactureDate, int grams)
         {
-            var qty = numberOfBoxes * grams;
-            if (_manufactureRepository.AddReadyStockTobacco(numberOfBoxes, manufactureDate))
-                return _tabaccoMixingService.RemoveMixedTobacco(qty, manufactureDate);
+            //Molases KG = number of boxes ---Change
+            //Convert g to kg
+            var packagingSize = ((decimal)(grams) / 1000);
+            var boxes = numberOfBoxes / packagingSize;
+            // grams = box size -- grams per box
+            if (_manufactureRepository.AddReadyStockTobacco((int)boxes, manufactureDate))
+                return _tabaccoMixingService.RemoveMixedTobacco(numberOfBoxes, manufactureDate);
 
             return false;
         }
