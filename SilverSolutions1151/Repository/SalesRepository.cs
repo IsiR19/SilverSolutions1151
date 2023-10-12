@@ -201,5 +201,25 @@ namespace SilverSolutions1151.Repository
 
             return total;
         }
+
+        public async Task<List<CustomerInvoice>> GetCustomerInvoiceList(string invoiceNumber, DateTime? startDate, DateTime? endDate)
+        {
+            var customerInvoiceList = new List<CustomerInvoice>();
+            if (!String.IsNullOrEmpty(invoiceNumber))
+            {
+                customerInvoiceList = await _context.CustomerInvoice.Where(x => x.InvoiceNumber == invoiceNumber).ToListAsync();
+            }
+            else if (startDate == null && endDate == null)
+            {
+                customerInvoiceList = await _context.CustomerInvoice.OrderByDescending(x=> x.InvoiceDate).ToListAsync();
+            }
+            else
+            {
+                customerInvoiceList = await _context.CustomerInvoice.Where(x => x.InvoiceDate >= startDate && x.InvoiceDate <= endDate).ToListAsync();
+            }
+
+            return customerInvoiceList;
+        }
+
     }
 }

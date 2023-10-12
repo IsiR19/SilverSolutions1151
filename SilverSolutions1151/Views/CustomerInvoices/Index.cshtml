@@ -1,25 +1,86 @@
-﻿@model IEnumerable<SilverSolutions1151.Models.Entity.CustomerInvoice>
+﻿@using SilverSolutions1151.Models.Entity;
+@using SilverSolutions1151.Models.Paganation;
+@model PaginatedList<CustomerInvoice>;
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<style type="text/css">
+    .search {
+        position: relative;
+        box-shadow: 0 0 40px rgba(51, 51, 51, .1);
+        width: 100%;
+    }
+
+        .search input {
+            height: 35px;
+            text-indent: 25px;
+            border: 2px solid #d6d4d4;
+        }
+
+            .search input:focus {
+                box-shadow: none;
+                border: 2px solid blue;
+            }
+
+        .search .fa-search {
+            position: absolute;
+            top: 20px;
+            left: 16px;
+        }
+
+        .search button {
+            position: absolute;
+            top: 0px;
+            right: 2px;
+            height: 35px;
+            width: 110px;
+        }
+
+    .rounded-container {
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 10px;
+    }
+</style>
+
+<div class="rounded-container">
+    <div class="row">
+        <form asp-action="Index" method="get">
+            <div class="row">
+                <div class="col-md-2 form-group">
+                    <label class="control-label">From Date</label>
+                    <input asp-for="FromDate" class="form-control" type="date" id="fromDate" value="@TempData["fromDateFilter"]" />
+                </div>
+                <div class="col-md-2 form-group">
+                    <label class="control-label">To Date</label>
+                    <input asp-for="ToDate" class="form-control" type="date" id="toDate" value="@TempData["toDateFilter"]" />
+                </div>
+                <div class="col-md-3 form-group">
+                    <label class="control-label">Invoice Number</label>
+                    <input type="text" name="invoiceNumber" id="invNumber" class="form-control" value="@TempData["currentFilter"]" />
+                </div>
+                <div class="col-md-1 form-group">
+                    <button class="btn btn-primary" style="margin-left:31px;height:35px;">Search</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.InvoiceNumber)
+                Invoice Number
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.InvoiceDate)
+               Invoice Date
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CustomerName)
+                Customer Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CustomerPhone)
+                Phone
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CustomerAddress)
+               Address
             </th>
             <th></th>
         </tr>
@@ -51,6 +112,43 @@
 }
     </tbody>
 </table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@TempData["CurrentFilter"]"
+   asp-route-fromDateFilter="@TempData["fromDateFilter"]"
+   asp-route-toDateFilter="@TempData["toDateFilter"]"
+   class="btn btn-light @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@TempData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@TempData["CurrentFilter"]"
+   asp-route-fromDateFilter="@TempData["fromDateFilter"]"
+   asp-route-toDateFilter="@TempData["toDateFilter"]"
+   class="btn btn-light @nextDisabled">
+    Next
+</a>
+</div>
+<br />
+@section Scripts
+    {
+    <script type="text/javascript">
+        function filter() {
+            console.log('Filter function executed.');
+            var fromDate = document.getElementById("fromDate").value;
+            var toDate = document.getElementById("toDate").value;
+            var invoiceNumber = document.getElementById("invNumber").value;
+            var url = '@Url.Action("Index", "CustomerInvoices")' + '?invoiceNumber=' + invoiceNumber + '&fromDate=' + fromDate + '&toDate=' + toDate;
+            window.location.href = url;
+        }
+    </script>
+    }
 
 <br />
 <div class="row justify-content-end">
@@ -61,3 +159,4 @@
         <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Back</a>
     </div>
 </div>
+

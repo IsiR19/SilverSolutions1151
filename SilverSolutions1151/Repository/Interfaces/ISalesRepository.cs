@@ -9,6 +9,7 @@ namespace SilverSolutions1151.Repository.Interfaces
 
         Task<CustomerInvoice> UpdateInvoiceDetailsAsync(Guid id,CustomerInvoice customerInvoice);
         Task<InvoiceTotals> GetSalesInvoiceDetailsAsync(Guid Id);
+        Task<List<CustomerInvoice>> GetCustomerInvoiceList(string invoiceNumber,DateTime? startDate,DateTime? endDate);
        
     }
 }

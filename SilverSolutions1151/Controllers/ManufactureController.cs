@@ -38,7 +38,7 @@ namespace SilverSolutions1151.Controllers
             {
                 pageNumber = 1;
                 if (String.IsNullOrEmpty(stage))
-                    stage = TempData["stage"].ToString();
+                    stage = TempData["stage"]?.ToString() ?? string.Empty;
                 else
                     TempData["stage"] = stage;
             }

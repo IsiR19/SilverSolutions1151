@@ -131,7 +131,7 @@
             console.log('Filter function executed.');
             var fromDate = document.getElementById("fromDate").value;
             var toDate = document.getElementById("toDate").value;
-            var url = '@Url.Action("Index", "Manufacture")' + '?fromDate=' + fromDate + '&toDate=' + toDate;
+            var url = '@Url.Action("Index", "Invoices")' + '?fromDate=' + fromDate + '&toDate=' + toDate;
             window.location.href = url;
         }
     </script>

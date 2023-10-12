@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SilverSolutions1151.Data;
 using SilverSolutions1151.Middleware.Services.Interfaces;
 using SilverSolutions1151.Models.Entity;
+using SilverSolutions1151.Models.Paganation;
 
 namespace SilverSolutions1151.Controllers
 {
@@ -23,17 +24,66 @@ namespace SilverSolutions1151.Controllers
         }
 
         // GET: CustomerInvoices
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    if (_context.CustomerInvoice != null)
+        //    {
+        //        return View(await _context.CustomerInvoice.OrderByDescending(invoice => invoice.InvoiceDate).ToListAsync());
+        //    }
+        //    else
+        //    {
+        //        return Problem("Entity set 'ApplicationDbContext.CustomerInvoice' is null.");
+        //    }
+        //}
+
+        public async Task<IActionResult> Index(string invoiceNumber,
+     DateTime? fromDate,
+     DateTime? fromDateFilter,
+     DateTime? toDateFilter,
+     DateTime? toDate,
+     int? pageNumber,
+     string currentFilter)
         {
-            if (_context.CustomerInvoice != null)
+            SetPageNumberAndInvoiceNumber(ref pageNumber, ref invoiceNumber, fromDate, toDate, currentFilter);
+
+
+            SetTempData(invoiceNumber, fromDate, toDate);
+
+            var invoices = await _salesService.GetInvoiceListAsync(invoiceNumber, fromDate, toDate);
+            var viewmodel = await PaginatedList<CustomerInvoice>.CreateAsync(invoices.AsQueryable().AsNoTracking(), pageNumber ?? 1, 20);
+
+            return View(viewmodel);
+        }
+
+        private void SetPageNumberAndInvoiceNumber(ref int? pageNumber, ref string invoiceNumber, DateTime? fromDate, DateTime? toDate, string currentFilter)
+        {
+            if ((fromDate != null && toDate != null) || !string.IsNullOrEmpty(invoiceNumber))
             {
-                return View(await _context.CustomerInvoice.OrderByDescending(invoice => invoice.InvoiceDate).ToListAsync());
+                pageNumber = 1;
+                if (string.IsNullOrEmpty(invoiceNumber))
+                {
+                    invoiceNumber = TempData["invoiceNumber"]?.ToString() ?? string.Empty;
+                }
+                else
+                {
+                    TempData["invoiceNumber"] = invoiceNumber;
+                }
             }
             else
             {
-                return Problem("Entity set 'ApplicationDbContext.CustomerInvoice' is null.");
+                invoiceNumber = currentFilter;
             }
         }
+
+
+        private void SetTempData(string invoiceNumber, DateTime? fromDate, DateTime? toDate)
+        {
+            TempData["CurrentFilter"] = invoiceNumber;
+            TempData["fromDateFilter"] = fromDate;
+            TempData["toDateFilter"] = toDate;
+        }
+
+
 
         // GET: CustomerInvoices/Details/5
         public async Task<IActionResult> Details(Guid? id)

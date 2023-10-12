@@ -1,4 +1,5 @@
-﻿using SilverSolutions1151.Middleware.Services.Interfaces;
+﻿using SilverSolutions1151.Middleware.Extensions;
+using SilverSolutions1151.Middleware.Services.Interfaces;
 using SilverSolutions1151.Models;
 using SilverSolutions1151.Models.Entity;
 using SilverSolutions1151.Repository.Interfaces;
@@ -28,6 +29,11 @@ namespace SilverSolutions1151.Middleware.Services
         public async Task<InvoiceTotals> GetInvoiceAsync(Guid invoiceId)
         {
             return await _salesRepository.GetSalesInvoiceDetailsAsync(invoiceId);
+        }
+
+        public async Task<List<CustomerInvoice>> GetInvoiceListAsync(string invoiceNumber,DateTime? startDate,DateTime? endDate)
+        {
+            return await _salesRepository.GetCustomerInvoiceList(invoiceNumber,startDate?.StartOfDay(),endDate?.EndOfDay());
         }
 
         public async Task<CustomerInvoice> UpdateInvoice(Guid id,CustomerInvoice customerInvoice)
