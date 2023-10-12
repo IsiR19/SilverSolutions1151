@@ -52,7 +52,7 @@ namespace SilverSolutions1151.Controllers
             productReport.ReadyStockBalancePreviousDay = _readyStockService.GetReadyStockByDate(DateTime.Now.AddDays(-1));
             //Sold 
             productReport.SoldBalanceCurrentDay = _soldstockService.GeSoldByDate(filterDate);
-            productReport.SoldBalancePreviousDay = _soldstockService.GeSoldByDate(filterDate.AddDays(-1));
+            //productReport.SoldBalancePreviousDay = _soldstockService.GeSoldByDate(filterDate.AddDays(-1));
 
             
             return View(productReport);

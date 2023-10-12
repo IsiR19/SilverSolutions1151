@@ -156,6 +156,13 @@ namespace SilverSolutions1151.Repository
                      .Sum(x => x.Quantity));
         }
 
+        public int GetSoldStockBalanceByDate(DateTime startDate,DateTime endDate)
+        {
+            return Decimal.ToInt32(_context.Manufacturing
+                     .Where(x => x.ProductionStage == Models.Entity.ProductionStage.Sold && x.ManufactureDate >= startDate && x.ManufactureDate <= endDate)
+                     .Sum(x => x.Quantity));
+        }
+
         public List<Manufacture> GetManufactureItemsByDateAndType(Models.Entity.ProductionStage stage, DateTime? startDate, DateTime? endDate)
         {
             if(startDate == null || endDate == null)
