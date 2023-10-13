@@ -65,13 +65,10 @@
             <thead>
                 <tr>
                     <th>
-                        Production Stage
+                        Manufacture Date
                     </th>
                     <th>
                         Quantity
-                    </th>
-                    <th>
-                        Manufacture Date
                     </th>
                 </tr>
             </thead>
@@ -81,13 +78,10 @@
                     
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ProductionStage)
+                            @Html.DisplayFor(modelItem => item.ManufactureDate)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Quantity)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ManufactureDate)
                         </td>
                     </tr>
                 }

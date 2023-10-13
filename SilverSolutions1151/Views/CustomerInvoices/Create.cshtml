@@ -51,8 +51,9 @@
                         <thead>
                             <tr>
                                 <th>Description</th>
-                                <th>Price</th>
+                                <th>Package Size</th>
                                 <th>Quantity</th>
+                                <th>Price</th>
                             </tr>
                         </thead>
                         @if (Model != null && Model.InvoiceItems != null)
@@ -63,8 +64,9 @@
                                 {
                                     <tr>
                                         <td>@item.Description</td>
-                                        <td>@item.Price</td>
+                                        <td>@item.Weight</td>
                                         <td>@item.Quantity</td>
+                                        <td>@item.Price</td>
                                         <td><button type="button" class="btn btn-danger delete-row-button">Delete</button></td>
                                     </tr>
                                 }
@@ -94,13 +96,14 @@
     button.onclick = function () {
         var row = table.insertRow(-1);
         var descriptionCell = row.insertCell(0);
-        var priceCell = row.insertCell(1);
+        var weightCell = row.insertCell(1);
         var quantityCell = row.insertCell(2);
-        var weightCell = row.insertCell(3);
+        var priceCell = row.insertCell(3);
         var deleteCell = row.insertCell(4);
         descriptionCell.innerHTML = '<input type="text" name="InvoiceItems[' + (table.rows.length - 2) + '].Description" class="form-control" />';
-        priceCell.innerHTML = '<input type="text" name="InvoiceItems[' + (table.rows.length - 2) + '].Price" class="form-control" />';
+        weightCell.innerHTML = '<input type="text" name="InvoiceItems[' + (table.rows.length - 2) + '].Weight" class="form-control" />';
         quantityCell.innerHTML = '<input type="text" name="InvoiceItems[' + (table.rows.length - 2) + '].Quantity" class="form-control" />';
+        priceCell.innerHTML = '<input type="text" name="InvoiceItems[' + (table.rows.length - 2) + '].Price" class="form-control" />';
         deleteCell.innerHTML = '<button type="button" class="btn btn-danger delete-row-button">Delete</button>';
         var deleteButtons = document.getElementsByClassName("delete-row-button");
         for (var i = 0; i < deleteButtons.length; i++) {

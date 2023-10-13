@@ -110,13 +110,14 @@ namespace SilverSolutions1151.Repository
             return true;
         }
 
-        public bool AddReadyStockTobacco(int quantity, DateTime manufactureDate)
+        public bool AddReadyStockTobacco(int quantity,int pacakgeSize, DateTime manufactureDate)
         {
             _context.Add(new Manufacture
             {
                 Id = Guid.NewGuid(),
                 CreatedDate = DateTime.Now,
                 Quantity = quantity,
+                PackagingSize = pacakgeSize,
                 ManufactureDate = manufactureDate,
                 ProductionStage = Models.Entity.ProductionStage.Complete,
                 CreatedBy = "Admin",
@@ -126,20 +127,27 @@ namespace SilverSolutions1151.Repository
             return true;
         }
 
-        public int GetReadyStockBalance(DateTime endDate)
+        public int GetReadyStockBalanceByDate(DateTime endDate)
         {
             return Decimal.ToInt32(_context.Manufacturing
                      .Where(x => x.ProductionStage == Models.Entity.ProductionStage.Complete && x.ManufactureDate <= endDate)
                      .Sum(x => x.Quantity));
         }
 
-        public bool RemoveReadyStock(int quantity, DateTime manufactureDate)
+        public List<Manufacture> GetReadyStockBalance(DateTime endDate)
+        {
+            return _context.Manufacturing
+                     .Where(x => x.ProductionStage == Models.Entity.ProductionStage.Complete && x.ManufactureDate <= endDate).ToList();
+        }
+
+        public bool RemoveReadyStock(int quantity, int packageSize, DateTime manufactureDate)
         {
             _context.Add(new Manufacture
             {
                 Id = Guid.NewGuid(),
                 CreatedDate = DateTime.Now,
                 Quantity = -quantity,
+                PackagingSize = packageSize,
                 ManufactureDate = manufactureDate,
                 ProductionStage = Models.Entity.ProductionStage.Complete,
                 CreatedBy = "Admin",
@@ -181,13 +189,14 @@ namespace SilverSolutions1151.Repository
             }
         }
 
-        public bool AddSoldStock(int quantity, DateTime manufactureDate)
+        public bool AddSoldStock(int quantity,int packagingSize, DateTime manufactureDate)
         {
             _context.Add(new Manufacture
             {
                 Id = Guid.NewGuid(),
                 CreatedDate = DateTime.Now,
                 Quantity = quantity,
+                PackagingSize = packagingSize,
                 ManufactureDate = manufactureDate,
                 ProductionStage = Models.Entity.ProductionStage.Sold,
                 CreatedBy = "Admin",
@@ -198,22 +207,28 @@ namespace SilverSolutions1151.Repository
             return true;
         }
 
-        public bool RemoveSoldStock(int quantity, DateTime manufactureDate)
+        public bool RemoveSoldStock(int quantity, int packagingSize, DateTime manufactureDate)
         {
             _context.Add(new Manufacture
             {
                 Id = Guid.NewGuid(),
                 CreatedDate = DateTime.Now,
                 Quantity = -quantity,
+                PackagingSize= packagingSize,
                 ManufactureDate = manufactureDate,
                 ProductionStage = Models.Entity.ProductionStage.Sold,
                 CreatedBy = "Admin",
                 ModifiedBy = "Admin"
             });
             _context.SaveChanges();
-            AddReadyStockTobacco(quantity, manufactureDate);
+            AddReadyStockTobacco(quantity,0, manufactureDate);
             return true;
         }
 
+        public List<Manufacture> GetSoldStockBalance(DateTime endDate)
+        {
+            return _context.Manufacturing
+                     .Where(x => x.ProductionStage == Models.Entity.ProductionStage.Sold && x.ManufactureDate <= endDate).ToList();
+        }
     }
 }

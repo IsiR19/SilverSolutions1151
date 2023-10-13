@@ -4260,6 +4260,7 @@
     <None Include="wwwroot\svgs\brands\youtube-square.svg" />
     <None Include="wwwroot\svgs\brands\youtube.svg" />
     <None Include="wwwroot\svgs\brands\zhihu.svg" />
+    <None Include="wwwroot\svgs\logo.webp" />
     <None Include="wwwroot\svgs\regular\address-book.svg" />
     <None Include="wwwroot\svgs\regular\address-card.svg" />
     <None Include="wwwroot\svgs\regular\angry.svg" />
@@ -7134,6 +7135,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Content\images\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

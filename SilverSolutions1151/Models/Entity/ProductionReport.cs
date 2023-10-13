@@ -21,6 +21,7 @@ namespace SilverSolutions1151.Data.Entity
         public decimal ReadyStockk { get; set; }
         public decimal Sold { get; set; }
         public decimal Packing { get; set; }
-
+        public ICollection<Balance> BalancesByPackagingSize { get; set; }
+        public ICollection<Balance> SoldBySize { get; set; }
     }
 }

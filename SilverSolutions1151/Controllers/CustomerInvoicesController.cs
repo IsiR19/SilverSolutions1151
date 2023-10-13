@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SilverSolutions1151.Data;
 using SilverSolutions1151.Middleware.Services.Interfaces;
+using SilverSolutions1151.Models;
 using SilverSolutions1151.Models.Entity;
 using SilverSolutions1151.Models.Paganation;
 
@@ -203,6 +204,11 @@ namespace SilverSolutions1151.Controllers
         }
 
         public async Task<IActionResult> Print(Guid id)
+        {
+            return View(await _salesService.GetInvoiceAsync(id));
+        }
+
+        public async Task<IActionResult> PrintInvoice(Guid id)
         {
             return View(await _salesService.GetInvoiceAsync(id));
         }

@@ -36,33 +36,64 @@ namespace SilverSolutions1151.Controllers
         {
             ProductionReport productReport = new ProductionReport();
             DateTime filterDate = DateTime.Now;
-            if(SearchDate != null)
+            if (SearchDate != null)
             {
                 filterDate = (DateTime)SearchDate;
             }
             productReport.SearchDate = filterDate;
-         
+
+            // Set the ViewBag property
+            ViewBag.FilterDate = filterDate.ToString("yyyy-MM-dd");
+
+            // Retrieve the data for the report
             productReport.RawTobaccoBalanceCurrentDay = _rawtobaccoService.GetRawTobaccoByDate(filterDate);
             productReport.RawTobaccoBalancePreviousDay = _rawtobaccoService.GetRawTobaccoByDate(filterDate.AddDays(-1));
             //Mixed
             productReport.MixedTobaccoBalanceCurrentDay = _tabaccoMixingService.GetMixedTobaccoByDate(filterDate);
             productReport.MixedTobaccoBalancePreviousDay = _tabaccoMixingService.GetMixedTobaccoByDate(filterDate.AddDays(-1));
-            //Ready Stock
-            productReport.ReadyStockBalanceCurrentDay = _readyStockService.GetReadyStockByDate(filterDate);
-            productReport.ReadyStockBalancePreviousDay = _readyStockService.GetReadyStockByDate(DateTime.Now.AddDays(-1));
-            //Sold 
-            productReport.SoldBalanceCurrentDay = _soldstockService.GeSoldByDate(filterDate);
-            //productReport.SoldBalancePreviousDay = _soldstockService.GeSoldByDate(filterDate.AddDays(-1));
 
-            
+            //Ready Stock
+            var readyStock = _readyStockService.GetReadyStockByDate(filterDate);
+            var readyStockpreviousDay = _readyStockService.GetReadyStockByDate(filterDate.AddDays(-1));
+            var balancesByPackagingSize = readyStock.GroupBy(b => (int)b.PackagingSize);
+            var previousDayBalance = readyStockpreviousDay.GroupBy(b => b.PackagingSize);
+
+            var balanceObjectsByPackagingSize = balancesByPackagingSize.Select(group => new Balance
+            {
+                PackagingSize = group.Key,
+                Amount = group.Sum(b => (int)b.Quantity)
+            });
+
+
+            productReport.BalancesByPackagingSize = balanceObjectsByPackagingSize.ToList();
+
+
+            //Sold 
+            var soldStock = _soldstockService.GetSoldStockBalance(filterDate);
+            var soldStockkpreviousDay = _soldstockService.GetSoldStockBalance(filterDate.AddDays(-1));
+            var soldStockByPackagingSize = soldStock.GroupBy(b => (int)b.PackagingSize);
+            var soldStockPreviousBalance = soldStockkpreviousDay.GroupBy(b => b.PackagingSize);
+
+            var soldStockBalance = soldStockByPackagingSize.Select(group => new Balance
+            {
+                PackagingSize = group.Key,
+                Amount = group.Sum(b => (int)b.Quantity)
+            });
+
+
+            productReport.SoldBySize = soldStockBalance.ToList();
+
+
+
             return View(productReport);
         }
 
-      
-        public IActionResult AddTobacco(decimal? openingBalance,DateTime? manufacturedate)
+
+
+        public IActionResult AddTobacco(decimal? quantity,DateTime? manufacturedate)
         {
             // Update the database with the new opening balance
-            _rawtobaccoService.AddRawTobacco((int)openingBalance, (DateTime)manufacturedate);
+            _rawtobaccoService.AddRawTobacco((int)quantity, (DateTime)manufacturedate);
 
             // Return the view 
             return RedirectToAction("Index", "Home");
@@ -78,10 +109,10 @@ namespace SilverSolutions1151.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult AddPackaging(decimal? quantityInGrams, DateTime? packingDate, decimal? numberOfBoxes)
+        public IActionResult AddPackaging(decimal? molasesQty, DateTime? packagingDate, decimal? packagingSize)
         {
             // Update the database with the new opening balance
-            _readyStockService.AddReadyStock((int)quantityInGrams, (DateTime)packingDate, (int)numberOfBoxes);
+            _readyStockService.AddReadyStock((int)molasesQty, (DateTime)packagingDate, (int)packagingSize);
 
             // Return the view 
             return RedirectToAction("Index", "Home");

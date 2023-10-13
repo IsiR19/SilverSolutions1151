@@ -1,4 +1,5 @@
-﻿using SilverSolutions1151.Models.Entity;
+﻿using SilverSolutions1151.Migrations;
+using SilverSolutions1151.Models.Entity;
 
 namespace SilverSolutions1151.Repository.Interfaces
 {
@@ -10,13 +11,14 @@ namespace SilverSolutions1151.Repository.Interfaces
         bool AddMixedTobacco(TobaccoMixture tobaccoMixture,DateTime manufactureDate);
         int GetMixedTobaccoBalance(DateTime endDate);
         bool RemoveMixedTobacco(int quantity, DateTime manufactureDate);
-        int GetReadyStockBalance(DateTime endDate);
-        bool AddReadyStockTobacco(int quantity, DateTime manufactureDate);
-        bool RemoveReadyStock(int quantity, DateTime manufactureDate);
+        List<Manufacture> GetReadyStockBalance(DateTime endDate);
+        List<Manufacture> GetSoldStockBalance(DateTime endDate);
+        bool AddReadyStockTobacco(int quantity, int packageSize, DateTime manufactureDate);
+        bool RemoveReadyStock(int quantity,int packageSize, DateTime manufactureDate);
         int GetSoldStockBalanceByDate(DateTime endDate);
         int GetSoldStockBalanceByDate(DateTime startDate, DateTime endDate);
-        bool AddSoldStock(int quantity,DateTime manufactureDate);
-        bool RemoveSoldStock(int quantity, DateTime manufactureDate);
+        bool AddSoldStock(int quantity,int packagingSize, DateTime manufactureDate);
+        bool RemoveSoldStock(int quantity, int packagingSize, DateTime manufactureDate);
         List<Manufacture> GetManufactureItemsByDateAndType(Models.Entity.ProductionStage stage,DateTime? startDate,DateTime? endDate);
 
     }

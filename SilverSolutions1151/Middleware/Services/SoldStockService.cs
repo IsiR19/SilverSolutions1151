@@ -1,5 +1,6 @@
 ﻿using SilverSolutions1151.Middleware.Extensions;
 using SilverSolutions1151.Middleware.Services.Interfaces;
+using SilverSolutions1151.Models.Entity;
 using SilverSolutions1151.Repository.Interfaces;
 
 namespace SilverSolutions1151.Middleware.Services
@@ -16,6 +17,11 @@ namespace SilverSolutions1151.Middleware.Services
         public int GeSoldByDate(DateTime endDate)
         {
             return _manufactureRepository.GetSoldStockBalanceByDate(endDate.StartOfDay(),endDate.EndOfDay());
+        }
+
+        public List<Manufacture> GetSoldStockBalance(DateTime endDate)
+        {
+            return _manufactureRepository.GetSoldStockBalance(endDate.EndOfDay());
         }
     }
 }

@@ -45,9 +45,14 @@ namespace SilverSolutions1151.Middleware.Services
         {
             if(customerInvoice.InvoiceItems.Count > 0)
             {
-                int totalQuantity = customerInvoice.InvoiceItems.Sum(item => item.Quantity);
-                if(_manufactureRepository.AddSoldStock(totalQuantity,customerInvoice.InvoiceDate))
-                    _manufactureRepository.RemoveReadyStock(totalQuantity,customerInvoice.InvoiceDate);
+                
+                foreach(var item in customerInvoice.InvoiceItems)
+                {
+                    if (_manufactureRepository.AddSoldStock(item.Quantity,item.Weight, customerInvoice.InvoiceDate))
+                        _manufactureRepository.RemoveReadyStock(item.Quantity,item.Weight , customerInvoice.InvoiceDate);
+                }
+
+                
             }
             return true;
         }

@@ -1,4 +1,5 @@
 ﻿using SilverSolutions1151.Middleware.Services.Interfaces;
+using SilverSolutions1151.Models.Entity;
 using SilverSolutions1151.Repository.Interfaces;
 
 namespace SilverSolutions1151.Middleware.Services
@@ -15,27 +16,29 @@ namespace SilverSolutions1151.Middleware.Services
             _manufactureRepository = manufactureRepository;
             _tabaccoMixingService = tobaccoMixingService;
         }
-        public bool AddReadyStock(int numberOfBoxes, DateTime manufactureDate, int grams)
+        public bool AddReadyStock(int molasesQty, DateTime manufactureDate, int packageSize)
         {
             //Molases KG = number of boxes ---Change
             //Convert g to kg
-            var packagingSize = ((decimal)(grams) / 1000);
-            var boxes = numberOfBoxes / packagingSize;
+            var packagingSize = ((decimal)(packageSize) / 1000);
+            var boxes = molasesQty / packagingSize;
             // grams = box size -- grams per box
-            if (_manufactureRepository.AddReadyStockTobacco((int)boxes, manufactureDate))
-                return _tabaccoMixingService.RemoveMixedTobacco(numberOfBoxes, manufactureDate);
+            if (_manufactureRepository.AddReadyStockTobacco((int)boxes,(int)packageSize, manufactureDate))
+                return _tabaccoMixingService.RemoveMixedTobacco(molasesQty, manufactureDate);
 
             return false;
         }
 
-        public int GetReadyStockByDate(DateTime endDate)
+        public List<Manufacture> GetReadyStockByDate(DateTime endDate)
         {
-            return _manufactureRepository.GetReadyStockBalance(endDate);
+            var readyStock = _manufactureRepository.GetReadyStockBalance(endDate);
+            
+            return readyStock;
         }
 
         public bool RemoveReadyStock(int quantity, DateTime manufactureDate)
         {
-            return _manufactureRepository.RemoveReadyStock(quantity, manufactureDate);
+            return _manufactureRepository.RemoveReadyStock(quantity,0, manufactureDate);
         }
     }
 }

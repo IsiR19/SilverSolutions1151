@@ -12,6 +12,7 @@ namespace SilverSolutions1151.Models.Entity
         public decimal Preservatives { get; set; } = 0;
         public decimal Syrup { get; set; } = 0;
         public decimal Glycerine { get; set; } = 0;
+        public decimal PackagingSize { get; set; } = 0; 
     }
 
     public enum ProductionStage

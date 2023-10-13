@@ -34,7 +34,7 @@ namespace SilverSolutions1151.Middleware.Services
             mixedTobacco.MixtureTotal = mixedTobacco.FlavorQty + mixedTobacco.GlycerinQty + mixedTobacco.SyrupQty + mixedTobacco.PreservativeQty + mixedTobacco.Tobacco;
             
             if(_manufactureRepository.AddMixedTobacco(mixedTobacco, manufactureDate))
-                return _tobaccoService.RemoveRawTobacco((int)mixedTobacco.MixtureTotal, manufactureDate);
+                return _tobaccoService.RemoveRawTobacco(quantity, manufactureDate);
 
             return false;
         }
