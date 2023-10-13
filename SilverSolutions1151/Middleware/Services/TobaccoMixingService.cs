@@ -2,6 +2,7 @@
 using SilverSolutions1151.Middleware.Services.Interfaces;
 using SilverSolutions1151.Models.Entity;
 using SilverSolutions1151.Repository.Interfaces;
+using System.Web.Http.ModelBinding;
 
 namespace SilverSolutions1151.Middleware.Services
 {
@@ -10,13 +11,19 @@ namespace SilverSolutions1151.Middleware.Services
         private ILogger<TobaccoMixingService> _logger;
         private IManufactureRepository _manufactureRepository;
         private IRawTobaccoService _tobaccoService;
-
-        public TobaccoMixingService(ILogger<TobaccoMixingService> logger,IManufactureRepository manufactureRepository, IRawTobaccoService tobaccoService)
+        private bool _isValidate;
+       
+        public TobaccoMixingService(ILogger<TobaccoMixingService> logger
+            ,IManufactureRepository manufactureRepository
+            , IRawTobaccoService tobaccoService
+            , IConfiguration config
+            )
         {
             _logger = logger;
             _manufactureRepository = manufactureRepository;
             _tobaccoService = tobaccoService;
-
+            _isValidate = config.GetValue<bool>("ValidateStage:IsValidate");
+           
         }
         public bool AddTobaccoMixing(int quantity, DateTime manufactureDate, decimal? glycerineQty, decimal? flavourQty
             , decimal? syrupQty, decimal? preservativeQty)
@@ -32,7 +39,6 @@ namespace SilverSolutions1151.Middleware.Services
             };
             
             mixedTobacco.MixtureTotal = mixedTobacco.FlavorQty + mixedTobacco.GlycerinQty + mixedTobacco.SyrupQty + mixedTobacco.PreservativeQty + mixedTobacco.Tobacco;
-            
             if(_manufactureRepository.AddMixedTobacco(mixedTobacco, manufactureDate))
                 return _tobaccoService.RemoveRawTobacco(quantity, manufactureDate);
 

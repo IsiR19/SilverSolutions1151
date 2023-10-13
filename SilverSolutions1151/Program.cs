@@ -7,6 +7,7 @@ using SilverSolutions1151.Middleware.Services;
 using SilverSolutions1151.Middleware.Services.Interfaces;
 using SilverSolutions1151.Repository;
 using SilverSolutions1151.Repository.Interfaces;
+using System.Web.Http.ModelBinding;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+//builder.Services.AddTransient<ModelStateDictionary>();
 builder.Services.AddTransient<IManufactureRepository,ManufactureRepository>();
 builder.Services.AddTransient<IRawTobaccoService, TobaccoService>();
 builder.Services.AddTransient<ITobaccoMixingService, TobaccoMixingService>();

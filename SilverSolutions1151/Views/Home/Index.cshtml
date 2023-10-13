@@ -70,6 +70,19 @@
     {
         <p>Showing balances for : @ViewBag.FilterDate</p>
     }
+    <!-- Display errors here -->
+   @* @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <ul>
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }*@
+
     <div class="form-group">
         <div class="rounded-border-container">
             <h4 class="rounded-border-heading">Raw Tobacco</h4>
