@@ -118,7 +118,7 @@ namespace SilverSolutions1151.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("InvoiceId,InvoiceNumber,InvoiceDate,CustomerName,CustomerPhone,CustomerAddress,Vat,CreatedBy,ModifiedBy,CreatedModifiedDate,Id,CreatedDate,IsDeleted,InvoiceItems")] CustomerInvoice customerInvoice)
         {
-            
+            //Add validation here for package size
             _salesService.CreateInvoice(customerInvoice); 
                 return RedirectToAction(nameof(Index));
            

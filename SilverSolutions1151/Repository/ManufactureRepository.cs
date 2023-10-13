@@ -225,10 +225,10 @@ namespace SilverSolutions1151.Repository
             return true;
         }
 
-        public List<Manufacture> GetSoldStockBalance(DateTime endDate)
+        public List<Manufacture> GetSoldStockBalance(DateTime startDate,DateTime endDate)
         {
             return _context.Manufacturing
-                     .Where(x => x.ProductionStage == Models.Entity.ProductionStage.Sold && x.ManufactureDate <= endDate).ToList();
+                     .Where(x => x.ProductionStage == Models.Entity.ProductionStage.Sold && x.ManufactureDate >= startDate && x.ManufactureDate <= endDate).ToList();
         }
     }
 }

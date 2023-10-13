@@ -62,7 +62,7 @@ namespace SilverSolutions1151.Controllers
             
             var viewmodel = await PaginatedList<Manufacture>.CreateAsync(manufacturing.AsQueryable().AsNoTracking(), pageNumber ?? 1, 20);
 
-            return View(viewmodel);  
+            return View("Mixing", viewmodel);
         }
 
         public async Task<IActionResult> Mixing(string stage,
@@ -102,6 +102,57 @@ namespace SilverSolutions1151.Controllers
 
             return View(viewmodel);
         }
+
+        public async Task<IActionResult> Packaging(string stage,
+    DateTime? fromDate,
+    DateTime? fromDateFilter,
+    DateTime? toDateFilter,
+    DateTime? toDate,
+    int? pageNumber, string currentFilter)
+        {
+            // Check if search parameters are provided
+            if (fromDate != null && toDate != null || !String.IsNullOrEmpty(stage))
+            {
+                // Reset page number to 1 and save search parameters to TempData
+                pageNumber = 1;
+                if (String.IsNullOrEmpty(stage))
+                {
+                    stage = TempData["stage"]?.ToString();
+                }
+                else
+                {
+                    TempData["stage"] = stage;
+                }
+                
+                TempData["fromDateFilter"] = fromDate;
+                TempData["toDateFilter"] = toDate;
+            }
+            else
+            {
+                // Use previous search parameters from TempData
+                stage = TempData["stage"]?.ToString();
+                fromDate = fromDateFilter ?? TempData["fromDateFilter"] as DateTime?;
+                toDate = toDateFilter ?? TempData["toDateFilter"] as DateTime?;
+            }
+
+            // Save current search filter to TempData
+            TempData["CurrentFilter"] = stage;
+
+            // Get manufacturing items based on search parameters
+            var manufacturing = new List<Manufacture>();
+            if (Enum.TryParse(typeof(Models.Entity.ProductionStage), stage, out var result))
+            {
+                manufacturing = _manufactureRepository.GetManufactureItemsByDateAndType((Models.Entity.ProductionStage)result, fromDate, toDate);
+            }
+
+            // Create paginated list of manufacturing items
+            var viewmodel = await PaginatedList<Manufacture>.CreateAsync(manufacturing.AsQueryable().AsNoTracking(), pageNumber ?? 1, 20);
+
+            return View("Packaging", viewmodel);
+
+        }
+
+
 
 
     }

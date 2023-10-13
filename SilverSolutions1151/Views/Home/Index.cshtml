@@ -68,21 +68,8 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     @if (ViewBag.FilterDate != null)
     {
-        <p>Showing balances for : @ViewBag.FilterDate</p>
+        <p><strong>Showing balances for : @ViewBag.FilterDate</strong></p>
     }
-    <!-- Display errors here -->
-   @* @if (!ViewData.ModelState.IsValid)
-    {
-        <div class="alert alert-danger">
-            <ul>
-                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    <li>@error.ErrorMessage</li>
-                }
-            </ul>
-        </div>
-    }*@
-
     <div class="form-group">
         <div class="rounded-border-container">
             <h4 class="rounded-border-heading">Raw Tobacco</h4>
@@ -204,28 +191,35 @@
             </div>
         </div>
     </div>
+
     <div class="form-group">
         <div class="rounded-border-container">
             <h4 class="rounded-border-heading">Ready Stock</h4>
             <hr class="rounded-border-separator">
-            <div class="balance-group-container">
-                @foreach (var group in Model.BalancesByPackagingSize)
-                {
-                    <div class="rounded-border-container">
-                        <p class="balance-group-amount"><strong>Packaging Size(g): @group.PackagingSize</strong></p>
-                        <p class="balance-group-amount">Current Balance: @group.Amount</p>
-                    </div>
-                }
-            </div>
-            <br/>
+            @if (Model.BalancesByPackagingSize.Count == 0)
+            {
+                <p>No data has been captured for the current day.</p>
+            }
+            else
+            {
+                <div class="balance-group-container">
+                    @foreach (var group in Model.BalancesByPackagingSize)
+                    {
+                        <div class="rounded-border-container">
+                            <p class="balance-group-amount"><strong>Packaging Size(g): @group.PackagingSize</strong></p>
+                            <p class="balance-group-amount">Current Balance: @group.Amount</p>
+                        </div>
+                    }
+                </div>
+                <br />
 
-            <div class="form-group">
-                <button type="button" class="btn btn-success" onclick="viewReadyStockTransaction()">View</button>
-            </div>
-
-
+                <div class="form-group">
+                    <button type="button" class="btn btn-success" onclick="viewReadyStockTransaction()">View</button>
+                </div>
+            }
         </div>
     </div>
+
 
     <div class="form-group">
         <div class="rounded-border-container">
@@ -307,7 +301,7 @@
         function viewReadyStockTransaction() {
             console.log('viewReadyStockTransaction function executed.');
 
-            const url = '@Url.Action("Index", "Manufacture")?stage=Complete';
+            const url = '@Url.Action("Packaging", "Manufacture")?stage=Complete';
             window.location.href = url;
         }
 

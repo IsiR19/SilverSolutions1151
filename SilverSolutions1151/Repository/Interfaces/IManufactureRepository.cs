@@ -12,7 +12,7 @@ namespace SilverSolutions1151.Repository.Interfaces
         int GetMixedTobaccoBalance(DateTime endDate);
         bool RemoveMixedTobacco(int quantity, DateTime manufactureDate);
         List<Manufacture> GetReadyStockBalance(DateTime endDate);
-        List<Manufacture> GetSoldStockBalance(DateTime endDate);
+        List<Manufacture> GetSoldStockBalance(DateTime startDate,DateTime endDate);
         bool AddReadyStockTobacco(int quantity, int packageSize, DateTime manufactureDate);
         bool RemoveReadyStock(int quantity,int packageSize, DateTime manufactureDate);
         int GetSoldStockBalanceByDate(DateTime endDate);

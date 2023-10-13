@@ -68,6 +68,7 @@
                         <tr>
                             <th>Item</th>
                             <th class="right">Unit Price</th>
+                            <th clas="centre">Packaging Size(g)</th>
                             <th class="center">Quantity</th>
                             <th class="right">Total</th>
                         </tr>
@@ -79,13 +80,16 @@
                                 <td>
                                     <input asp-for="Invoice.InvoiceItems[i].Description" class="form-control" readonly="readonly" />
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     <input asp-for="Invoice.InvoiceItems[i].Price" class="form-control" readonly="readonly" />
                                 </td>
-                                <td>
+                                <td class="text-right">
+                                    <input asp-for="Invoice.InvoiceItems[i].Weight" class="form-control" readonly="readonly" />
+                                </td>
+                                <td class="text-center">
                                     <input asp-for="Invoice.InvoiceItems[i].Quantity" class="form-control" readonly="readonly" />
                                 </td>
-                                <td>
+                                <td class="text-right">
                                     <input asp-for="Invoice.InvoiceItems[i].TotalPrice" class="form-control" readonly="readonly" />
                                 </td>
                             </tr>

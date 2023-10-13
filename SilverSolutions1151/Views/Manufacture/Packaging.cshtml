@@ -41,7 +41,8 @@
     }
 </style>
 
-<div class="rounded-container">
+<div class="rounded-container" style="margin-top: 20px";>
+    <!-- Search form -->
     <div class="row">
         <form asp-action="Index" method="get">
             <div class="row">
@@ -54,76 +55,35 @@
                     <input asp-for="ToDate" class="form-control" type="date" id="toDate" value="@TempData["toDateFilter"]" />
                 </div>
                 <div class="col-md-1 form-group">
-                    <button class="btn btn-primary" style="margin-left:31px;height:35px;" onclick="filter()">Search</button>
+                    <button class="btn btn-primary search-button" onclick="">Search</button>
                 </div>
             </div>
         </form>
-
     </div>
+
+    <!-- Results table -->
     <div class="rounded-container">
         <table class="table">
             <thead>
                 <tr>
-                    <th>
-                        Production Stage
-                    </th>
-                    <th>
-                       Total Quantity
-                    </th>
-                    <th>
-                       Tobacco
-                    </th>
-                    <th>
-                        Glycerin
-                    </th>
-                    <th>
-                        Syrup
-                    </th>
-                    <th>
-                        Flavor
-                    </th>
-                    <th>
-                        Preservatives
-                    </th>
-                    <th>
-                        Manufacture Date
-                    </th>
+                    <th>Packaging Date</th>
+                    <th>Packaging Size(g)</th>
+                    <th>Total Quantity</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
-                    
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProductionStage)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Quantity)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Tobacco)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Glycerine)
-                        </td>
-                         <td>
-                            @Html.DisplayFor(modelItem => item.Syrup)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Flavour)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Preservatives)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ManufactureDate)
-                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.ManufactureDate)</td>
+                        <td>@Html.DisplayFor(modelItem => item.PackagingSize)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
                     </tr>
                 }
             </tbody>
         </table>
 
+        <!-- Pagination links -->
         @{
             var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
             var nextDisabled = !Model.HasNextPage ? "disabled" : "";
@@ -147,22 +107,33 @@
             Next
         </a>
     </div>
-    <br/>
+
+    <br />
+
+    <!-- Back button -->
     <div class="row justify-content-end">
         <div class="col-auto">
             <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Back</a>
         </div>
     </div>
 </div>
+
 @section Scripts
     {
     <script type="text/javascript">
-        function filter() {
-            console.log('Filter function executed.');
-            var fromDate = document.getElementById("fromDate").value;
-            var toDate = document.getElementById("toDate").value;
-            var url = '@Url.Action("Mixing", "Manufacture")' + '?fromDate=' + fromDate + '&toDate=' + toDate;
-            window.location.href = url;
-        }
+        $(document).ready(function () {
+            // Handle search button click
+            $('.search-button').click(function () {
+                var fromDate = $('#fromDate').val();
+                var toDate = $('#toDate').val();
+
+                // Construct URL with query parameters
+                var url = '@Url.Action("Packaging", "Manufacture")' + '?fromDate=' + fromDate + '&toDate=' + toDate;
+                console.log(url);
+                debugger;
+                // Redirect to new URL
+                window.location.href = url;
+            });
+        });
     </script>
-    }
+}
