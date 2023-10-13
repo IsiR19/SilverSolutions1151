@@ -1,18 +1,40 @@
 ﻿@model SilverSolutions1151.Models.InvoiceTotals
+
 <style>
     .BorderLess {
         border: none;
     }
+
+    #bottom2 {
+        position: absolute;
+        height: 20vh;
+        width: 30vw;
+        left: calc(50vw - 30vw/2 + 10vw);
+        top: calc(100vh - 20vh);
+    }
+
+    .my-heading {
+        font-size: 3.3em;
+    }
+
 </style>
+<script type="text/javascript">
+    window.addEventListener('DOMContentLoaded', function () {
+        var banner = document.querySelector('.bg-primary.text-white.py-3');
+        if (banner) {
+            banner.remove();
+        }
+    });
+</script>
 <div class="container">
     <div class="card">
         <div class="card-header">
             <div class="row mb-4">
-                <div class="col-sm-7">
-                    <h1 class="font-weight-bold">Silver&nbsp;Solutions&nbsp;1151&nbsp;cc</h1>
+                <div class="col-sm-8">
+                    <h1 class="my-heading font-weight-bold">Silver&nbsp;Solutions&nbsp;1151&nbsp;cc</h1>
                     <p class="font-weight-medium text-center">Manufacturer of Molases tobacco</p>
                 </div>
-                <div class="col-sm-5 text-right">
+                <div class="col-sm-4 text-right">
                     <img src="~/svgs/logo.webp" alt="Logo" class="img-fluid">
                     <p class="font-weight-light">The original taste of hookah</p>
                 </div>
@@ -98,7 +120,7 @@
                 </table>
             </div>
 
-            <div class="row mb-4">
+            <div class="row mb-4" style="margin-top:240px">
                 <div class="col-sm-6">
                     <div>
                         <strong>Banking Details:</strong>
