@@ -7,14 +7,14 @@ namespace SilverSolutions1151.Data.Entity
     {
         [DataType(DataType.Date)]
         public DateTime SearchDate { get; set; }
-        public int  RawTobaccoBalancePreviousDay { get; set; }
-        public int RawTobaccoBalanceCurrentDay { get; set; }
-        public int MixedTobaccoBalancePreviousDay { get; set; }
-        public int MixedTobaccoBalanceCurrentDay { get; set; }
-        public int ReadyStockBalancePreviousDay { get; set; }
-        public int ReadyStockBalanceCurrentDay { get; set; }
-        public int SoldBalancePreviousDay { get; set; }
-        public int SoldBalanceCurrentDay { get; set; }
+        public decimal RawTobaccoBalancePreviousDay { get; set; }
+        public decimal RawTobaccoBalanceCurrentDay { get; set; }
+        public decimal MixedTobaccoBalancePreviousDay { get; set; }
+        public decimal MixedTobaccoBalanceCurrentDay { get; set; }
+        public decimal ReadyStockBalancePreviousDay { get; set; }
+        public decimal ReadyStockBalanceCurrentDay { get; set; }
+        public decimal SoldBalancePreviousDay { get; set; }
+        public decimal SoldBalanceCurrentDay { get; set; }
         public decimal OpeningBalance { get; set; }
         public decimal ClosedBalance { get; set; }
         public decimal InProgress { get; set; }

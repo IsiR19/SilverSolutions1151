@@ -5,7 +5,7 @@ namespace SilverSolutions1151.Middleware.Services.Interfaces
     public interface IReadyStockService
     {
         List<Manufacture> GetReadyStockByDate(DateTime endDate);
-        bool AddReadyStock(int molasesQty, DateTime manufactureDate,int packageSize);
-        bool RemoveReadyStock(int quantity, DateTime manufactureDate);
+        bool AddReadyStock(decimal molasesQty, DateTime manufactureDate, decimal packageSize);
+        bool RemoveReadyStock(decimal quantity, DateTime manufactureDate);
     }
 }

@@ -14,7 +14,7 @@ namespace SilverSolutions1151.Middleware.Services
             _logger = logger;
             _manufactureRepository = manufactureRepository;
         }
-        public int GeSoldByDate(DateTime endDate)
+        public decimal GeSoldByDate(DateTime endDate)
         {
             return _manufactureRepository.GetSoldStockBalanceByDate(endDate.StartOfDay(),endDate.EndOfDay());
         }

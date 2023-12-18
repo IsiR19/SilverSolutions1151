@@ -16,15 +16,15 @@ namespace SilverSolutions1151.Repository
             _logger = logger;
             _context = context;
         }
-        public int GetRawTobaccoBalance(DateTime endDate)
+        public decimal GetRawTobaccoBalance(DateTime endDate)
         {
             {
-                return Decimal.ToInt32(_context.Manufacturing
+                return _context.Manufacturing
                     .Where(x => x.ProductionStage == Models.Entity.ProductionStage.RawTobacco && x.ManufactureDate <= endDate)
-                    .Sum(x => x.Quantity));
+                    .Sum(x => x.Quantity);
             }
         }
-        public bool AddRawTobacco(int quantity, DateTime manufactureDate)
+        public bool AddRawTobacco(decimal quantity, DateTime manufactureDate)
         {
             _context.Add(new Manufacture
             {
@@ -41,10 +41,10 @@ namespace SilverSolutions1151.Repository
 
         }
 
-        public int GetManufactureBalance(DateTime endDate)
+        public decimal GetManufactureBalance(DateTime endDate)
         {
             {
-                return Decimal.ToInt32(_context.ManufacturingStage
+                return (_context.ManufacturingStage
                     .Where(x => x.ProductionStage == ProductionStage.RawTobacco && x.CreatedDate <= endDate)
                     .Sum(x => x.Quantity));
             }
@@ -71,7 +71,7 @@ namespace SilverSolutions1151.Repository
             return true;
         }
 
-        public bool RemoveRawTobacco(int quantity, DateTime manufactureDate)
+        public bool RemoveRawTobacco(decimal quantity, DateTime manufactureDate)
         {
             _context.Add(new Manufacture
             {
@@ -87,14 +87,14 @@ namespace SilverSolutions1151.Repository
             return true;
         }
 
-        public int GetMixedTobaccoBalance(DateTime endDate)
+        public decimal GetMixedTobaccoBalance(DateTime endDate)
         {
-            return Decimal.ToInt32(_context.Manufacturing
+            return (_context.Manufacturing
                      .Where(x => x.ProductionStage == Models.Entity.ProductionStage.Mixing && x.ManufactureDate <= endDate)
                      .Sum(x => x.Quantity));
         }
 
-        public bool RemoveMixedTobacco(int quantity, DateTime manufactureDate)
+        public bool RemoveMixedTobacco(decimal quantity, DateTime manufactureDate)
         {
             _context.Add(new Manufacture
             {
@@ -110,7 +110,7 @@ namespace SilverSolutions1151.Repository
             return true;
         }
 
-        public bool AddReadyStockTobacco(int quantity,int pacakgeSize, DateTime manufactureDate)
+        public bool AddReadyStockTobacco(decimal quantity, decimal pacakgeSize, DateTime manufactureDate)
         {
             _context.Add(new Manufacture
             {
@@ -127,9 +127,9 @@ namespace SilverSolutions1151.Repository
             return true;
         }
 
-        public int GetReadyStockBalanceByDate(DateTime endDate)
+        public decimal GetReadyStockBalanceByDate(DateTime endDate)
         {
-            return Decimal.ToInt32(_context.Manufacturing
+            return (_context.Manufacturing
                      .Where(x => x.ProductionStage == Models.Entity.ProductionStage.Complete && x.ManufactureDate <= endDate)
                      .Sum(x => x.Quantity));
         }
@@ -140,7 +140,7 @@ namespace SilverSolutions1151.Repository
                      .Where(x => x.ProductionStage == Models.Entity.ProductionStage.Complete && x.ManufactureDate <= endDate).ToList();
         }
 
-        public bool RemoveReadyStock(int quantity, int packageSize, DateTime manufactureDate)
+        public bool RemoveReadyStock(decimal quantity, decimal packageSize, DateTime manufactureDate)
         {
             _context.Add(new Manufacture
             {
@@ -157,16 +157,16 @@ namespace SilverSolutions1151.Repository
             return true;
         }
 
-        public int GetSoldStockBalanceByDate(DateTime endDate)
+        public decimal GetSoldStockBalanceByDate(DateTime endDate)
         {
-            return Decimal.ToInt32(_context.Manufacturing
+            return (_context.Manufacturing
                      .Where(x => x.ProductionStage == Models.Entity.ProductionStage.Sold && x.ManufactureDate <= endDate)
                      .Sum(x => x.Quantity));
         }
 
-        public int GetSoldStockBalanceByDate(DateTime startDate,DateTime endDate)
+        public decimal GetSoldStockBalanceByDate(DateTime startDate,DateTime endDate)
         {
-            return Decimal.ToInt32(_context.Manufacturing
+            return (_context.Manufacturing
                      .Where(x => x.ProductionStage == Models.Entity.ProductionStage.Sold && x.ManufactureDate >= startDate && x.ManufactureDate <= endDate)
                      .Sum(x => x.Quantity));
         }
@@ -189,7 +189,7 @@ namespace SilverSolutions1151.Repository
             }
         }
 
-        public bool AddSoldStock(int quantity,int packagingSize, DateTime manufactureDate)
+        public bool AddSoldStock(decimal quantity, decimal packagingSize, DateTime manufactureDate)
         {
             _context.Add(new Manufacture
             {
@@ -207,7 +207,7 @@ namespace SilverSolutions1151.Repository
             return true;
         }
 
-        public bool RemoveSoldStock(int quantity, int packagingSize, DateTime manufactureDate)
+        public bool RemoveSoldStock(decimal quantity, decimal packagingSize, DateTime manufactureDate)
         {
             _context.Add(new Manufacture
             {

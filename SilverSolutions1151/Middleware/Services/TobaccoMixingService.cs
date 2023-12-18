@@ -25,7 +25,7 @@ namespace SilverSolutions1151.Middleware.Services
             _isValidate = config.GetValue<bool>("ValidateStage:IsValidate");
            
         }
-        public bool AddTobaccoMixing(int quantity, DateTime manufactureDate, decimal? glycerineQty, decimal? flavourQty
+        public bool AddTobaccoMixing(decimal quantity, DateTime manufactureDate, decimal? glycerineQty, decimal? flavourQty
             , decimal? syrupQty, decimal? preservativeQty)
         {
 
@@ -45,13 +45,13 @@ namespace SilverSolutions1151.Middleware.Services
             return false;
         }
 
-        public int GetMixedTobaccoByDate(DateTime endDate)
+        public decimal GetMixedTobaccoByDate(DateTime endDate)
         {
 
             return _manufactureRepository.GetMixedTobaccoBalance(endDate.EndOfDay());
         }
 
-        public bool RemoveMixedTobacco(int quantity, DateTime manufactureDate)
+        public bool RemoveMixedTobacco(decimal quantity, DateTime manufactureDate)
         {
             return _manufactureRepository.RemoveMixedTobacco(quantity,manufactureDate);
         }

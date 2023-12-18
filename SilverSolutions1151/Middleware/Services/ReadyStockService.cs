@@ -17,14 +17,14 @@ namespace SilverSolutions1151.Middleware.Services
             _manufactureRepository = manufactureRepository;
             _tabaccoMixingService = tobaccoMixingService;
         }
-        public bool AddReadyStock(int molasesQty, DateTime manufactureDate, int packageSize)
+        public bool AddReadyStock(decimal molasesQty, DateTime manufactureDate, decimal packageSize)
         {
             //Molases KG = number of boxes ---Change
             //Convert g to kg
-            var packagingSize = ((decimal)(packageSize) / 1000);
+            var packagingSize = ((packageSize) / 1000);
             var boxes = molasesQty / packagingSize;
             // grams = box size -- grams per box
-            if (_manufactureRepository.AddReadyStockTobacco((int)boxes,(int)packageSize, manufactureDate.EnsureTime()))
+            if (_manufactureRepository.AddReadyStockTobacco(boxes,packageSize, manufactureDate.EnsureTime()))
                 return _tabaccoMixingService.RemoveMixedTobacco(molasesQty, manufactureDate.EnsureTime());
 
             return false;
@@ -37,7 +37,7 @@ namespace SilverSolutions1151.Middleware.Services
             return readyStock;
         }
 
-        public bool RemoveReadyStock(int quantity, DateTime manufactureDate)
+        public bool RemoveReadyStock(decimal quantity, DateTime manufactureDate)
         {
             return _manufactureRepository.RemoveReadyStock(quantity,0, manufactureDate);
         }

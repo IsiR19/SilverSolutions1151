@@ -119,7 +119,7 @@ namespace SilverSolutions1151.Controllers
                 TempData["ProductionReportErrors"] = errorMessages;
                 return RedirectToAction("Index", "Home");
             }
-            _rawtobaccoService.AddRawTobacco((int)quantity, (DateTime)manufacturedate);
+            _rawtobaccoService.AddRawTobacco((decimal)quantity, (DateTime)manufacturedate);
 
             
 
@@ -154,7 +154,7 @@ namespace SilverSolutions1151.Controllers
                 }
             }
             // Update the database with the new opening balance
-            _tabaccoMixingService.AddTobaccoMixing((int)manufacturingQty, (DateTime)manufacturedate, glycerineQty, flavourQty, syrupQty, preservativeQty);
+            _tabaccoMixingService.AddTobaccoMixing((decimal)manufacturingQty, (DateTime)manufacturedate, glycerineQty, flavourQty, syrupQty, preservativeQty);
             
                
             // Return the view 
@@ -185,7 +185,7 @@ namespace SilverSolutions1151.Controllers
                 }
             }
             // Update the database with the new opening balance
-            _readyStockService.AddReadyStock((int)molasesQty, (DateTime)packagingDate, (int)packagingSize);
+            _readyStockService.AddReadyStock((decimal)molasesQty, (DateTime)packagingDate, (int)packagingSize);
 
             // Return the view 
             return RedirectToAction("Index", "Home");

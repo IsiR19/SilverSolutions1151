@@ -2,8 +2,8 @@
 {
     public interface IRawTobaccoService
     {
-        int GetRawTobaccoByDate(DateTime endDate);
-        bool AddRawTobacco(int quantity, DateTime manufactureDate);
-        bool RemoveRawTobacco(int quantity, DateTime manufactureDate);
+        decimal GetRawTobaccoByDate(DateTime endDate);
+        bool AddRawTobacco(decimal quantity, DateTime manufactureDate);
+        bool RemoveRawTobacco(decimal quantity, DateTime manufactureDate);
     }
 }

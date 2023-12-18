@@ -15,18 +15,18 @@ namespace SilverSolutions1151.Middleware.Services
                 _manufactureRepository = manufactureRepository;
         }
 
-        public bool AddRawTobacco(int quantity,DateTime manufactureDate)
+        public bool AddRawTobacco(decimal quantity,DateTime manufactureDate)
         {
             return _manufactureRepository.AddRawTobacco(quantity, manufactureDate.EnsureTime());
         }
 
-        public int GetRawTobaccoByDate(DateTime endDate)
+        public decimal GetRawTobaccoByDate(DateTime endDate)
         {
             endDate = endDate.EndOfDay();
             return _manufactureRepository.GetRawTobaccoBalance(endDate);
         }
 
-        public bool RemoveRawTobacco(int quantity,DateTime manufactureDate)
+        public bool RemoveRawTobacco(decimal quantity,DateTime manufactureDate)
         {
             return _manufactureRepository.RemoveRawTobacco(quantity, manufactureDate);
         }

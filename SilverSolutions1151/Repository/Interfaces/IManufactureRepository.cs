@@ -5,20 +5,20 @@ namespace SilverSolutions1151.Repository.Interfaces
 {
     public interface IManufactureRepository
     {
-        int GetRawTobaccoBalance(DateTime endDate);
-        bool AddRawTobacco(int quantity, DateTime manufactureDate);
-        bool RemoveRawTobacco(int quantity,DateTime manufactureDate);
+        decimal GetRawTobaccoBalance(DateTime endDate);
+        bool AddRawTobacco(decimal quantity, DateTime manufactureDate);
+        bool RemoveRawTobacco(decimal quantity,DateTime manufactureDate);
         bool AddMixedTobacco(TobaccoMixture tobaccoMixture,DateTime manufactureDate);
-        int GetMixedTobaccoBalance(DateTime endDate);
-        bool RemoveMixedTobacco(int quantity, DateTime manufactureDate);
+        decimal GetMixedTobaccoBalance(DateTime endDate);
+        bool RemoveMixedTobacco(decimal quantity, DateTime manufactureDate);
         List<Manufacture> GetReadyStockBalance(DateTime endDate);
         List<Manufacture> GetSoldStockBalance(DateTime startDate,DateTime endDate);
-        bool AddReadyStockTobacco(int quantity, int packageSize, DateTime manufactureDate);
-        bool RemoveReadyStock(int quantity,int packageSize, DateTime manufactureDate);
-        int GetSoldStockBalanceByDate(DateTime endDate);
-        int GetSoldStockBalanceByDate(DateTime startDate, DateTime endDate);
-        bool AddSoldStock(int quantity,int packagingSize, DateTime manufactureDate);
-        bool RemoveSoldStock(int quantity, int packagingSize, DateTime manufactureDate);
+        bool AddReadyStockTobacco(decimal quantity, decimal packageSize, DateTime manufactureDate);
+        bool RemoveReadyStock(decimal quantity, decimal packageSize, DateTime manufactureDate);
+        decimal GetSoldStockBalanceByDate(DateTime endDate);
+        decimal GetSoldStockBalanceByDate(DateTime startDate, DateTime endDate);
+        bool AddSoldStock(decimal quantity, decimal packagingSize, DateTime manufactureDate);
+        bool RemoveSoldStock(decimal quantity, decimal packagingSize, DateTime manufactureDate);
         List<Manufacture> GetManufactureItemsByDateAndType(Models.Entity.ProductionStage stage,DateTime? startDate,DateTime? endDate);
 
     }
