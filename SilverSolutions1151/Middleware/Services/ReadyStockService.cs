@@ -1,4 +1,5 @@
-﻿using SilverSolutions1151.Middleware.Services.Interfaces;
+﻿using SilverSolutions1151.Middleware.Extensions;
+using SilverSolutions1151.Middleware.Services.Interfaces;
 using SilverSolutions1151.Models.Entity;
 using SilverSolutions1151.Repository.Interfaces;
 
@@ -23,8 +24,8 @@ namespace SilverSolutions1151.Middleware.Services
             var packagingSize = ((decimal)(packageSize) / 1000);
             var boxes = molasesQty / packagingSize;
             // grams = box size -- grams per box
-            if (_manufactureRepository.AddReadyStockTobacco((int)boxes,(int)packageSize, manufactureDate))
-                return _tabaccoMixingService.RemoveMixedTobacco(molasesQty, manufactureDate);
+            if (_manufactureRepository.AddReadyStockTobacco((int)boxes,(int)packageSize, manufactureDate.EnsureTime()))
+                return _tabaccoMixingService.RemoveMixedTobacco(molasesQty, manufactureDate.EnsureTime());
 
             return false;
         }

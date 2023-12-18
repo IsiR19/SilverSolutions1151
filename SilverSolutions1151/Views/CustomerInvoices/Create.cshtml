@@ -29,7 +29,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="CustomerPhone" class="control-label"></label>
-                <input asp-for="CustomerPhone" class="form-control" />
+                <input type="text" id="customerName" class="form-control" />
                 <span asp-validation-for="CustomerPhone" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -112,6 +112,39 @@
             });
         }
     };
+    var customerNameInput = document.getElementById("customerName");
+    var customers = [];
+
+    // Make an AJAX request to get the list of customers
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "@Url.Action("GetCustomers", "CustomerInvoices")");
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            customers = JSON.parse(xhr.responseText);
+        } else {
+            console.log("Request failed. Returned status of " + xhr.status);
+        }
+    };
+    xhr.send();
+
+    // Add an event listener to the customerNameInput element
+    customerNameInput.addEventListener("input", function () {
+        var filteredCustomers = customers.filter(function (customer) {
+            return customer.customerName.toLowerCase().indexOf(customerNameInput.value.toLowerCase()) !== -1;
+        });
+        var suggestions = filteredCustomers.map(function (customer) {
+            return '<div class="autocomplete-item">' + customer.customerName + '</div>';
+        }).join("");
+        document.getElementById("autocomplete-container").innerHTML = suggestions;
+    });
+
+    // Add an event listener to the document to handle clicks on the autocomplete items
+    document.addEventListener("click", function (event) {
+        if (event.target.classList.contains("autocomplete-item")) {
+            customerNameInput.value = event.target.innerText;
+            document.getElementById("autocomplete-container").innerHTML = "";
+        }
+    });
 </script>
 
 @section Scripts {

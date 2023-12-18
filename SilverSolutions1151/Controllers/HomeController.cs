@@ -112,6 +112,13 @@ namespace SilverSolutions1151.Controllers
         public IActionResult AddTobacco(decimal? quantity,DateTime? manufacturedate)
         {
             // Update the database with the new opening balance
+            if (quantity <= 0 && manufacturedate == null) 
+            {
+                ModelState.AddModelError("Validation", "Quantity and manufacture date are required.");
+                var errorMessages = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+                TempData["ProductionReportErrors"] = errorMessages;
+                return RedirectToAction("Index", "Home");
+            }
             _rawtobaccoService.AddRawTobacco((int)quantity, (DateTime)manufacturedate);
 
             

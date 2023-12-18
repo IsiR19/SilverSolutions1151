@@ -143,6 +143,7 @@
 
             <div class="form-group">
                 <button type="button" class="btn btn-primary" onclick="addManufacturing()">Add</button>
+                <button type="button" class="btn btn-success" onclick="viewMixedTobaccoTransaction()">View</button>
             </div>
         </div>
     </div>
@@ -158,7 +159,7 @@
             </div>
 
             <div class="form-group">
-                <button type="button" class="btn btn-success" onclick="viewMixedTobaccoTransaction()">View</button>
+                <button type="button" class="btn btn-success" onclick="viewMixedTobaccoTotalTransaction()">View</button>
             </div>
         </div>
     </div>
@@ -295,6 +296,13 @@
             console.log('viewMixedTobaccoTransaction function executed.');
 
             const url = '@Url.Action("Mixing", "Manufacture")?stage=Mixing';
+            window.location.href = url;
+        }
+
+        function viewMixedTobaccoTotalTransaction() {
+            console.log('viewMixedTobaccoTransaction function executed.');
+
+            const url = '@Url.Action("Index", "Manufacture")?stage=MixingTotal';
             window.location.href = url;
         }
 

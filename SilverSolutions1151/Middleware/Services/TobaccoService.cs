@@ -17,7 +17,7 @@ namespace SilverSolutions1151.Middleware.Services
 
         public bool AddRawTobacco(int quantity,DateTime manufactureDate)
         {
-            return _manufactureRepository.AddRawTobacco(quantity, manufactureDate);
+            return _manufactureRepository.AddRawTobacco(quantity, manufactureDate.EnsureTime());
         }
 
         public int GetRawTobaccoByDate(DateTime endDate)

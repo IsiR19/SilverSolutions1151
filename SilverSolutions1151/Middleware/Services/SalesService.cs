@@ -11,18 +11,35 @@ namespace SilverSolutions1151.Middleware.Services
         private readonly ILogger<SalesService> _logger;
         private readonly ISalesRepository _salesRepository;
         private readonly IManufactureRepository _manufactureRepository;
+        private readonly ICustomerRepository _customerRepository;
 
-        public SalesService(ILogger<SalesService> logger, ISalesRepository salesRepository, IManufactureRepository manufactureRepository)
+        public SalesService(ILogger<SalesService> logger, ISalesRepository salesRepository,
+            IManufactureRepository manufactureRepository, ICustomerRepository customerRepository)
         {
             _logger = logger;
             _salesRepository = salesRepository;
             _manufactureRepository = manufactureRepository;
+            _customerRepository = customerRepository;
         }
 
         public bool CreateInvoice(CustomerInvoice customerInvoice)
         {
             if (_salesRepository.CreateInvoiceDetails(customerInvoice))
                 AddManufacturingSoldStock(customerInvoice);
+
+
+
+            var customer = new Customer
+            {
+                CustomerName = customerInvoice.CustomerName,
+                Address = customerInvoice.CustomerAddress,
+                Phone = customerInvoice.CustomerPhone,
+                
+            };
+
+            
+            _customerRepository.CreateCustomer(customer);
+            
             return true ;
         }
 

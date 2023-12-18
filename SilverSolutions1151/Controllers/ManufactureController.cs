@@ -54,15 +54,18 @@ namespace SilverSolutions1151.Controllers
             TempData["fromDateFilter"] = fromDate;
             TempData["toDateFilter"] = toDate;
             var manufacturing = new List<Manufacture>();
+            if (stage == "MixingTotal")
+                stage = "Mixing";
             if (Enum.TryParse(typeof(Models.Entity.ProductionStage),stage,out var result))
             {
                 manufacturing = _manufactureRepository.GetManufactureItemsByDateAndType((Models.Entity.ProductionStage)result, fromDate, toDate);
             }
-    
+            
+            
             
             var viewmodel = await PaginatedList<Manufacture>.CreateAsync(manufacturing.AsQueryable().AsNoTracking(), pageNumber ?? 1, 20);
-
-            return View("Mixing", viewmodel);
+     
+            return View("Index", viewmodel);
         }
 
         public async Task<IActionResult> Mixing(string stage,

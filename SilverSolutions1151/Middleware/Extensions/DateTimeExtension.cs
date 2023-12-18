@@ -11,5 +11,13 @@
         {
             return theDate.Date.AddDays(1).AddTicks(-1);
         }
+        public static DateTime EnsureTime(this DateTime dateTime)
+        {
+            if (dateTime.TimeOfDay == TimeSpan.Zero)
+            {
+                dateTime = dateTime.Add(DateTime.Now.TimeOfDay);
+            }
+            return dateTime;
+        }
     }
 }
